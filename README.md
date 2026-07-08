@@ -15,6 +15,7 @@ This repository is the web foundation for the Next Steps Radio Podcast Network a
 - Contact links
 - Support mission placeholder
 - Responsive layout for desktop and mobile screens
+- Basic Progressive Web App metadata
 
 ## Tech Stack
 
@@ -49,6 +50,18 @@ Preview the production build locally:
 npm run preview
 ```
 
+## PWA Foundation
+
+The app includes a basic web app manifest and mobile metadata so browsers and mobile devices can recognize it as an installable app foundation.
+
+Current PWA files:
+
+- `public/manifest.webmanifest`
+- `public/icons/icon.svg`
+- PWA metadata in `index.html`
+
+Future PWA improvements should include production-ready PNG icons, offline support, a service worker, and install testing on iOS and Android.
+
 ## Repository Standards
 
 - Keep `main` stable.
@@ -63,7 +76,7 @@ npm run preview
 2. Add podcast episode archive links.
 3. Add sponsor and guest pages.
 4. Add a working support or donation link.
-5. Add PWA install support.
+5. Add production-ready PWA install support.
 6. Prepare the codebase for iOS and Android wrappers.
 7. Add analytics after the privacy approach is decided.
 
