@@ -1,0 +1,20 @@
+{
+  "name": "Next Steps Radio Podcast Network",
+  "short_name": "Next Steps Radio",
+  "description": "Listen live to the Next Steps Radio Podcast Network and follow The Next Steps Show.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f8fafc",
+  "theme_color": "#1e3a8a",
+  "categories": ["news", "music", "entertainment"],
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
