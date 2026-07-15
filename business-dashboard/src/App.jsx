@@ -5,9 +5,9 @@ const fiscalYears = [
     year: 'FY 2026–27',
     period: 'Aug. 1, 2026–July 31, 2027',
     stage: 'Launch and validation',
-    revenue: 85386,
-    ownerDraw: 56400,
-    endingRunRate: 116284,
+    revenue: 118400,
+    ownerDraw: 57050,
+    endingMonthlyDraw: 6550,
     objective: 'Prove demand, establish recurring clients, and fund the owner-draw ramp.',
     status: 'Required operating target',
   },
@@ -15,29 +15,29 @@ const fiscalYears = [
     year: 'FY 2027–28',
     period: 'Aug. 1, 2027–July 31, 2028',
     stage: 'Recurring-revenue growth',
-    revenue: 132000,
-    ownerDraw: 78600,
-    endingRunRate: 156000,
+    revenue: 174000,
+    ownerDraw: 84300,
+    endingMonthlyDraw: 7500,
     objective: 'Strengthen retention, raise average client value, and stabilize monthly income.',
-    status: 'Planning case',
+    status: 'Household-supporting base case',
   },
   {
     year: 'FY 2028–29',
     period: 'Aug. 1, 2028–July 31, 2029',
     stage: 'Pricing and service expansion',
-    revenue: 180000,
-    ownerDraw: 96000,
-    endingRunRate: 204000,
+    revenue: 228000,
+    ownerDraw: 99000,
+    endingMonthlyDraw: 9000,
     objective: 'Move beyond launch pricing and add higher-value strategic engagements.',
-    status: 'Planning case',
+    status: 'Household-supporting base case',
   },
   {
     year: 'FY 2029–30',
     period: 'Aug. 1, 2029–July 31, 2030',
-    stage: 'Mature solo practice',
-    revenue: 225000,
-    ownerDraw: 120000,
-    endingRunRate: 252000,
+    stage: 'Mature premium practice',
+    revenue: 262800,
+    ownerDraw: 117000,
+    endingMonthlyDraw: 10500,
     objective: 'Maintain a profitable premium practice with disciplined capacity control.',
     status: 'Strategic growth case',
   },
@@ -45,10 +45,10 @@ const fiscalYears = [
     year: 'FY 2030–31',
     period: 'Aug. 1, 2030–July 31, 2031',
     stage: 'Selective scale',
-    revenue: 275000,
-    ownerDraw: 144000,
-    endingRunRate: 300000,
-    objective: 'Choose between a premium solo model and selective contractor-supported growth.',
+    revenue: 325800,
+    ownerDraw: 138000,
+    endingMonthlyDraw: 12500,
+    objective: 'Use higher-value retainers, disciplined project pricing, and selective contractor leverage.',
     status: 'Strategic growth case',
   },
 ];
@@ -86,7 +86,7 @@ const milestones = [
   ['First 40 prospects', 'Qualified launch pipeline'],
   ['2 paid starter projects', 'Initial customer validation'],
   ['1 converted retainer', 'Recurring-revenue proof'],
-  ['$9,690 monthly revenue', 'Target needed to support the July 2027 owner draw'],
+  ['$9,690 monthly revenue', 'Minimum threshold associated with supporting the July 2027 draw target'],
 ];
 
 const money = new Intl.NumberFormat('en-US', {
@@ -177,10 +177,10 @@ export default function App() {
         </section>
 
         <section className="metrics-grid" aria-label="Key business metrics">
-          <Metric label="FY 2026–27 revenue requirement" value="$85,386" detail="Supports the planned owner-draw ramp under current operating assumptions." />
-          <Metric label="July 2027 monthly revenue target" value="$9,690" detail="Required to support the $6,550 monthly draw target." />
-          <Metric label="Five-year strategic revenue target" value="$275,000" detail="A disciplined premium-practice or selective-scale outcome." />
-          <Metric label="Launch structure" value="Low overhead" detail="Owner-led delivery, no unnecessary debt, and controlled spending." />
+          <Metric label="FY 2026–27 revenue requirement" value="$118,400" detail="The revised household-supporting base case for the first complete fiscal year." />
+          <Metric label="FY1 average monthly revenue" value="$9,867" detail="Average revenue required across the first August-to-July operating cycle." />
+          <Metric label="FY 2030–31 revenue target" value="$325,800" detail="Reached through higher-value retainers, disciplined pricing, and selective contractor leverage." />
+          <Metric label="Five-year owner draws" value="$495,350" detail="Total planned household distributions across the five complete fiscal years." />
         </section>
 
         <section className="section" id="financials">
@@ -219,7 +219,7 @@ export default function App() {
               <div className="detail-metrics">
                 <div><span>Revenue</span><strong>{money.format(year.revenue)}</strong></div>
                 <div><span>Owner draw</span><strong>{money.format(year.ownerDraw)}</strong></div>
-                <div><span>Ending annual run rate</span><strong>{money.format(year.endingRunRate)}</strong></div>
+                <div><span>Ending monthly draw</span><strong>{money.format(year.endingMonthlyDraw)}</strong></div>
                 <div><span>YoY growth</span><strong>{growth === null ? 'Baseline' : `${growth.toFixed(1)}%`}</strong></div>
               </div>
 
@@ -233,7 +233,7 @@ export default function App() {
 
           <div className="financial-note">
             <strong>Important:</strong>
-            <p>The former $122,498 calendar-year projection represented a cautious solo-owner floor. It is no longer presented as the five-year definition of success. The revised model must be validated monthly against actual sales and reviewed by a CPA or tax professional.</p>
+            <p>The former $122,498 calendar-year projection represented a cautious solo-owner floor. It is no longer presented as the five-year definition of success. The revised household-supporting model begins at $118,400 in FY 2026–27 and reaches $325,800 in FY 2030–31. These remain planning assumptions that must be replaced monthly with actual results and reviewed by a CPA or tax professional.</p>
           </div>
         </section>
 
