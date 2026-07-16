@@ -1,6 +1,10 @@
 import React from 'react';
-import ExecutiveDashboard from './ExecutiveDashboard';
+import PublicDashboard from './PublicDashboard.jsx';
+import OwnerPortal from './OwnerPortal.jsx';
+import './final.css';
 
 export default function App() {
-  return <ExecutiveDashboard />;
+  const path = window.location.pathname.replace(/\/+$/, '') || '/';
+  if (path === '/owner' || path === '/login') return <OwnerPortal />;
+  return <PublicDashboard />;
 }
