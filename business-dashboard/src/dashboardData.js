@@ -1,14 +1,98 @@
-export const dashboardSnapshot = {
+export const dashboardData = {
   meta: {
     businessName: 'Next Steps Media & Digital Services',
     dataMode: 'Approved planning snapshot',
     asOf: 'July 15, 2026',
     fiscalCycle: 'August 1–July 31',
     promise: 'Helping meaningful voices be seen, heard, trusted, and found.',
+    launchDate: 'August 1, 2026',
+    stabilizationDate: 'September 22, 2026',
     notice: 'Planning assumptions are not guarantees. Actual results replace assumptions monthly.',
   },
-  launch: {
-    date: 'August 1, 2026',
-    stabilizationReview: 'September 22, 2026',
-    minimumMonthlyDraw: 2850,
-    july2027DrawTarget: 6550
+  executiveCase: {
+    problem: 'Small organizations and public-facing professionals often possess valuable expertise but lack the time, production discipline, and digital systems required to turn that expertise into consistent, credible content.',
+    solution: 'Next Steps combines message development, production, repurposing, publishing support, and practical strategy in one founder-led service relationship.',
+    customer: 'Small businesses, nonprofits, ministries, professional-service firms, public voices, community organizations, and podcast creators in Rochester, the Finger Lakes, and remote markets.',
+    advantage: 'Broadcast experience, executive leadership, owned workspace, existing production infrastructure, regional relationships, and a controlled low-overhead launch.',
+    proofRequired: 'Paid starter work, recurring retainers, delivery within planned hours, measurable retention, testimonials, referrals, and monthly cash performance.',
+  },
+  marketSegments: [
+    { name: 'Small businesses', need: 'Consistent visibility without adding a full marketing employee', fit: 'Retainers, interviews, short-form content, web and email assets' },
+    { name: 'Nonprofits and ministries', need: 'Mission storytelling, donor trust, volunteer engagement, and event promotion', fit: 'Message development, interviews, campaigns, and repurposing' },
+    { name: 'Professional services', need: 'Thought leadership that explains expertise and builds credibility', fit: 'Executive interviews, educational content, and authority-building series' },
+    { name: 'Public voices and creators', need: 'Reliable production, packaging, distribution, and audience growth', fit: 'Podcast production, clips, show notes, and multi-channel publishing' },
+  ],
+  services: [
+    { name: 'Message-to-Media Starter', price: 550, hours: 7, directCost: 23, contribution: 527, margin: 95.8, deliverables: 'One interview or source message, edited audio or client-supplied video, title, description, summary, four social posts, and one revision.', bestFor: 'A first paid test or a defined announcement.', upgrade: 'Convert successful work into a monthly continuity retainer.' },
+    { name: 'Content Continuity Retainer', price: 1100, hours: 14, directCost: 46, contribution: 1054, margin: 95.8, deliverables: 'Two content cycles, edits, show notes, six social posts, clips or graphics, one web or email asset, planning call, and one revision.', bestFor: 'Organizations needing steady monthly execution.', upgrade: 'Reprice as reporting, strategy, channel count, and measurable value expand.' },
+    { name: 'Strategic Growth Engagement', price: 2500, hours: 24, directCost: 200, contribution: 2300, margin: 92, deliverables: 'Strategy, production planning, multi-channel campaign execution, reporting, and executive advisory support.', bestFor: 'Established clients with larger goals and higher-value outcomes.', upgrade: 'Selective quarterly or monthly strategic partnership.' },
+  ],
+  fiscalYears: [
+    { year: 'FY 2026–27', revenue: 118400, directCosts: 4973, operatingExpenses: 10902, operatingProfit: 102525, taxReserve: 25631, ownerDraw: 57050, retainedCash: 19844, endingCash: 19844, endingMonthlyDraw: 6550, capacity: 75.6, ownerHours: 88.8, recurringMix: 56, projectMix: 34, strategicMix: 10, status: 'Required operating target' },
+    { year: 'FY 2027–28', revenue: 174000, directCosts: 7308, operatingExpenses: 23700, operatingProfit: 142992, taxReserve: 35748, ownerDraw: 84300, retainedCash: 22944, endingCash: 42788, endingMonthlyDraw: 7500, capacity: 60.1, ownerHours: 96.2, recurringMix: 62, projectMix: 24, strategicMix: 14, status: 'Household-supporting base case' },
+    { year: 'FY 2028–29', revenue: 228000, directCosts: 9576, operatingExpenses: 49080, operatingProfit: 169344, taxReserve: 42336, ownerDraw: 99000, retainedCash: 28008, endingCash: 70796, endingMonthlyDraw: 9000, capacity: 61.8, ownerHours: 98.8, recurringMix: 65, projectMix: 20, strategicMix: 15, status: 'Pricing and service expansion' },
+    { year: 'FY 2029–30', revenue: 262800, directCosts: 11038, operatingExpenses: 68792, operatingProfit: 182970, taxReserve: 45743, ownerDraw: 117000, retainedCash: 20228, endingCash: 91023, endingMonthlyDraw: 10500, capacity: 58.8, ownerHours: 94.1, recurringMix: 67, projectMix: 17, strategicMix: 16, status: 'Mature premium practice' },
+    { year: 'FY 2030–31', revenue: 325800, directCosts: 13684, operatingExpenses: 95386, operatingProfit: 216730, taxReserve: 54183, ownerDraw: 138000, retainedCash: 24548, endingCash: 115571, endingMonthlyDraw: 12500, capacity: 60.6, ownerHours: 97, recurringMix: 70, projectMix: 14, strategicMix: 16, status: 'Selective scale' },
+  ],
+  firstYearMonthly: [
+    { month: 'Aug', revenue: 5500, draw: 2850, retainers: 3, starters: 4, strategic: 0, outreach: 15, calls: 2, proposals: 1 },
+    { month: 'Sep', revenue: 6050, draw: 3200, retainers: 4, starters: 3, strategic: 0, outreach: 15, calls: 3, proposals: 2 },
+    { month: 'Oct', revenue: 6600, draw: 3550, retainers: 4, starters: 4, strategic: 0, outreach: 15, calls: 3, proposals: 2 },
+    { month: 'Nov', revenue: 7500, draw: 3900, retainers: 5, starters: 3, strategic: 0, outreach: 15, calls: 3, proposals: 2 },
+    { month: 'Dec', revenue: 9250, draw: 4250, retainers: 6, starters: 3, strategic: 0, outreach: 15, calls: 4, proposals: 2 },
+    { month: 'Jan', revenue: 9250, draw: 4600, retainers: 6, starters: 3, strategic: 0, outreach: 15, calls: 4, proposals: 2 },
+    { month: 'Feb', revenue: 10750, draw: 4950, retainers: 7, starters: 3, strategic: 0, outreach: 15, calls: 4, proposals: 3 },
+    { month: 'Mar', revenue: 10750, draw: 5300, retainers: 7, starters: 3, strategic: 0, outreach: 15, calls: 4, proposals: 3 },
+    { month: 'Apr', revenue: 11500, draw: 5650, retainers: 8, starters: 2, strategic: 0, outreach: 15, calls: 4, proposals: 3 },
+    { month: 'May', revenue: 13250, draw: 6000, retainers: 8, starters: 3, strategic: 1, outreach: 15, calls: 4, proposals: 3 },
+    { month: 'Jun', revenue: 13250, draw: 6250, retainers: 8, starters: 3, strategic: 1, outreach: 15, calls: 4, proposals: 3 },
+    { month: 'Jul', revenue: 14750, draw: 6550, retainers: 9, starters: 3, strategic: 1, outreach: 15, calls: 4, proposals: 3 },
+  ],
+  scenarios: [
+    { name: '50% attainment', attainment: 50, revenue: 59200, cashBeforeDraw: 34776, requiredDraw: 57050, balance: -22274, classification: 'Not household-supporting', action: 'Outside-income bridge or working capital is mandatory; freeze nonessential spending and rebuild the pipeline.' },
+    { name: '75% attainment', attainment: 75, revenue: 88800, cashBeforeDraw: 55878, requiredDraw: 57050, balance: -1172, classification: 'Near break-even but underfunded', action: 'Quantify the bridge immediately, intensify presales, and hold the draw ramp until collections recover.' },
+    { name: '100% base case', attainment: 100, revenue: 118400, cashBeforeDraw: 76979, requiredDraw: 57050, balance: 19929, classification: 'Required base', action: 'Execute the monthly sales plan, preserve scope, and replace assumptions with actuals every month.' },
+    { name: '120% upside', attainment: 120, revenue: 142080, cashBeforeDraw: 93860, requiredDraw: 57050, balance: 36810, classification: 'Upside sensitivity', action: 'Protect quality and capacity; add contractor support only after repeatable demand is proven.' },
+  ],
+  funnel: [
+    { stage: 'Qualified prospects', value: 40, conversion: 100 },
+    { stage: 'Discovery calls', value: 6, conversion: 15 },
+    { stage: 'Proposals', value: 3, conversion: 7.5 },
+    { stage: 'Paid starters', value: 2, conversion: 5 },
+    { stage: 'Converted retainers', value: 1, conversion: 2.5 },
+  ],
+  workflow: [
+    ['01', 'Qualify', 'Confirm fit, authority, urgency, budget, and the specific communication problem.'],
+    ['02', 'Discover', 'Clarify audience, message, channels, desired action, and measurable outcome.'],
+    ['03', 'Scope and contract', 'Define deliverables, responsibilities, revision limits, payment, rights, and timeline.'],
+    ['04', 'Produce', 'Capture, edit, package, and repurpose using repeatable checklists.'],
+    ['05', 'Approve and publish', 'Obtain client approval, deliver assets, and support publishing as contracted.'],
+    ['06', 'Measure and renew', 'Review performance, hours, margin, client value, and the next engagement.'],
+  ],
+  risks: [
+    { risk: 'Sales ramp below plan', probability: 4, impact: 5, trigger: 'Revenue falls below 75% of monthly plan for two consecutive months.', response: 'Increase qualified outreach and referral asks, tighten offer fit, and quantify the household bridge.' },
+    { risk: 'Launch pricing becomes permanent', probability: 4, impact: 4, trigger: 'Contribution per delivery hour or scope discipline deteriorates.', response: 'Reprice, reduce scope, or discontinue low-value work after validation.' },
+    { risk: 'Founder capacity overload', probability: 3, impact: 4, trigger: 'Utilization reaches 80%, deadlines slip, or revision hours rise.', response: 'Standardize, narrow scope, schedule production blocks, and use project contractors selectively.' },
+    { risk: 'Household cash pressure', probability: 4, impact: 5, trigger: 'Business cash cannot support the planned draw and tax reserve.', response: 'Document the outside-income bridge, delay draw increases, and protect minimum cash.' },
+    { risk: 'Compliance or professional-review delay', probability: 3, impact: 5, trigger: 'SEAP deadline or attorney, CPA, insurance, or cybersecurity gate remains open.', response: 'Escalate the deadline and do not represent an unreviewed item as complete.' },
+  ],
+  milestones: [
+    { date: 'August 1, 2026', name: 'Controlled soft launch', evidence: 'Approved offers, contracts, CRM, payment method, and production workflow ready.' },
+    { date: 'August 24, 2026', name: 'Progress reporting checkpoint', evidence: 'SEAP progress report submitted on time.' },
+    { date: 'September 7, 2026', name: 'Business Strategy due', evidence: 'Strategy submitted after two counselor meetings.' },
+    { date: 'September 22, 2026', name: 'Stabilization review', evidence: 'Pipeline, paid work, capacity, cash, and corrective actions reviewed.' },
+    { date: 'First 90 days', name: 'Customer validation', evidence: '40 qualified prospects, 6 calls, 3 proposals, 2 paid starters, and 1 retainer conversion.' },
+    { date: 'July 31, 2027', name: 'Household-supporting verdict', evidence: 'Revenue, recurring clients, owner draw, retained cash, delivery quality, and compliance support continuation.' },
+  ],
+  successGates: [
+    ['Demand', 'At least two paid starter projects and one converted retainer demonstrate willingness to pay.'],
+    ['Economics', 'Actual delivery hours and direct costs preserve acceptable contribution per hour.'],
+    ['Repeatability', 'The sales and production process works more than once and does not depend on improvisation.'],
+    ['Household support', 'Collections support the planned owner draw, taxes, expenses, and minimum retained cash.'],
+    ['Capacity', 'Quality remains strong without sustained utilization above the 80% warning threshold.'],
+    ['Governance', 'SEAP obligations and attorney, CPA, insurance, and cybersecurity gates are current.'],
+  ],
+};
+
+export const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+export const number = new Intl.NumberFormat('en-US', { maximumFractionDigits: 1 });
