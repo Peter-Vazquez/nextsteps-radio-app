@@ -27,6 +27,7 @@ function CurrencyTooltip({ active, payload, label }) {
 function PublicDashboard() {
   const [selectedYear, setSelectedYear] = useState(0);
   const year = data.fiscalYears[selectedYear];
+  const progress = data.operatingSnapshot;
   const fiveYearRevenue = useMemo(() => data.fiscalYears.reduce((sum, item) => sum + item.revenue, 0), []);
   const fiveYearDraw = useMemo(() => data.fiscalYears.reduce((sum, item) => sum + item.ownerDraw, 0), []);
   const annual = data.fiscalYears.map((item) => ({
@@ -42,7 +43,7 @@ function PublicDashboard() {
   return <div className="site-shell final-dashboard">
     <header className="topbar">
       <a className="brand" href="#overview"><span className="brand-mark">NS</span><span><strong>Next Steps</strong><small>Media & Digital Services</small></span></a>
-      <nav><a href="#market">Market</a><a href="#services">Services</a><a href="#financials">Financials</a><a href="#sales">Sales</a><a href="#operations">Operations</a><a href="#risk">Risk</a></nav>
+      <nav><a href="#progress">Progress</a><a href="#market">Market</a><a href="#services">Services</a><a href="#financials">Financials</a><a href="#sales">Sales</a><a href="#operations">Operations</a><a href="#risk">Risk</a></nav>
       <div className="toolbar"><button type="button" onClick={() => window.print()}>Print / PDF</button><a className="owner-link" href="/owner">Owner portal</a></div>
     </header>
 
@@ -50,8 +51,8 @@ function PublicDashboard() {
       <div className="data-strip"><span><strong>Data:</strong> {data.meta.dataMode}</span><span><strong>As of:</strong> {data.meta.asOf}</span><span><strong>Fiscal cycle:</strong> {data.meta.fiscalCycle}</span><span><strong>Privacy:</strong> Public approved summaries only</span></div>
 
       <section className="hero" id="overview">
-        <div className="hero-copy-block"><p className="eyebrow">Executive business plan and performance dashboard</p><h1>{data.meta.promise}</h1><p className="hero-copy">Next Steps Media & Digital Services is a founder-led media and content company built to convert expertise, mission, and long-form ideas into credible content that audiences can understand, trust, and act upon.</p><div className="hero-actions"><a className="button primary" href="#financials">Examine the financial case</a><a className="button secondary" href="#verdict">Review the success standard</a></div></div>
-        <aside className="hero-panel"><div><span>Controlled launch</span><strong>{data.meta.launchDate}</strong></div><div><span>Stabilization review</span><strong>{data.meta.stabilizationDate}</strong></div><div><span>Minimum August draw</span><strong>{money.format(2850)}</strong></div><div><span>July 2027 draw target</span><strong>{money.format(6550)}</strong></div></aside>
+        <div className="hero-copy-block"><p className="eyebrow">Executive business plan and performance dashboard</p><h1>{data.meta.promise}</h1><p className="hero-copy">Next Steps Media & Digital Services is a founder-led media and content company built to convert expertise, mission, and long-form ideas into credible content that audiences can understand, trust, and act upon.</p><div className="hero-actions"><a className="button primary" href="#progress">View current progress</a><a className="button secondary" href="#financials">Examine the financial case</a></div></div>
+        <aside className="hero-panel"><div><span>Current phase</span><strong>{progress.phase}</strong></div><div><span>Outreach begins</span><strong>{progress.outreachStart}</strong></div><div><span>Controlled launch</span><strong>{data.meta.launchDate}</strong></div><div><span>Stabilization review</span><strong>{data.meta.stabilizationDate}</strong></div></aside>
       </section>
 
       <section className="metrics-grid">
@@ -59,6 +60,26 @@ function PublicDashboard() {
         <Kpi label="Five-year modeled revenue" value={money.format(fiveYearRevenue)} detail="Cumulative revenue across five August-to-July fiscal years." />
         <Kpi label="Five-year owner draws" value={money.format(fiveYearDraw)} detail="Planned household distributions, subject to actual cash performance." />
         <Kpi label="Maximum first-year capacity" value={`${data.fiscalYears[0].capacity}%`} detail="Below the 80% warning threshold, but only if scope and hours remain controlled." />
+      </section>
+
+      <section className="section progress-section" id="progress">
+        <SectionTitle eyebrow="Live startup progress and accountability" title="The plan, the work, the numbers, and the next decision are visible in one place." copy="This section is the current operating snapshot. It distinguishes completed work from planned work and keeps family, advisors, and authorized stakeholders informed without exposing private client or account-level information." />
+        <div className="progress-status-banner"><div><span>Current status</span><strong>{progress.status}</strong></div><p>{progress.updateCadence}</p><small>Last synchronized: {progress.lastSync}</small></div>
+        <div className="live-progress-grid">
+          <Kpi label="Qualified prospect accounts" value={number.format(progress.qualifiedProspects)} detail="First 40 launch accounts are entered, scored, and assigned next actions." tone="navy" />
+          <Kpi label="Preliminary pipeline value" value={money.format(progress.preliminaryPipelineValue)} detail="Unweighted starter-project assumption; not collected revenue or a forecast." />
+          <Kpi label="Confirmed work hours" value={progress.confirmedWorkHours.toFixed(2)} detail={`${progress.pendingTimeEntries} July 16 work sessions still require actual start and end times.`} />
+          <Kpi label="Training progress" value={`${progress.trainingLoggedHours.toFixed(2)} / ${progress.trainingRequiredHours}`} detail={`${progress.trainingEligibleHours.toFixed(2)} hours currently treated as eligible pending SEAP confirmation.`} />
+          <Kpi label="Personalized contacts" value={number.format(progress.personalizedContacts)} detail={`Outreach begins ${progress.outreachStart} after the fixed preparation window.`} />
+          <Kpi label="Discovery calls" value={number.format(progress.discoveryCalls)} detail="Customer proof begins when preparation converts into real conversations." />
+          <Kpi label="Proposals sent" value={number.format(progress.proposals)} detail="Every qualified proposal will have a decision date and follow-up cadence." />
+          <Kpi label="Clients won" value={number.format(progress.clientsWon)} detail="No customer or revenue proof is claimed before payment is received." />
+        </div>
+        <div className="accountability-layout">
+          <article className="accountability-card"><p className="eyebrow">Preparation priorities through Sunday</p><h3>Be ready to begin outreach without improvisation.</h3><ol>{progress.currentPriorities.map((item) => <li key={item}>{item}</li>)}</ol></article>
+          <article className="accountability-card"><p className="eyebrow">Completed foundation</p><h3>What has already been built.</h3><ul>{progress.accomplishments.map((item) => <li key={item}>{item}</li>)}</ul></article>
+          <article className="accountability-card cadence-card"><p className="eyebrow">Reporting discipline</p><h3>Dashboard update standard</h3><dl><div><dt>Morning</dt><dd>Planned work, priorities, deadlines, blockers, and commitments</dd></div><div><dt>End of day</dt><dd>Actual hours, completed deliverables, training, pipeline changes, risks, and next actions</dd></div><div><dt>Minimum</dt><dd>One complete update every active workday</dd></div><div><dt>Next sync</dt><dd>{progress.nextSync}</dd></div><div><dt>Counselor status</dt><dd>{progress.counselorStatus}</dd></div></dl></article>
+        </div>
       </section>
 
       <section className="section" id="case">
@@ -124,7 +145,7 @@ function PublicDashboard() {
       <section className="section verdict-section" id="verdict">
         <SectionTitle eyebrow="First-year verdict standard" title="The business is promising, but household support is not proven until customers pay, stay, and refer." copy="The plan, founder experience, low overhead, and service architecture justify proceeding. The decisive issue is whether the sales engine can create dependable recurring value without exhausting capacity or hiding a household cash gap." />
         <div className="success-grid">{data.successGates.map(([name,detail])=><article key={name}><h3>{name}</h3><p>{detail}</p></article>)}</div>
-        <div className="verdict-callout"><div><p className="eyebrow">What success means by July 31, 2027</p><h2>A repeatable company producing dependable owner income—not merely a busy freelance practice.</h2></div><ul><li>Revenue trajectory supports the planned draw.</li><li>Recurring clients reduce dependence on one-off projects.</li><li>Delivery remains within scope, margin, and capacity.</li><li>Cash, taxes, compliance, and professional gates remain current.</li><li>The owner and household can see the truth every month.</li></ul></div>
+        <div className="verdict-callout"><div><p className="eyebrow">What success means by July 31, 2027</p><h2>A repeatable company producing dependable owner income—not merely a busy freelance practice.</h2></div><ul><li>Revenue trajectory supports the planned draw.</li><li>Recurring clients reduce dependence on one-off projects.</li><li>Delivery remains within scope, margin, and capacity.</li><li>Cash, taxes, compliance, and professional gates remain current.</li><li>The owner and household can see the truth every day.</li></ul></div>
       </section>
     </main>
 
