@@ -1,0 +1,261 @@
+.toolbar {
+  display: flex;
+  gap: 8px;
+}
+
+.toolbar button {
+  min-height: 38px;
+  padding: 0 13px;
+  border: 1px solid #cbd7de;
+  border-radius: 999px;
+  background: #fff;
+  color: #123f5a;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.data-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px 24px;
+  margin-top: 18px;
+  padding: 13px 18px;
+  border: 1px solid #dbe4ea;
+  border-radius: 14px;
+  background: #fff;
+  color: #5b6b79;
+  font-size: 0.82rem;
+}
+
+.data-strip strong {
+  color: #12212f;
+}
+
+.detail-metrics-expanded {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.scenario-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 42px;
+}
+
+.scenario-card,
+.monitor-card,
+.control-panel {
+  padding: 28px;
+  border: 1px solid #dbe4ea;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(20, 48, 66, 0.05);
+}
+
+.scenario-warning {
+  border-color: #d9a441;
+  background: #fffaf0;
+}
+
+.scenario-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.scenario-header h3,
+.control-panel h3 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.55rem, 2.4vw, 2.35rem);
+  line-height: 1.08;
+}
+
+.scenario-card dl {
+  display: grid;
+  gap: 0;
+  margin: 26px 0 20px;
+}
+
+.scenario-card dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 11px 0;
+  border-bottom: 1px solid #e5ecef;
+}
+
+.scenario-card dt {
+  color: #5b6b79;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.scenario-card dd {
+  margin: 0;
+  color: #123f5a;
+  font-weight: 900;
+  text-align: right;
+}
+
+.scenario-card > p,
+.monitor-note {
+  margin: 0;
+  color: #5b6b79;
+  line-height: 1.6;
+}
+
+.monitoring-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
+  gap: 22px;
+  margin-top: 42px;
+}
+
+.monitor-primary {
+  box-shadow: 0 18px 50px rgba(20, 48, 66, 0.1);
+}
+
+.monitor-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin: 30px 0;
+}
+
+.monitor-grid div {
+  min-height: 116px;
+  padding: 18px;
+  border-radius: 15px;
+  background: #f4f7fa;
+}
+
+.monitor-grid span,
+.monitor-grid strong {
+  display: block;
+}
+
+.monitor-grid span {
+  min-height: 34px;
+  color: #5b6b79;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.monitor-grid strong {
+  margin-top: 12px;
+  color: #123f5a;
+  font-size: 1.25rem;
+}
+
+.control-panel {
+  background: #0a2d42;
+  color: #fff;
+}
+
+.control-panel ul {
+  display: grid;
+  gap: 14px;
+  margin: 26px 0 0;
+  padding-left: 20px;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.55;
+}
+
+.data-error {
+  max-width: 720px;
+  margin: 80px auto;
+  padding: 32px;
+  border: 1px solid #b91c1c;
+  border-radius: 18px;
+  background: #fff;
+  color: #7f1d1d;
+  font-weight: 800;
+}
+
+.presentation-mode .topbar nav,
+.presentation-mode .toolbar,
+.presentation-mode .data-strip,
+.presentation-mode footer {
+  display: none;
+}
+
+.presentation-mode .topbar {
+  position: static;
+  justify-content: center;
+}
+
+@media (max-width: 1180px) {
+  .topbar {
+    flex-wrap: wrap;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .toolbar {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .scenario-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .monitoring-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .toolbar {
+    justify-content: flex-start;
+    overflow-x: auto;
+  }
+
+  .data-strip {
+    display: grid;
+  }
+
+  .detail-metrics-expanded,
+  .monitor-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  .topbar nav,
+  .toolbar,
+  .hero-actions {
+    display: none !important;
+  }
+
+  .topbar {
+    position: static;
+  }
+
+  body,
+  .site-shell {
+    background: #fff !important;
+  }
+
+  .hero,
+  .metric-card,
+  .year-detail,
+  .scenario-card,
+  .monitor-card,
+  .control-panel,
+  .service-card,
+  .milestone,
+  .outcome-section {
+    break-inside: avoid;
+    box-shadow: none !important;
+  }
+
+  .section {
+    padding-top: 52px;
+  }
+}
