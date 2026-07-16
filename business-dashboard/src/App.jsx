@@ -1,4 +1,5 @@
 import React from 'react';
+import './dashboardPatch.js';
 import PublicDashboard from './PublicDashboard.jsx';
 import OwnerPortal from './OwnerPortal.jsx';
 import './final.css';
