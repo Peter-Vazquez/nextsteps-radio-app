@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="stylesheet" href="/styles.css">
+  <title>Private Shared Dashboard | OD Strategy</title>
+</head>
+<body class="shared-shell">
+  <header class="shared-header"><a class="brand" href="/"><span class="brand-mark">OD</span><span><strong>OD Strategy</strong><small>Private Shared Dashboard</small></span></a><div><a class="button button-outline" href="/">Public dashboard</a> <button class="button" id="logout-button" type="button" hidden>Sign out</button></div></header>
+  <main id="shared-app">
+    <section class="login-card" id="login-view">
+      <p class="eyebrow">Trusted shared access</p>
+      <h1>Private Shared Dashboard</h1>
+      <p>This protected area is for the owner, household, authorized advisors, and other specifically approved stakeholders. It is not a membership platform.</p>
+      <form id="login-form"><label for="dashboard-password">Shared dashboard password</label><input id="dashboard-password" name="password" type="password" autocomplete="current-password" required maxlength="256"><button class="button" type="submit">Enter dashboard</button></form>
+      <p class="form-error" id="login-error" role="alert"></p>
+      <p class="muted">The session uses server-side password verification, a secure HTTP-only cookie, expiration, and logout.</p>
+    </section>
+    <section class="shared-main" id="dashboard-view" hidden>
+      <div class="shared-hero"><div><p class="eyebrow">Complete operating picture</p><h1>One place to see the work, the numbers, the risks, and the next decision.</h1><p id="shared-status-copy"></p></div><aside><span>Overall status</span><strong id="shared-overall-status">Loading</strong><p id="shared-updated"></p></aside></div>
+      <div class="kpi-row" id="private-kpis"></div>
+      <div class="dashboard-grid">
+        <article class="dashboard-card wide"><h3>Monthly and annual financial plans</h3><div class="table-wrap"><table><thead><tr><th>Month</th><th>Plan</th><th>Actual</th><th>Expenses</th><th>Owner draw</th></tr></thead><tbody id="monthly-financials"></tbody></table></div></article>
+        <article class="dashboard-card"><h3>Household-income bridge</h3><div id="household-bridge"></div></article>
+        <article class="dashboard-card"><h3>Sales pipeline</h3><div id="pipeline-summary"></div></article>
+        <article class="dashboard-card"><h3>Prospecting and proposals</h3><div id="activity-summary"></div></article>
+        <article class="dashboard-card"><h3>Clients and projects</h3><div id="project-summary"></div></article>
+        <article class="dashboard-card"><h3>Capacity and workload</h3><div id="capacity-summary"></div></article>
+        <article class="dashboard-card wide"><h3>Risks and corrective actions</h3><div id="risk-summary"></div></article>
+        <article class="dashboard-card"><h3>SEAP deadlines and training</h3><div id="seap-summary"></div></article>
+        <article class="dashboard-card"><h3>Professional-review requirements</h3><div id="professional-summary"></div></article>
+        <article class="dashboard-card wide"><h3>Decisions, priorities, and next actions</h3><div id="decision-summary"></div></article>
+        <article class="dashboard-card"><h3>Links to operating records</h3><div id="record-links"></div></article>
+        <article class="dashboard-card full"><h3>Approved supporting documents</h3><div id="document-links"></div><p class="muted">Only documents specifically approved for shared access belong here.</p></article>
+      </div>
+    </section>
+  </main>
+  <script src="/shared/shared.js"></script>
+</body>
+</html>
