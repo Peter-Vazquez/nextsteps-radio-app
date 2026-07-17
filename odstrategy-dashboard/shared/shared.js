@@ -5,6 +5,9 @@
   const logoutButton = document.getElementById('logout-button');
   const errorNode = document.getElementById('login-error');
 
+  logoutButton.hidden = true;
+  logoutButton.style.display = 'none';
+
   function list(items, ordered) {
     const tag = ordered ? 'ol' : 'ul';
     return `<${tag}>${(items || []).map((item) => `<li>${item}</li>`).join('')}</${tag}>`;
@@ -14,6 +17,7 @@
     loginView.hidden = true;
     dashboardView.hidden = false;
     logoutButton.hidden = false;
+    logoutButton.style.display = 'inline-flex';
     document.getElementById('shared-overall-status').textContent = data.meta.overallStatus;
     document.getElementById('shared-updated').textContent = `Updated ${data.meta.asOf}`;
     document.getElementById('shared-status-copy').textContent = data.meta.statusExplanation;
@@ -68,6 +72,7 @@
     await fetch('/api/logout', { method: 'POST', credentials: 'same-origin' });
     dashboardView.hidden = true;
     logoutButton.hidden = true;
+    logoutButton.style.display = 'none';
     loginView.hidden = false;
   });
 
