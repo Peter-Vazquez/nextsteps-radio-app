@@ -3,10 +3,10 @@ import { configured, isAuthenticated, json } from './_auth.js';
 const safeDefault = {
   meta: {
     currentFiscalYear: 'FY 2026–27',
-    asOf: 'July 16, 2026 — afternoon update',
-    overallStatus: 'Pre-launch — preparation and customer proof required',
+    asOf: 'July 16, 2026 — evening infrastructure update',
+    overallStatus: 'Pre-launch — live platform established; customer proof required',
     statusExplanation:
-      'The operating plan, initial offers, prospect pipeline, accountability controls, and standalone dashboard infrastructure are established. Outreach, paid customer validation, and collected revenue remain the decisive proof.'
+  		'The standalone public and private accountability platform is live at odstrategy.com. Authentication, HTTPS, custom domains, branch separation, legacy-deployment retirement, and radio-app protection have been verified. Outreach, paid customer validation, and collected revenue remain the decisive proof.'
   },
 
   financial: {
