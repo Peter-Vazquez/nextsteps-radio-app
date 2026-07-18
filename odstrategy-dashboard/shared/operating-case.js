@@ -22,22 +22,6 @@
     setHtml('annual-financials', data.financial.annualPlans.map(([year, revenue, draw, cash, status]) => `<tr><td><strong>${year}</strong></td><td>${money.format(revenue)}</td><td>${money.format(draw)}</td><td>${money.format(cash)}</td><td>${status}</td></tr>`).join(''));
     setHtml('private-growth', operating.growth.map(([title, text]) => `<article><h3>${title}</h3><p>${text}</p></article>`).join(''));
     setHtml('private-milestones', operating.milestones.map(([date, name, evidence]) => `<article class="milestone"><time>${date}</time><div><strong>${name}</strong><p>${evidence}</p></div></article>`).join(''));
-
-    const kpiRow = document.getElementById('private-kpis');
-    if (kpiRow && !document.getElementById('private-pipeline-value')) {
-      const card = document.createElement('article');
-      card.className = 'private-kpi';
-      card.id = 'private-pipeline-value';
-      card.innerHTML = `<span>Preliminary pipeline</span><strong>${money.format(data.pipeline.preliminaryValue)}</strong>`;
-      kpiRow.appendChild(card);
-    }
-
-    const pipeline = document.getElementById('pipeline-summary');
-    if (pipeline && !pipeline.textContent.includes('Preliminary value')) {
-      const item = document.createElement('p');
-      item.innerHTML = `<strong>Preliminary value:</strong> ${money.format(data.pipeline.preliminaryValue)}`;
-      pipeline.insertBefore(item, pipeline.children[1] || null);
-    }
   }
 
   async function refreshOperatingCase() {
