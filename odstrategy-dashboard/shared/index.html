@@ -8,41 +8,68 @@
   <title>Private Shared Dashboard | OD Strategy</title>
 </head>
 <body class="shared-shell">
-  <header class="shared-header"><a class="brand" href="/"><span class="brand-mark">OD</span><span><strong>OD Strategy</strong><small>Private Shared Dashboard</small></span></a><div><a class="button button-outline" href="/">Public dashboard</a> <button class="button" id="logout-button" type="button" hidden>Sign out</button></div></header>
+  <header class="shared-header">
+    <a class="brand" href="/"><span class="brand-mark">OD</span><span><strong>OD Strategy</strong><small>Daily Operating Dashboard</small></span></a>
+    <div class="header-actions"><a class="button button-outline" href="/">Public dashboard</a><button class="button" id="logout-button" type="button" hidden>Sign out</button></div>
+  </header>
   <main id="shared-app">
     <section class="login-card" id="login-view">
       <p class="eyebrow">Trusted shared access</p>
       <h1>Private Shared Dashboard</h1>
-      <p>This protected area is for the owner, household, authorized advisors, and other specifically approved stakeholders. It is not a membership platform.</p>
-      <form id="login-form"><label for="dashboard-password">Shared dashboard password</label><input id="dashboard-password" name="password" type="password" autocomplete="current-password" required maxlength="256"><button class="button" type="submit">Enter dashboard</button></form>
+      <p>Secure operating view for the owner and authorized reviewers.</p>
+      <form id="login-form"><label for="dashboard-password">Dashboard password</label><input id="dashboard-password" name="password" type="password" autocomplete="current-password" required maxlength="256"><button class="button" type="submit">Enter dashboard</button></form>
       <p class="form-error" id="login-error" role="alert"></p>
-      <p class="muted">The session uses server-side password verification, a secure HTTP-only cookie, expiration, and logout.</p>
     </section>
+
     <section class="shared-main" id="dashboard-view" hidden>
-      <div class="shared-hero"><div><p class="eyebrow">Complete operating picture</p><h1>One place to see the work, the numbers, the risks, and the next decision.</h1><p id="shared-status-copy"></p></div><aside><span>Overall status</span><strong id="shared-overall-status">Loading</strong><p id="shared-updated"></p></aside></div>
-      <div class="kpi-row" id="private-kpis"></div>
-      <div class="dashboard-grid">
-        <article class="dashboard-card full"><h3>Business purpose</h3><p>A disciplined system for turning important messages into usable, professional content.</p><div class="purpose-grid" id="private-purpose"></div></article>
-        <article class="dashboard-card full"><h3>Services</h3><p>Two controlled launch offers. No broad agency menu.</p><div class="card-grid two" id="private-services"></div></article>
-        <article class="dashboard-card full"><h3>Market opportunity and beachhead strategy</h3><p>The opportunity is large, but the launch is intentionally local, relationship-driven, and capacity-limited.</p><div class="market-layout"><div class="card-grid two" id="private-market"></div><aside class="callout"><h3>Beachhead strategy</h3><p id="private-beachhead"></p></aside></div></article>
-        <article class="dashboard-card full"><h3>Five-year financial projections</h3><p>Revenue targets are planning requirements, not promises. The fiscal-year model remains an internal planning model pending actual results and professional review.</p><div class="table-wrap"><table><thead><tr><th>Fiscal year</th><th>Revenue target</th><th>Owner draw</th><th>Ending cash</th><th>Status</th></tr></thead><tbody id="annual-financials"></tbody></table></div></article>
-        <article class="dashboard-card full"><h3>Growth strategy</h3><p>Earn the right to expand.</p><div class="timeline-grid" id="private-growth"></div></article>
-        <article class="dashboard-card full"><h3>Operating milestones</h3><p>The startup is managed through evidence-based checkpoints.</p><div class="milestone-list" id="private-milestones"></div></article>
-        <article class="dashboard-card wide"><h3>Monthly financial plan and actuals</h3><div class="table-wrap"><table><thead><tr><th>Month</th><th>Plan</th><th>Actual</th><th>Expenses</th><th>Owner draw</th></tr></thead><tbody id="monthly-financials"></tbody></table></div></article>
-        <article class="dashboard-card"><h3>Household-income bridge</h3><div id="household-bridge"></div></article>
-        <article class="dashboard-card"><h3>Sales pipeline</h3><div id="pipeline-summary"></div></article>
-        <article class="dashboard-card"><h3>Prospecting and proposals</h3><div id="activity-summary"></div></article>
-        <article class="dashboard-card"><h3>Clients and projects</h3><div id="project-summary"></div></article>
-        <article class="dashboard-card"><h3>Capacity and workload</h3><div id="capacity-summary"></div></article>
-        <article class="dashboard-card wide"><h3>Risks and corrective actions</h3><div id="risk-summary"></div></article>
-        <article class="dashboard-card"><h3>SEAP deadlines and training</h3><div id="seap-summary"></div></article>
-        <article class="dashboard-card"><h3>Professional-review requirements</h3><div id="professional-summary"></div></article>
-        <article class="dashboard-card wide"><h3>Decisions, priorities, and next actions</h3><div id="decision-summary"></div></article>
-        <article class="dashboard-card"><h3>Links to operating records</h3><div id="record-links"></div></article>
-        <article class="dashboard-card full"><h3>Approved supporting documents</h3><div id="document-links"></div><p class="muted">Only documents specifically approved for shared access belong here.</p></article>
-      </div>
+      <section class="executive-bar" aria-labelledby="dashboard-title">
+        <div><p class="eyebrow">Daily operating guide</p><h1 id="dashboard-title">Know what matters now.</h1><p id="shared-status-copy"></p></div>
+        <aside><span>Overall status</span><strong id="shared-overall-status">Loading</strong><p id="shared-updated"></p></aside>
+      </section>
+
+      <nav class="dashboard-nav" aria-label="Dashboard sections">
+        <a href="#today">Today</a><a href="#numbers">Numbers</a><a href="#actions">Actions</a><a href="#details">Details</a>
+      </nav>
+
+      <section id="today" class="today-panel dashboard-card full">
+        <div class="section-title"><div><p class="eyebrow">Today</p><h2>Daily guide</h2></div><span class="status-badge">Simple. Current. Actionable.</span></div>
+        <div id="daily-guide" class="daily-guide"></div>
+      </section>
+
+      <section id="numbers" aria-labelledby="numbers-title">
+        <div class="section-title"><div><p class="eyebrow">At a glance</p><h2 id="numbers-title">Key numbers</h2></div></div>
+        <div class="kpi-row" id="private-kpis"></div>
+        <div class="visual-grid">
+          <article class="dashboard-card"><div class="card-heading"><h3>Revenue plan</h3><span>Plan vs. actual</span></div><div class="chart-wrap"><canvas id="revenue-chart" role="img" aria-label="Monthly revenue plan and actual revenue chart"></canvas></div></article>
+          <article class="dashboard-card"><div class="card-heading"><h3>Sales pipeline</h3><span>Movement by stage</span></div><div class="chart-wrap"><canvas id="pipeline-chart" role="img" aria-label="Sales pipeline stages chart"></canvas></div></article>
+          <article class="dashboard-card"><div class="card-heading"><h3>Training progress</h3><span id="training-progress-label"></span></div><div class="progress-track" aria-hidden="true"><span id="training-progress-bar"></span></div><div id="training-progress-copy" class="compact-copy"></div></article>
+        </div>
+      </section>
+
+      <section id="actions" aria-labelledby="actions-title">
+        <div class="section-title"><div><p class="eyebrow">Execution</p><h2 id="actions-title">Next actions and watch items</h2></div></div>
+        <div class="action-grid">
+          <article class="dashboard-card"><h3>Next actions</h3><div id="activity-summary"></div></article>
+          <article class="dashboard-card"><h3>Critical risks</h3><div id="risk-summary"></div></article>
+          <article class="dashboard-card"><h3>Upcoming deadlines</h3><div id="seap-summary"></div></article>
+        </div>
+      </section>
+
+      <section id="details" aria-labelledby="details-title">
+        <div class="section-title"><div><p class="eyebrow">Reference</p><h2 id="details-title">Operating details</h2></div></div>
+        <div class="details-stack">
+          <details open><summary>Financial plan and household bridge</summary><div class="detail-body"><div class="table-wrap"><table><thead><tr><th>Month</th><th>Plan</th><th>Actual</th><th>Expenses</th><th>Owner draw</th></tr></thead><tbody id="monthly-financials"></tbody></table></div><div id="household-bridge" class="compact-copy"></div></div></details>
+          <details><summary>Business purpose, services, and market</summary><div class="detail-body"><div class="purpose-grid" id="private-purpose"></div><div class="card-grid two" id="private-services"></div><div class="market-layout"><div class="card-grid two" id="private-market"></div><aside class="callout"><h3>Beachhead strategy</h3><p id="private-beachhead"></p></aside></div></div></details>
+          <details><summary>Five-year financial projections</summary><div class="detail-body"><div class="table-wrap"><table><thead><tr><th>Fiscal year</th><th>Revenue target</th><th>Owner draw</th><th>Ending cash</th><th>Status</th></tr></thead><tbody id="annual-financials"></tbody></table></div></div></details>
+          <details><summary>Growth strategy and milestones</summary><div class="detail-body"><div class="timeline-grid" id="private-growth"></div><div class="milestone-list" id="private-milestones"></div></div></details>
+          <details><summary>Pipeline, projects, and capacity</summary><div class="detail-body detail-columns"><div><h3>Pipeline</h3><div id="pipeline-summary"></div></div><div><h3>Projects</h3><div id="project-summary"></div></div><div><h3>Capacity</h3><div id="capacity-summary"></div></div></div></details>
+          <details><summary>Professional reviews and decisions</summary><div class="detail-body detail-columns"><div><h3>Professional reviews</h3><div id="professional-summary"></div></div><div><h3>Priorities and decisions</h3><div id="decision-summary"></div></div></div></details>
+          <details><summary>Operating records and approved documents</summary><div class="detail-body detail-columns"><div><h3>Operating records</h3><div id="record-links"></div></div><div><h3>Approved documents</h3><div id="document-links"></div></div></div></details>
+        </div>
+      </section>
     </section>
   </main>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script src="/shared/shared.js"></script>
   <script src="/shared/operating-case.js"></script>
 </body>
