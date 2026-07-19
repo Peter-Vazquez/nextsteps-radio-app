@@ -1,31 +1,31 @@
 import { configured, isAuthenticated, json } from './_auth.js';
 
 const dailyPlan = {
-  date: 'July 18, 2026',
-  focus: 'Modernize the OD Strategy dashboard into a clear daily operating guide.',
+  date: 'July 20, 2026',
+  focus: 'Begin controlled outreach and convert preparation into qualified conversations.',
   tasks: [
     {
-      what: 'Complete dashboard modernization',
-      when: '8:00 AM–10:00 AM',
-      where: 'OD Strategy preview branch and Dreamweaver',
-      why: 'Make the dashboard useful as a fast daily guide, not only a reporting page.',
-      how: 'Simplify the layout, add KPI visuals and charts, and preserve all existing security and functionality.',
-      status: 'In progress'
+      what: 'Complete the first-wave outreach packet',
+      when: 'Before the first contact block',
+      where: 'CRM and outreach workflow',
+      why: 'Start outreach with consistent, personalized messages and clear objectives.',
+      how: 'Finish the remaining personalized openings, verify contact routes, and confirm each prospect’s first-conversation objective.',
+      status: 'Priority'
     },
     {
-      what: 'Verify the modernized preview',
-      when: 'Immediately after build',
-      where: 'Local browser and Vercel preview',
-      why: 'Confirm the design works before changing production.',
-      how: 'Test desktop, mobile, login, logout, charts, links, and protected information boundaries.',
+      what: 'Send and record the first personalized contacts',
+      when: 'During the protected outreach block',
+      where: 'Approved contact channels and CRM',
+      why: 'Market conversations, not additional dashboard refinement, are now the primary proof of progress.',
+      how: 'Contact the highest-priority warm prospects and immediately record the message, response, next action, and follow-up date.',
       status: 'Next'
     },
     {
-      what: 'Resume Prospect 2 preparation',
-      when: 'After dashboard approval',
-      where: 'CRM and outreach workflow',
-      why: 'Keep controlled outreach preparation moving toward the July 20 start.',
-      how: 'Define the Craig Jones relationship, church need, contact method, and first conversation objective.',
+      what: 'Prepare follow-up and discovery readiness',
+      when: 'After the first contact block',
+      where: 'CRM, discovery guide, and calendar',
+      why: 'Fast, organized follow-up improves response conversion and protects momentum.',
+      how: 'Finalize the discovery questions, prepare response paths, and schedule every agreed next step.',
       status: 'Queued'
     }
   ]
