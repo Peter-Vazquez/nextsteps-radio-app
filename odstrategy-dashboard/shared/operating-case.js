@@ -1,4 +1,9 @@
 (function () {
+  const polish = document.createElement('link');
+  polish.rel = 'stylesheet';
+  polish.href = '/responsive-polish.css';
+  document.head.appendChild(polish);
+
   const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 
   function setHtml(id, html) {
