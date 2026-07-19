@@ -1,12 +1,12 @@
 import { configured, isAuthenticated, json } from './_auth.js';
 
 const closeout = {
-  asOf: 'July 19, 2026 — 12:46 AM closeout',
-  confirmedHours: 34.08,
+  asOf: 'July 19, 2026 — 4:28 PM closeout',
+  confirmedHours: 35.80,
   pendingEntries: 0,
-  capacityStatus: 'All reported startup work is reconciled through 12:46 AM July 19. The July 18–19 closeout added 4.00 active hours: 3.23 hours on July 18 and 0.77 hour on July 19.',
-  overallStatus: 'Pre-launch — platform ready; customer proof required',
-  statusExplanation: 'Dashboard modernization and the July 18–19 closeout are complete. Controlled outreach, qualified conversations, paid work, and collected revenue are now the decisive proof.'
+  capacityStatus: 'All reported startup work is reconciled through 4:28 PM July 19. The afternoon prospect-qualification session added 1.72 active hours from 2:45 PM to 4:28 PM. No training hours or completed outreach contacts were claimed.',
+  overallStatus: 'Pre-launch — outreach preparation advanced; customer proof required',
+  statusExplanation: 'Bible Baptist Temple and Faith on Film TV relationship paths, needs, decision-makers, contact channels, and recommended outreach sequences are documented. No outreach has been sent. The next work session should complete the remaining first-wave preparation and begin controlled market contact.'
 };
 
 export default function handler(req, res) {
