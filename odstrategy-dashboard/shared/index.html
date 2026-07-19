@@ -28,16 +28,25 @@
       </section>
 
       <nav class="dashboard-nav" aria-label="Dashboard sections">
-        <a href="#today">Today</a><a href="#numbers">Numbers</a><a href="#actions">Actions</a><a href="#details">Details</a>
+        <a href="#today">Today</a><a href="#actions">Actions</a><a href="#numbers">Performance</a><a href="#details">Details</a>
       </nav>
 
       <section id="today" class="today-panel dashboard-card full">
-        <div class="section-title"><div><p class="eyebrow">Today</p><h2>Daily guide</h2></div><span class="status-badge">Simple. Current. Actionable.</span></div>
+        <div class="section-title"><div><p class="eyebrow">Priority</p><h2>Today’s operating guide</h2></div><span class="status-badge">Simple. Current. Actionable.</span></div>
         <div id="daily-guide" class="daily-guide"></div>
       </section>
 
+      <section id="actions" aria-labelledby="actions-title">
+        <div class="section-title"><div><p class="eyebrow">Execution</p><h2 id="actions-title">What moves the business next</h2></div></div>
+        <div class="action-grid">
+          <article class="dashboard-card"><h3>Next actions</h3><div id="activity-summary"></div></article>
+          <article class="dashboard-card"><h3>Critical risks</h3><div id="risk-summary"></div></article>
+          <article class="dashboard-card"><h3>Upcoming deadlines</h3><div id="seap-summary"></div></article>
+        </div>
+      </section>
+
       <section id="numbers" aria-labelledby="numbers-title">
-        <div class="section-title"><div><p class="eyebrow">At a glance</p><h2 id="numbers-title">Key numbers</h2></div></div>
+        <div class="section-title"><div><p class="eyebrow">Performance</p><h2 id="numbers-title">Results, pipeline, and readiness</h2></div></div>
         <div class="kpi-row" id="private-kpis"></div>
         <div class="visual-grid">
           <article class="dashboard-card"><div class="card-heading"><h3>Revenue plan</h3><span>Plan vs. actual</span></div><div class="chart-wrap"><canvas id="revenue-chart" role="img" aria-label="Monthly revenue plan and actual revenue chart"></canvas></div></article>
@@ -46,17 +55,8 @@
         </div>
       </section>
 
-      <section id="actions" aria-labelledby="actions-title">
-        <div class="section-title"><div><p class="eyebrow">Execution</p><h2 id="actions-title">Next actions and watch items</h2></div></div>
-        <div class="action-grid">
-          <article class="dashboard-card"><h3>Next actions</h3><div id="activity-summary"></div></article>
-          <article class="dashboard-card"><h3>Critical risks</h3><div id="risk-summary"></div></article>
-          <article class="dashboard-card"><h3>Upcoming deadlines</h3><div id="seap-summary"></div></article>
-        </div>
-      </section>
-
       <section id="details" aria-labelledby="details-title">
-        <div class="section-title"><div><p class="eyebrow">Reference</p><h2 id="details-title">Operating details</h2></div></div>
+        <div class="section-title"><div><p class="eyebrow">Reference</p><h2 id="details-title">Supporting operating details</h2></div></div>
         <div class="details-stack">
           <details open><summary>Financial plan and household bridge</summary><div class="detail-body"><div class="table-wrap"><table><thead><tr><th>Month</th><th>Plan</th><th>Actual</th><th>Expenses</th><th>Owner draw</th></tr></thead><tbody id="monthly-financials"></tbody></table></div><div id="household-bridge" class="compact-copy"></div></div></details>
           <details><summary>Business purpose, services, and market</summary><div class="detail-body"><div class="purpose-grid" id="private-purpose"></div><div class="card-grid two" id="private-services"></div><div class="market-layout"><div class="card-grid two" id="private-market"></div><aside class="callout"><h3>Beachhead strategy</h3><p id="private-beachhead"></p></aside></div></div></details>
