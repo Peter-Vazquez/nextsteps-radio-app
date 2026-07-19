@@ -3,7 +3,7 @@ window.OD_PUBLIC_DATA = {
     promise: 'Helping meaningful voices be seen, heard, trusted, and found.',
     phase: 'Pre-launch execution, outreach readiness, and live accountability platform',
     outreachStart: 'Monday, July 20, 2026',
-    updated: 'July 16, 2026 — 10:42 PM closeout'
+    updated: 'July 19, 2026 — 12:46 AM closeout'
   },
   metrics: { prospects: 40, pipeline: 22000, trainingLogged: 2.98, trainingRequired: 20, contacts: 0 },
   purpose: [
@@ -37,7 +37,7 @@ window.OD_PUBLIC_DATA = {
   ],
   milestones: [
     ['July 16, 2026', 'Standalone accountability platform launched', 'OD Strategy deployed at odstrategy.com with public and secure private access; obsolete branches and legacy dashboard deployments retired.'],
-    ['July 19, 2026', 'Preparation readiness checkpoint', 'Offer, discovery process, outreach materials, mock-client workflow, SEAP work, and Monday contact packet reviewed.'],
+    ['July 19, 2026', 'Preparation readiness checkpoint', 'Dashboard modernization, mobile review, production access, operating records, and the Monday outreach priority were reviewed and closed out.'],
     ['July 20, 2026', 'Controlled outreach begins', 'First personalized contacts completed and every next action recorded.'],
     ['August 1, 2026', 'Controlled soft launch', 'Offers, CRM, payment method, client controls, and production workflow ready.'],
     ['August 10, 2026', 'Individual Services Plan due', 'Completed form submitted and confirmation retained.'],
