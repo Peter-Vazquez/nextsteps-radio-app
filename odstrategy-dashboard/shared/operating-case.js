@@ -29,13 +29,31 @@
     setHtml('private-milestones', operating.milestones.map(([date, name, evidence]) => `<article class="milestone"><time>${date}</time><div><strong>${name}</strong><p>${evidence}</p></div></article>`).join(''));
   }
 
+  function renderCloseout(closeout) {
+    setText('shared-updated', `Updated ${closeout.asOf}`);
+    setText('shared-overall-status', closeout.overallStatus);
+    setText('shared-status-copy', closeout.statusExplanation);
+    setHtml('capacity-summary', `<p><strong>Confirmed hours:</strong> ${closeout.confirmedHours}</p><p><strong>Pending entries:</strong> ${closeout.pendingEntries}</p><p><strong>Capacity:</strong> ${closeout.capacityStatus}</p>`);
+
+    document.querySelectorAll('.private-kpi').forEach((card) => {
+      const label = card.querySelector('span');
+      const value = card.querySelector('strong');
+      if (label && value && label.textContent.trim() === 'Work hours') value.textContent = closeout.confirmedHours;
+    });
+  }
+
   async function refreshOperatingCase() {
     const sessionResponse = await fetch('/api/session', { credentials: 'same-origin', cache: 'no-store' });
     const session = await sessionResponse.json().catch(() => ({}));
     if (!sessionResponse.ok || !session.authenticated) return;
-    const dataResponse = await fetch('/api/private-data', { credentials: 'same-origin', cache: 'no-store' });
-    if (!dataResponse.ok) return;
-    renderOperatingCase(await dataResponse.json());
+
+    const [dataResponse, closeoutResponse] = await Promise.all([
+      fetch('/api/private-data', { credentials: 'same-origin', cache: 'no-store' }),
+      fetch('/api/closeout-data', { credentials: 'same-origin', cache: 'no-store' })
+    ]);
+
+    if (dataResponse.ok) renderOperatingCase(await dataResponse.json());
+    if (closeoutResponse.ok) setTimeout(async () => renderCloseout(await closeoutResponse.json()), 100);
   }
 
   document.addEventListener('DOMContentLoaded', () => {
