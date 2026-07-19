@@ -1,4 +1,9 @@
 (function () {
+  const polish = document.createElement('link');
+  polish.rel = 'stylesheet';
+  polish.href = '/responsive-polish.css';
+  document.head.appendChild(polish);
+
   const data = window.OD_PUBLIC_DATA;
   const setText = (id, value) => {
     const node = document.getElementById(id);
