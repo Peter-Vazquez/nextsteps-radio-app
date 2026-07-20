@@ -9,4 +9,68 @@
 </head>
 <body class="shared-shell">
   <header class="shared-header">
-    <a class="brand" href="/"><span class
+    <a class="brand" href="/"><span class="brand-mark">OD</span><span><strong>OD Strategy</strong><small>Daily Operating Dashboard</small></span></a>
+    <div class="header-actions"><a class="button button-outline" href="/shared/action-sheet.html">Daily Action Sheet</a><a class="button button-outline" href="/">Public dashboard</a><button class="button" id="logout-button" type="button" hidden>Sign out</button></div>
+  </header>
+  <main id="shared-app">
+    <section class="login-card" id="login-view">
+      <p class="eyebrow">Trusted shared access</p>
+      <h1>Private Shared Dashboard</h1>
+      <p>Secure operating view for the owner and authorized reviewers.</p>
+      <form id="login-form"><label for="dashboard-password">Dashboard password</label><input id="dashboard-password" name="password" type="password" autocomplete="current-password" required maxlength="256"><button class="button" type="submit">Enter dashboard</button></form>
+      <p class="form-error" id="login-error" role="alert"></p>
+    </section>
+
+    <section class="shared-main" id="dashboard-view" hidden>
+      <section class="executive-bar" aria-labelledby="dashboard-title">
+        <div><p class="eyebrow">Daily operating guide</p><h1 id="dashboard-title">Know what matters now.</h1><p id="shared-status-copy"></p></div>
+        <aside><span>Overall status</span><strong id="shared-overall-status">Loading</strong><p id="shared-updated"></p></aside>
+      </section>
+
+      <nav class="dashboard-nav" aria-label="Dashboard sections">
+        <a href="#today">Today</a><a href="#actions">Actions</a><a href="#numbers">Performance</a><a href="#details">Details</a>
+      </nav>
+
+      <section id="today" class="today-panel dashboard-card full">
+        <div class="section-title"><div><p class="eyebrow">Priority</p><h2>Today’s operating guide</h2></div><span class="status-badge">Simple. Current. Actionable.</span></div>
+        <div id="daily-guide" class="daily-guide"></div>
+      </section>
+
+      <section id="actions" aria-labelledby="actions-title">
+        <div class="section-title"><div><p class="eyebrow">Execution</p><h2 id="actions-title">What moves the business next</h2></div></div>
+        <div class="action-grid">
+          <article class="dashboard-card"><h3>Next actions</h3><div id="activity-summary"></div></article>
+          <article class="dashboard-card"><h3>Critical risks</h3><div id="risk-summary"></div></article>
+          <article class="dashboard-card"><h3>Upcoming deadlines</h3><div id="seap-summary"></div></article>
+        </div>
+      </section>
+
+      <section id="numbers" aria-labelledby="numbers-title">
+        <div class="section-title"><div><p class="eyebrow">Performance</p><h2 id="numbers-title">Results, pipeline, and readiness</h2></div></div>
+        <div class="kpi-row" id="private-kpis"></div>
+        <div class="visual-grid">
+          <article class="dashboard-card"><div class="card-heading"><h3>Revenue plan</h3><span>Plan vs. actual</span></div><div class="chart-wrap"><canvas id="revenue-chart" role="img" aria-label="Monthly revenue plan and actual revenue chart"></canvas></div></article>
+          <article class="dashboard-card"><div class="card-heading"><h3>Sales pipeline</h3><span>Movement by stage</span></div><div class="chart-wrap"><canvas id="pipeline-chart" role="img" aria-label="Sales pipeline stages chart"></canvas></div></article>
+          <article class="dashboard-card"><div class="card-heading"><h3>Training progress</h3><span id="training-progress-label"></span></div><div class="progress-track" aria-hidden="true"><span id="training-progress-bar"></span></div><div id="training-progress-copy" class="compact-copy"></div></article>
+        </div>
+      </section>
+
+      <section id="details" aria-labelledby="details-title">
+        <div class="section-title"><div><p class="eyebrow">Reference</p><h2 id="details-title">Supporting operating details</h2></div></div>
+        <div class="details-stack">
+          <details open><summary>Financial plan and household bridge</summary><div class="detail-body"><div class="table-wrap"><table><thead><tr><th>Month</th><th>Plan</th><th>Actual</th><th>Expenses</th><th>Owner draw</th></tr></thead><tbody id="monthly-financials"></tbody></table></div><div id="household-bridge" class="compact-copy"></div></div></details>
+          <details><summary>Business purpose, services, and market</summary><div class="detail-body"><div class="purpose-grid" id="private-purpose"></div><div class="card-grid two" id="private-services"></div><div class="market-layout"><div class="card-grid two" id="private-market"></div><aside class="callout"><h3>Beachhead strategy</h3><p id="private-beachhead"></p></aside></div></div></details>
+          <details><summary>Five-year financial projections</summary><div class="detail-body"><div class="table-wrap"><table><thead><tr><th>Fiscal year</th><th>Revenue target</th><th>Owner draw</th><th>Ending cash</th><th>Status</th></tr></thead><tbody id="annual-financials"></tbody></table></div></div></details>
+          <details><summary>Growth strategy and milestones</summary><div class="detail-body"><div class="timeline-grid" id="private-growth"></div><div class="milestone-list" id="private-milestones"></div></div></details>
+          <details><summary>Pipeline, projects, and capacity</summary><div class="detail-body detail-columns"><div><h3>Pipeline</h3><div id="pipeline-summary"></div></div><div><h3>Projects</h3><div id="project-summary"></div></div><div><h3>Capacity</h3><div id="capacity-summary"></div></div></div></details>
+          <details><summary>Professional reviews and decisions</summary><div class="detail-body detail-columns"><div><h3>Professional reviews</h3><div id="professional-summary"></div></div><div><h3>Priorities and decisions</h3><div id="decision-summary"></div></div></div></details>
+          <details><summary>Operating records and approved documents</summary><div class="detail-body detail-columns"><div><h3>Operating records</h3><div id="record-links"></div></div><div><h3>Approved documents</h3><div id="document-links"></div></div></div></details>
+        </div>
+      </section>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="/shared/shared.js"></script>
+  <script src="/shared/operating-case.js"></script>
+</body>
+</html>
