@@ -3,12 +3,17 @@
   const loginView = document.getElementById('login-view');
   const dashboardView = document.getElementById('dashboard-view');
   const logoutButton = document.getElementById('logout-button');
+  const actionSheetLink = document.getElementById('action-sheet-link');
   const errorNode = document.getElementById('login-error');
   let revenueChart;
   let pipelineChart;
 
   logoutButton.hidden = true;
   logoutButton.style.display = 'none';
+  if (actionSheetLink) {
+    actionSheetLink.hidden = true;
+    actionSheetLink.style.display = 'none';
+  }
 
   function list(items, ordered) {
     const tag = ordered ? 'ol' : 'ul';
@@ -85,6 +90,10 @@
     dashboardView.hidden = false;
     logoutButton.hidden = false;
     logoutButton.style.display = 'inline-flex';
+    if (actionSheetLink) {
+      actionSheetLink.hidden = false;
+      actionSheetLink.style.display = 'inline-flex';
+    }
 
     document.getElementById('shared-overall-status').textContent = data.meta.overallStatus;
     document.getElementById('shared-updated').textContent = `Updated ${data.meta.asOf}`;
@@ -151,6 +160,10 @@
     dashboardView.hidden = true;
     logoutButton.hidden = true;
     logoutButton.style.display = 'none';
+    if (actionSheetLink) {
+      actionSheetLink.hidden = true;
+      actionSheetLink.style.display = 'none';
+    }
     loginView.hidden = false;
   });
 
