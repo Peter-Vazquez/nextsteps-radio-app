@@ -9,32 +9,46 @@
   <style>
     :root{--ink:#162d3c;--blue:#213a4b;--blue2:#2f536b;--line:#cbd5db;--soft:#f3f6f8;--gold:#c79b39;--green:#2d7b50}
     body{margin:0;background:#e7ecef;color:var(--ink);font-family:Arial,Helvetica,sans-serif}
-    .toolbar,.sheet{max-width:8.5in;margin:16px auto}
+    .toolbar,.sheet{max-width:980px;margin:12px auto}
     .toolbar{display:flex;justify-content:space-between;gap:8px;align-items:center}
-    .toolbar a,.toolbar button{padding:9px 13px;border:1px solid var(--ink);border-radius:6px;background:#fff;color:var(--ink);font-weight:700;text-decoration:none;cursor:pointer}
+    .toolbar a,.toolbar button{padding:8px 12px;border:1px solid var(--ink);border-radius:6px;background:#fff;color:var(--ink);font-weight:700;text-decoration:none;cursor:pointer}
     .toolbar .primary{background:var(--ink);color:#fff}.toolbar .close{background:var(--green);color:#fff}
     .sheet{background:#fff;box-shadow:0 4px 18px #0002}
-    .cover{min-height:10in;padding:.85in .6in .55in;background:linear-gradient(180deg,var(--blue) 0,var(--blue) 72%,var(--gold) 72%,var(--gold) 73%,#fff 73%,#fff 100%);color:#fff;display:flex;flex-direction:column}
-    .cover .kicker{font-size:11px;letter-spacing:.11em;text-transform:uppercase;font-weight:800;color:#e6edf1}
-    .cover h1{font-size:42px;line-height:1.05;margin:.35in 0 .15in}.cover h2{font-size:24px;margin:0 0 .45in;color:#f2f6f8}
-    .rule{width:96px;height:3px;background:var(--gold);margin:0 0 .45in}
-    .cover-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:.16in;margin-top:auto}
-    .cover-meta div{border:1px solid #ffffff44;padding:.16in}.cover-meta span{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#d9e3e9}.cover-meta strong{display:block;margin-top:4px;font-size:13px}
-    .cover .rule-line{margin-top:.35in;border-top:1px solid #dfe6ea}.cover .rule-line p{font-size:12px;color:#d8e2e8}
-    .agenda{padding:.45in .55in .5in}
-    .agenda-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;border-bottom:3px solid var(--gold);padding-bottom:10px;margin-bottom:16px}
-    .agenda-head h2{margin:0;font-size:21px;color:var(--blue)}.agenda-head p{margin:4px 0 0;font-size:10px;color:#596b77}
-    .date-row{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:8px;min-width:310px}.field label,.metric label{display:block;font-size:8px;text-transform:uppercase;font-weight:800;color:#6a7984;margin-bottom:3px}.field input,.field textarea,.metric input{width:100%;box-sizing:border-box;padding:6px;border:1px solid var(--line);border-radius:4px;font:inherit;color:var(--ink);background:#fff}.field textarea{min-height:58px;resize:vertical}
-    .operating-rule{border:1px solid var(--blue2);background:#f7f9fa;padding:10px 12px;margin:0 0 14px}.operating-rule strong{font-size:12px}.operating-rule textarea{margin-top:6px}
-    .section{margin-top:18px}.section-title{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:4px}.section-title h2{font-size:12px;letter-spacing:.04em;margin:0;color:var(--blue)}.section-title span{font-size:8px;text-transform:uppercase;color:#72818b}
-    .agenda-list{display:grid;gap:8px;margin-top:10px}.agenda-item{display:grid;grid-template-columns:26px 1fr auto;gap:10px;border:1px solid var(--line);border-left:5px solid var(--blue2);padding:10px;background:#fff}.agenda-item.break{border-left-color:var(--gold)}.agenda-item.closeout{border-left-color:var(--green)}.agenda-item input[type=checkbox]{width:16px;height:16px;margin-top:2px}.agenda-copy h3{font-size:12px;margin:0 0 2px;color:var(--blue)}.agenda-copy p{font-size:9.5px;margin:2px 0;color:#394d5a}.agenda-copy .completion{font-size:9px;color:#5d6d77}.duration{font-size:9px;font-weight:800;color:var(--blue);white-space:nowrap}
-    .metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}.metric input{font-size:10px}.notes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
-    .minimum-list{display:grid;gap:6px;margin-top:8px}.minimum-item{display:grid;grid-template-columns:18px 1fr;gap:7px;font-size:9.5px;padding:6px 0;border-bottom:1px solid #e4e9ec}.deferred{font-size:9.5px;background:#f7f9fa;border-left:4px solid var(--gold);padding:9px 10px;margin-top:8px}
+    .cover{padding:30px 38px 24px;background:var(--blue);border-bottom:7px solid var(--gold);color:#fff}
+    .cover .kicker{font-size:10px;letter-spacing:.11em;text-transform:uppercase;font-weight:800;color:#e6edf1;margin:0 0 10px}
+    .cover h1{font-size:32px;line-height:1.05;margin:0 0 7px}.cover h2{font-size:17px;margin:0;color:#f2f6f8;font-weight:600}
+    .rule{width:62px;height:3px;background:var(--gold);margin:14px 0 18px}
+    .cover-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:0}
+    .cover-meta div{border:1px solid #ffffff38;background:#ffffff0d;padding:10px 12px;border-radius:4px}
+    .cover-meta span{display:block;font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:#d9e3e9}
+    .cover-meta strong{display:block;margin-top:3px;font-size:12px}
+    .agenda{padding:24px 32px 28px}
+    .agenda-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;border-bottom:3px solid var(--gold);padding-bottom:9px;margin-bottom:12px}
+    .agenda-head h2{margin:0;font-size:20px;color:var(--blue)}.agenda-head p{margin:4px 0 0;font-size:10px;color:#596b77}
+    .date-row{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:8px;min-width:310px}
+    .field label,.metric label{display:block;font-size:8px;text-transform:uppercase;font-weight:800;color:#6a7984;margin-bottom:3px}
+    .field input,.field textarea,.metric input{width:100%;box-sizing:border-box;padding:6px;border:1px solid var(--line);border-radius:4px;font:inherit;color:var(--ink);background:#fff}
+    .field textarea{min-height:52px;resize:vertical}
+    .operating-rule{border:1px solid var(--blue2);background:#f7f9fa;padding:9px 11px;margin:0 0 12px}
+    .operating-rule strong{font-size:12px}.operating-rule textarea{margin-top:5px}
+    .section{margin-top:15px}.section-title{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:4px}
+    .section-title h2{font-size:12px;letter-spacing:.04em;margin:0;color:var(--blue)}.section-title span{font-size:8px;text-transform:uppercase;color:#72818b}
+    .agenda-list{display:grid;gap:7px;margin-top:8px}
+    .agenda-item{display:grid;grid-template-columns:24px 1fr auto;gap:9px;border:1px solid var(--line);border-left:5px solid var(--blue2);padding:9px;background:#fff}
+    .agenda-item.break{border-left-color:var(--gold)}.agenda-item.closeout{border-left-color:var(--green)}
+    .agenda-item input[type=checkbox]{width:16px;height:16px;margin-top:2px}
+    .agenda-copy h3{font-size:12px;margin:0 0 2px;color:var(--blue)}.agenda-copy p{font-size:9.5px;margin:2px 0;color:#394d5a}.agenda-copy .completion{font-size:9px;color:#5d6d77}
+    .duration{font-size:9px;font-weight:800;color:var(--blue);white-space:nowrap}
+    .metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}.metric input{font-size:10px}
+    .notes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+    .minimum-list{display:grid;gap:5px;margin-top:7px}.minimum-item{display:grid;grid-template-columns:18px 1fr;gap:7px;font-size:9.5px;padding:5px 0;border-bottom:1px solid #e4e9ec}
+    .deferred{font-size:9.5px;background:#f7f9fa;border-left:4px solid var(--gold);padding:8px 9px;margin-top:7px}
     .status{font-size:10px;font-weight:700;color:#687984;margin-top:10px}.status.ok{color:var(--green)}.status.warn{color:#a05f16}
-    footer{margin-top:12px;border-top:1px solid var(--line);padding-top:7px;font-size:8px;color:#6a7882;display:flex;justify-content:space-between;gap:15px}
-    @media(max-width:900px){.toolbar,.sheet{margin:10px}.cover,.agenda{padding:24px}.cover-meta,.date-row,.metrics,.notes{grid-template-columns:1fr}.agenda-head{display:block}.date-row{min-width:0;margin-top:12px}.agenda-item{grid-template-columns:24px 1fr}.duration{grid-column:2}}
+    footer{margin-top:11px;border-top:1px solid var(--line);padding-top:7px;font-size:8px;color:#6a7882;display:flex;justify-content:space-between;gap:15px}
+    @media(max-width:1000px){.toolbar,.sheet{margin:10px}}
+    @media(max-width:760px){.toolbar{align-items:stretch;flex-direction:column}.toolbar>div{display:flex;flex-wrap:wrap;gap:6px}.cover,.agenda{padding:22px}.cover h1{font-size:28px}.cover-meta,.date-row,.metrics,.notes{grid-template-columns:1fr}.agenda-head{display:block}.date-row{min-width:0;margin-top:12px}.agenda-item{grid-template-columns:22px 1fr}.duration{grid-column:2}}
     @page{size:letter;margin:.25in}
-    @media print{body{background:#fff}.toolbar{display:none}.sheet{box-shadow:none;margin:0;max-width:none}.cover{page-break-after:always;min-height:9.7in}.agenda{padding:.3in .35in}.agenda-item{break-inside:avoid}.section{break-inside:avoid}}
+    @media print{body{background:#fff}.toolbar{display:none}.sheet{box-shadow:none;margin:0;max-width:none}.cover{padding:.28in .38in .22in;page-break-after:auto}.agenda{padding:.25in .35in}.agenda-item{break-inside:avoid}.section{break-inside:avoid}}
   </style>
 </head>
 <body>
@@ -48,18 +62,16 @@
       <h1>Today’s Priority Agenda</h1>
       <h2 id="coverDate">Operating Day</h2>
       <div class="rule"></div>
-      <p style="max-width:6.2in;font-size:16px;line-height:1.45">A disciplined operating plan balancing revenue development, business construction, training, compliance, and accurate closeout.</p>
       <div class="cover-meta">
         <div><span>Workday Start</span><strong id="coverStart">—</strong></div>
         <div><span>Break</span><strong id="coverBreak">Not yet taken</strong></div>
         <div><span>Operating Rule</span><strong>Advance all three lanes today</strong></div>
       </div>
-      <div class="rule-line"><p>Revenue • Build • Compliance</p></div>
     </section>
 
     <section class="agenda">
       <header class="agenda-head">
-        <div><h2>Priority Agenda</h2><p>Complete the work in order unless a real client or compliance event requires a controlled change.</p></div>
+        <div><h2>Priority Agenda</h2><p>Complete the work in order unless a client or compliance event requires a controlled change.</p></div>
         <div class="date-row">
           <div class="field"><label>Date</label><input id="date" type="date" readonly></div>
           <div class="field"><label>Planned Start</label><input id="plannedStart"></div>
@@ -67,7 +79,7 @@
         </div>
       </header>
 
-      <div class="operating-rule field"><strong id="operatingRule">Advance all three lanes today — Revenue, Build, and Compliance.</strong><label style="margin-top:8px">Primary Objective</label><textarea id="objective"></textarea></div>
+      <div class="operating-rule field"><strong id="operatingRule">Advance all three lanes today — Revenue, Build, and Compliance.</strong><label style="margin-top:7px">Primary Objective</label><textarea id="objective"></textarea></div>
 
       <section class="section"><div class="section-title"><h2>Today’s Agenda</h2><span>Recreated daily</span></div><div class="agenda-list" id="agendaList"></div></section>
 
@@ -84,7 +96,7 @@
 
       <section class="section"><div class="section-title"><h2>Operating Notes and Closeout</h2><span>Retire when closed</span></div>
         <div class="notes"><div class="field"><label>Responses, Commitments, and Follow-Up Notes</label><textarea id="followUp"></textarea></div><div class="field"><label>Closeout Comments</label><textarea id="comments"></textarea></div></div>
-        <div class="notes"><div class="field"><label>Actual Start</label><input id="actualStart"></div><div class="field"><label>Actual End</label><input id="actualEnd"><label style="margin-top:8px">Tomorrow’s First Action</label><textarea id="tomorrow"></textarea></div></div>
+        <div class="notes"><div class="field"><label>Actual Start</label><input id="actualStart"></div><div class="field"><label>Actual End</label><input id="actualEnd"><label style="margin-top:7px">Tomorrow’s First Action</label><textarea id="tomorrow"></textarea></div></div>
       </section>
 
       <p id="status" class="status">Creating today’s action sheet…</p>
