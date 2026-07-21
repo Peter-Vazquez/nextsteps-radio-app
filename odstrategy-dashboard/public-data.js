@@ -3,9 +3,9 @@ window.OD_PUBLIC_DATA = {
     promise: 'Helping meaningful voices be seen, heard, trusted, and found.',
     phase: 'Controlled pre-launch execution, market outreach, and launch-readiness development',
     outreachStart: 'Active — first controlled outreach completed July 21, 2026',
-    updated: 'July 21, 2026 — current operating update'
+    updated: 'July 21, 2026 — end-of-day operating closeout'
   },
-  metrics: { prospects: 40, pipeline: 22000, trainingLogged: 2.98, trainingRequired: 20, contacts: 3 },
+  metrics: { prospects: 40, pipeline: 22000, trainingLogged: 3.20, trainingRequired: 20, contacts: 3 },
   purpose: [
     ['Problem', 'Important messages are underused because organizations lack time, systems, or in-house production capacity.'],
     ['Solution', 'One source message becomes professional podcast, web, social, email, and search content.'],
@@ -38,7 +38,7 @@ window.OD_PUBLIC_DATA = {
   milestones: [
     ['July 16, 2026', 'Standalone accountability platform launched', 'OD Strategy deployed at odstrategy.com with public and secure private access; obsolete branches and legacy dashboard deployments retired.'],
     ['July 19, 2026', 'Preparation readiness checkpoint', 'Dashboard modernization, mobile review, production access, operating records, and first-wave prospect preparation were reviewed and closed out.'],
-    ['July 21, 2026', 'Controlled outreach underway', 'Three personalized contacts were completed, two positive responses were received, and one meeting was scheduled.'],
+    ['July 21, 2026', 'Controlled outreach and sales system advanced', 'Three personalized contacts were completed, two positive responses were received, one meeting was scheduled, client-facing sales materials were completed, and SBA Journey 9 was applied to the Sales SOP.'],
     ['August 1, 2026', 'Controlled soft launch', 'Offers, CRM, payment method, client controls, and production workflow ready.'],
     ['August 10, 2026', 'Individual Services Plan due', 'Completed form submitted and confirmation retained.'],
     ['August 31, 2026', 'First training verification due', 'First ten hours completed, verified, submitted, and retained.'],
