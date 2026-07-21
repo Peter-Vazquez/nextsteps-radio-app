@@ -1,12 +1,12 @@
 import { configured, isAuthenticated, json } from './_auth.js';
 
 const closeout = {
-  asOf: 'July 19, 2026 — 4:28 PM closeout',
-  confirmedHours: 35.80,
-  pendingEntries: 0,
-  capacityStatus: 'All reported startup work is reconciled through 4:28 PM July 19. The afternoon prospect-qualification session added 1.72 active hours from 2:45 PM to 4:28 PM. No training hours or completed outreach contacts were claimed.',
-  overallStatus: 'Pre-launch — outreach preparation advanced; customer proof required',
-  statusExplanation: 'Bible Baptist Temple and Faith on Film TV relationship paths, needs, decision-makers, contact channels, and recommended outreach sequences are documented. No outreach has been sent. The next work session should complete the remaining first-wave preparation and begin controlled market contact.'
+  asOf: 'July 21, 2026 — 9:33 AM progress update',
+  confirmedHours: 39.13,
+  pendingEntries: 1,
+  capacityStatus: 'All reported startup work is reconciled through the July 20 closeout. July 20 added 3.33 active hours from 7:30 AM to 11:15 AM with a 25-minute break. The July 21 workday began at 7:30 AM and remains open with no break reported and no final hours entered yet.',
+  overallStatus: 'Pre-launch — first outreach completed; two positive responses and one meeting scheduled',
+  statusExplanation: 'Three personalized contacts were sent July 21. Pastor Ken Todd responded positively and expects to arrange a conversation. Pastor Jose Rodriguez scheduled lunch and discussion for Friday, July 24 at 2:00 PM. Abraham Hernandez remains awaiting response. The immediate priorities are meeting preparation, response follow-up, and the next controlled outreach block.'
 };
 
 export default function handler(req, res) {
