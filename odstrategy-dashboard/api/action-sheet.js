@@ -116,14 +116,27 @@ function chooseTask(tasks, pattern, excluded = new Set()) {
     .sort((a, b) => taskScore(a) - taskScore(b))[0] || null;
 }
 
-function taskPlan(row, lane, fallbackTitle, fallbackCopy) {
-  if (!row) return { lane, title: fallbackTitle, copy: fallbackCopy, taskId: '', completion: fallbackCopy };
+function taskPlan(row, lane, fallbackTitle, fallbackAction, duration) {
+  if (!row) {
+    return {
+      lane,
+      title: fallbackTitle,
+      action: fallbackAction,
+      copy: fallbackAction,
+      duration,
+      taskId: '',
+      completion: fallbackAction
+    };
+  }
   const completion = row[10] || row[12] || 'Complete the next documented milestone and retain evidence.';
+  const task = row[3] || fallbackTitle;
   return {
     lane,
     taskId: row[0] || '',
-    title: `${lane} lane — ${row[3]}`,
+    title: `${lane} lane — ${task}`,
+    action: `${task}. Due ${row[7] || 'as soon as practical'}.`,
     copy: `Due ${row[7] || 'as soon as practical'}. Completion standard: ${completion}`,
+    duration,
     completion
   };
 }
@@ -136,6 +149,29 @@ function dueFollowUps(pipelineRows, operatingDate) {
     .filter((row) => !/won|lost|closed/i.test(row[6] || ''))
     .slice(0, 4)
     .map((row) => `${row[4] || row[3]}: ${row[12] || 'Complete the documented next action.'}`);
+}
+
+function trainingPlan(nextTraining) {
+  if (!nextTraining) {
+    return {
+      lane: 'Training',
+      taskId: '',
+      title: 'Training lane — Complete the next sequenced training block',
+      duration: '60–90 minutes',
+      action: 'Complete a focused training block tied directly to a required launch deliverable.',
+      completion: 'Actual start and end time, modules completed, evidence, key lessons, and business application recorded.'
+    };
+  }
+  const program = nextTraining[2] || 'the next sequenced course';
+  const deliverable = nextTraining[4] || 'the current launch work';
+  return {
+    lane: 'Training',
+    taskId: nextTraining[0] || '',
+    title: `Training lane — Begin or continue ${program}`,
+    duration: '60–90 minutes',
+    action: `Complete a focused training block and apply the lessons directly to ${deliverable}.`,
+    completion: 'Actual start and end time, modules completed, screenshots or evidence, key lessons, and business application recorded.'
+  };
 }
 
 async function buildPlan(operatingDate) {
@@ -153,45 +189,95 @@ async function buildPlan(operatingDate) {
   const buildRow = chooseTask(openTasks, /website|brand|material|presentation|production|portfolio|social|organic|sample/i, used);
   if (buildRow) used.add(buildRow[0]);
   const complianceRow = chooseTask(openTasks, /training|seap|counsel|formation|financial|professional|legal|insurance|readiness|go\/no-go/i, used);
+  if (complianceRow) used.add(complianceRow[0]);
 
   const revenue = taskPlan(
     revenueRow,
     'Revenue',
-    'Complete the next protected prospecting and follow-up block',
-    'Send or advance qualified contacts, convert responses into scheduled conversations, and update the CRM.'
+    'Revenue lane — Complete the next protected prospecting and follow-up block',
+    'Send or advance qualified contacts, convert responses into scheduled conversations, and update the CRM.',
+    '45–60 minutes'
   );
   const build = taskPlan(
     buildRow,
     'Build',
-    'Complete one launch asset',
-    'Finish one website, presentation, client-material, production, proof, or social-media deliverable.'
+    'Build lane — Complete one launch asset',
+    'Finish one website, presentation, client-material, production, proof, or social-media deliverable.',
+    '90 minutes'
   );
   const compliance = taskPlan(
     complianceRow,
     'Compliance',
-    'Complete one compliance milestone',
-    'Advance training, counseling, SEAP forms, formation, financial controls, or professional review and retain evidence.'
+    'Compliance lane — Complete one compliance milestone',
+    'Advance counseling, SEAP forms, formation, financial controls, or professional review and retain evidence.',
+    '30–45 minutes'
   );
 
   const followUps = dueFollowUps(pipelineRows, operatingDate);
   const redGates = readinessRows.filter(filled).filter((row) => /red/i.test(row[5] || '')).slice(0, 3).map((row) => row[2]);
-  const nextTraining = trainingRows.filter(filled).filter((row) => !/completed/i.test(row[12] || '')).sort((a, b) => Number(a[13] || 999) - Number(b[13] || 999))[0];
+  const nextTraining = trainingRows
+    .filter(filled)
+    .filter((row) => !/completed/i.test(row[12] || ''))
+    .sort((a, b) => Number(a[13] || 999) - Number(b[13] || 999))[0];
+  const training = trainingPlan(nextTraining);
+
+  const breakItem = {
+    lane: 'Break',
+    taskId: '',
+    title: 'BREAK',
+    duration: '20 minutes',
+    action: 'Step away. Return rested and ready to work through the remaining agenda in order.',
+    completion: 'Break is logged. Record final break minutes when work resumes.'
+  };
+
+  const record = {
+    lane: 'Closeout',
+    taskId: '',
+    title: 'END-OF-DAY SYNCHRONIZATION',
+    duration: '20–30 minutes',
+    action: 'Update all operating records, enter end time and break, and synchronize the CRM, Daily Work Log, Training Log, Project Control Center, scorecard, dashboards, Kanban, Gantt, and readiness.',
+    copy: 'Update every controlling record before closing the day.',
+    completion: "Today's Action Sheet is closed, archived, retired, and replaced by a newly generated sheet for the next operating day."
+  };
+
+  const agenda = [breakItem, compliance, build, training, revenue, record].map((item, index) => ({
+    ...item,
+    number: index + 1,
+    key: ['break', 'compliance', 'build', 'training', 'revenue', 'record'][index]
+  }));
+
+  const deferredTasks = openTasks
+    .filter((row) => !used.has(row[0]))
+    .filter((row) => /website|social|organic|launch post|lead path/i.test(`${row[2]} ${row[3]}`))
+    .sort((a, b) => taskScore(a) - taskScore(b))
+    .slice(0, 3)
+    .map((row) => row[3]);
 
   return {
     generatedAt: new Date().toISOString(),
     date: operatingDate,
+    operatingRule: 'Advance all three lanes today — Revenue, Build, and Compliance.',
     objective: `Advance all three required lanes: ${revenue.title.replace('Revenue lane — ', '')}; ${build.title.replace('Build lane — ', '')}; and ${compliance.title.replace('Compliance lane — ', '')}.`,
     revenue,
     build,
     compliance,
+    training,
+    agenda,
+    minimumFinish: [
+      compliance.completion,
+      build.completion,
+      training.completion,
+      revenue.completion,
+      record.completion
+    ],
+    deferred: deferredTasks.length
+      ? `Deferred until the next dedicated build block: ${deferredTasks.join('; ')}.`
+      : 'No additional launch-critical work is deferred from today’s agenda.',
     workspace: {
       title: 'Open the required operating workspace',
       copy: 'Review the newly generated sheet, CRM commitments, current deadlines, and only the records needed for today.'
     },
-    record: {
-      title: 'Record and synchronize every result',
-      copy: 'Update the CRM, Daily Work Log, Project Control Center, Weekly Scorecard, Training Log when applicable, and the live dashboard.'
-    },
+    record,
     followUp: {
       title: followUps.length ? 'Complete due prospect follow-ups' : 'Check active responses at controlled intervals',
       copy: followUps.length ? followUps.join(' | ') : 'Monitor active channels without allowing inbox activity to replace the planned revenue, build, and compliance work.',
@@ -217,7 +303,7 @@ async function freshRecord(archiveRows) {
     actualEnd: '',
     breakMinutes: 0,
     workHours: 0,
-    taskStatus: { _plan: plan },
+    taskStatus: { _plan: plan, _time: {} },
     contactsSent: 0,
     responses: 0,
     meetingsSet: 0,
@@ -246,9 +332,10 @@ export default async function handler(req, res) {
       const row = [...openRows].reverse()[0];
       if (row) {
         const current = normalize(row);
-        if (!current.taskStatus._plan) {
+        if (!current.taskStatus._plan?.agenda) {
           const plan = await buildPlan(current.date || localDate());
           current.taskStatus._plan = plan;
+          current.taskStatus._time = current.taskStatus._time || {};
           current.objective = plan.objective;
           await saveActionRow(serialize(current, 'Open'));
         }
@@ -272,7 +359,7 @@ export default async function handler(req, res) {
         const record = await freshRecord([...archiveRows, values]);
         await saveActionRow(serialize(record, 'Open'));
         return json(res, 200, {
-          message: 'Day closed, archived, and retired. A new action sheet was generated from the current roadmap with all tasks and daily totals reset.',
+          message: 'Day closed, archived, and retired. A new priority-agenda action sheet was generated from the current roadmap with all tasks and daily totals reset.',
           record,
           retiredRecord: normalize(values)
         });
