@@ -10,9 +10,7 @@ export const SPREADSHEETS = {
 const CURRENT_RANGE = "'Daily Action Sheet'!A5:X200";
 const ARCHIVE_RANGE = "'Daily Action Archive'!A:X";
 
-function b64url(value) {
-  return Buffer.from(value).toString('base64url');
-}
+function b64url(value) { return Buffer.from(value).toString('base64url'); }
 
 function credentials() {
   const raw = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
@@ -37,8 +35,7 @@ async function accessToken() {
   const signer = crypto.createSign('RSA-SHA256');
   signer.update(unsigned);
   signer.end();
-  const signature = signer.sign(service.private_key, 'base64url');
-  const assertion = `${unsigned}.${signature}`;
+  const assertion = `${unsigned}.${signer.sign(service.private_key, 'base64url')}`;
   const response = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -53,11 +50,7 @@ async function googleFetch(spreadsheetId, path, options = {}) {
   const token = await accessToken();
   const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}${path}`, {
     ...options,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      ...(options.headers || {})
-    }
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json', ...(options.headers || {}) }
   });
   const body = await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(body.error?.message || 'Google Sheets request failed.');
@@ -70,9 +63,8 @@ export async function readValues(spreadsheetId, range) {
   return result.values || [];
 }
 
-export async function readActionRows() {
-  return readValues(SPREADSHEETS.control, CURRENT_RANGE);
-}
+export async function readActionRows() { return readValues(SPREADSHEETS.control, CURRENT_RANGE); }
+export async function readArchiveRows() { return readValues(SPREADSHEETS.control, ARCHIVE_RANGE); }
 
 export async function saveActionRow(values) {
   const rows = await readActionRows();
@@ -85,6 +77,15 @@ export async function saveActionRow(values) {
     method: 'PUT',
     body: JSON.stringify({ range: targetRange, majorDimension: 'ROWS', values: [values] })
   });
+}
+
+export async function clearActionRow(recordId) {
+  const rows = await readActionRows();
+  const index = rows.findIndex((row) => String(row[0] || '') === String(recordId || ''));
+  if (index < 0) return null;
+  const rowNumber = index + 5;
+  const target = encodeURIComponent(`'Daily Action Sheet'!A${rowNumber}:X${rowNumber}`);
+  return googleFetch(SPREADSHEETS.control, `/values/${target}:clear`, { method: 'POST', body: '{}' });
 }
 
 export async function archiveActionRow(values) {
