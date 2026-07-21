@@ -1,11 +1,13 @@
 import { configured, isAuthenticated, json } from './_auth.js';
-import { readActionRows, saveActionRow, archiveActionRow } from './_sheets.js';
+import { readActionRows, readArchiveRows, saveActionRow, archiveActionRow, clearActionRow } from './_sheets.js';
 
 function normalize(values = []) {
+  let taskStatus = {};
+  try { taskStatus = JSON.parse(values[10] || '{}'); } catch { taskStatus = {}; }
   return {
     recordId: values[0] || '', date: values[1] || '', status: values[2] || 'Open', objective: values[3] || '',
     plannedStart: values[4] || '', plannedEnd: values[5] || '', actualStart: values[6] || '', actualEnd: values[7] || '',
-    breakMinutes: Number(values[8] || 0), workHours: Number(values[9] || 0), taskStatus: JSON.parse(values[10] || '{}'),
+    breakMinutes: Number(values[8] || 0), workHours: Number(values[9] || 0), taskStatus,
     contactsSent: Number(values[11] || 0), responses: Number(values[12] || 0), meetingsSet: Number(values[13] || 0),
     prospectingHours: Number(values[14] || 0), followUpNotes: values[15] || '', closeoutComments: values[16] || '',
     tomorrowFirstAction: values[17] || '', savedAt: values[18] || '', closedAt: values[19] || '',
@@ -25,24 +27,62 @@ function serialize(data, status) {
   ];
 }
 
+function localDate() {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+}
+
+function freshRecord(archiveRows) {
+  const latestClosed = [...archiveRows].reverse().find((row) => row && row.some((value) => String(value || '').trim())) || [];
+  const date = localDate();
+  const objective = latestClosed[17] || 'Complete the highest-priority operating work for today and document every result.';
+  return {
+    recordId: `DAS-${date}`,
+    date,
+    status: 'Draft',
+    objective,
+    plannedStart: '6:00 AM',
+    plannedEnd: '8:00 PM',
+    actualStart: '', actualEnd: '', breakMinutes: 0, workHours: 0,
+    taskStatus: {}, contactsSent: 0, responses: 0, meetingsSet: 0, prospectingHours: 0,
+    followUpNotes: '', closeoutComments: '', tomorrowFirstAction: '', savedAt: '', closedAt: '',
+    workLogSynced: false, scorecardSynced: false, crmReviewRequired: true, kanbanReviewRequired: true,
+    isFresh: true
+  };
+}
+
 export default async function handler(req, res) {
   if (!configured()) return json(res, 503, { message: 'Secure dashboard is not configured.' });
   if (!isAuthenticated(req)) return json(res, 401, { message: 'Unauthorized.' });
   try {
+    res.setHeader('Cache-Control', 'no-store, max-age=0');
     if (req.method === 'GET') {
       const rows = await readActionRows();
       const date = String(req.query?.date || '');
-      const row = [...rows].reverse().find((item) => !date || String(item[1] || '') === date) || [];
-      return json(res, 200, { record: normalize(row) });
+      const openRows = rows.filter((item) => String(item[2] || '').toLowerCase() === 'open');
+      const row = date
+        ? [...openRows].reverse().find((item) => String(item[1] || '') === date)
+        : [...openRows].reverse()[0];
+      if (row) return json(res, 200, { record: normalize(row), source: 'active' });
+      const archiveRows = await readArchiveRows();
+      return json(res, 200, { record: freshRecord(archiveRows), source: 'fresh' });
     }
     if (req.method === 'POST') {
       const data = req.body || {};
       if (!data.recordId || !data.date) return json(res, 400, { message: 'Record ID and date are required.' });
       const action = data.action === 'close' ? 'close' : 'save';
       const values = serialize(data, action === 'close' ? 'Closed' : 'Open');
+      if (action === 'close') {
+        await archiveActionRow(values);
+        await clearActionRow(data.recordId);
+        const archiveRows = await readArchiveRows();
+        return json(res, 200, {
+          message: 'Day closed, archived, and retired. A new daily action sheet has been created.',
+          record: freshRecord([...archiveRows, values]),
+          retiredRecord: normalize(values)
+        });
+      }
       await saveActionRow(values);
-      if (action === 'close') await archiveActionRow(values);
-      return json(res, 200, { message: action === 'close' ? 'Day closed and archived.' : 'Progress saved.', record: normalize(values) });
+      return json(res, 200, { message: 'Progress saved.', record: normalize(values) });
     }
     return json(res, 405, { message: 'Method not allowed.' });
   } catch (error) {
