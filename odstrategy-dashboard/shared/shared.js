@@ -97,7 +97,8 @@
 
     document.getElementById('shared-overall-status').textContent = data.meta.overallStatus;
     document.getElementById('shared-updated').textContent = `Updated ${data.meta.asOf} · ${data.meta.syncSource || 'live data'}`;
-    document.getElementById('shared-status-copy').textContent = data.meta.statusExplanation;
+    const cumulativeNarrative = data.meta.cumulativeNarrative || `Launch progress to date includes ${data.pipeline.qualifiedProspects} qualified prospects representing ${money.format(data.pipeline.preliminaryValue)} in preliminary opportunity value, ${data.pipeline.contactsSent || 0} personalized contacts, ${data.pipeline.responses || 0} responses, ${data.pipeline.discoveryScheduled || 0} meeting scheduled, ${data.training.loggedHours} training hours logged, and ${data.workload.confirmedHours} confirmed startup work hours. Client-facing sales materials and the operating sales process remain part of the cumulative launch record.`;
+    document.getElementById('shared-status-copy').textContent = cumulativeNarrative;
 
     const kpis = [
       ['Revenue to date', money.format(data.financial.actualRevenueToDate), 'Cumulative collected revenue'],
@@ -123,7 +124,7 @@
     document.getElementById('risk-summary').innerHTML = data.risks.slice(0, 5).map((item) => `<div class="alert"><strong>${item.risk}</strong><p>${item.response}</p></div>`).join('');
     document.getElementById('seap-summary').innerHTML = data.compliance.deadlines.slice(0, 5).map((item) => `<div class="deadline-row"><strong>${item.date}</strong><span>${item.item}</span><em>${item.status}</em></div>`).join('');
     document.getElementById('professional-summary').innerHTML = data.professionalGates.map((item) => `<div class="alert"><strong>${item.name}</strong><p>${item.status}: ${item.action}</p></div>`).join('');
-    document.getElementById('decision-summary').innerHTML = `<h4>Priorities</h4>${list(data.actions, true)}<h4>Current decisions</h4>${list(data.decisions, false)}`;
+    document.getElementById('decision-summary').innerHTML = `<h4>Current priorities</h4>${list(data.actions, true)}<h4>Cumulative decisions</h4>${list(data.decisions, false)}`;
     document.getElementById('record-links').innerHTML = data.recordLinks.map((item) => `<a class="record-link" href="${item.url}" target="_blank" rel="noopener">${item.name}</a>`).join('');
     document.getElementById('document-links').innerHTML = data.approvedDocuments.length ? data.approvedDocuments.map((item) => `<a class="record-link" href="${item.url}" target="_blank" rel="noopener">${item.name}</a>`).join('') : '<p>No supporting documents are currently approved for direct shared access.</p>';
 
