@@ -8,7 +8,7 @@ export const SPREADSHEETS = {
 };
 
 const CURRENT_RANGE = "'Daily Action Sheet'!A5:X200";
-const ARCHIVE_RANGE = "'Daily Action Archive'!A:X";
+const ARCHIVE_RANGE = "'Daily Action Archive'!A1:X1000";
 
 function b64url(value) { return Buffer.from(value).toString('base64url'); }
 
@@ -39,7 +39,7 @@ async function accessToken() {
   const response = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({ grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer', assertion })
+    body: new URLSearchParams({ grant_type: 'urn:ietf:params:oauth-type:jwt-bearer', assertion })
   });
   const body = await response.json();
   if (!response.ok || !body.access_token) throw new Error(body.error_description || 'Google authentication failed.');
