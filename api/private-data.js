@@ -1,121 +1,194 @@
 import { configured, isAuthenticated, json } from './_auth.js';
+import { readActionRows, readArchiveRows, readValues, SPREADSHEETS } from './_sheets.js';
 
-const safeDefault = {
-  meta: {
-    currentFiscalYear: 'FY 2026–27',
-    asOf: 'July 15, 2026',
-    sourceMode: 'Secure approved snapshot',
-    overallStatus: 'Pre-launch — customer proof required',
-    statusExplanation: 'The plan, model, controls, and offers are established. Customer and revenue validation remain the decisive proof.',
-  },
-  financial: {
-    plannedRevenueToDate: 0,
-    actualRevenueToDate: 0,
-    requiredOwnerDrawToDate: 0,
-    actualOwnerDrawToDate: 0,
-    outsideIncomeUsed: 0,
-    endingCash: 0,
-    minimumCashReserve: 5000,
-    monthly: [
-      { month: 'Aug', plan: 5500, actual: null, requiredDraw: 2850, actualDraw: null },
-      { month: 'Sep', plan: 6050, actual: null, requiredDraw: 3200, actualDraw: null },
-      { month: 'Oct', plan: 6600, actual: null, requiredDraw: 3550, actualDraw: null },
-      { month: 'Nov', plan: 7500, actual: null, requiredDraw: 3900, actualDraw: null },
-      { month: 'Dec', plan: 9250, actual: null, requiredDraw: 4250, actualDraw: null },
-      { month: 'Jan', plan: 9250, actual: null, requiredDraw: 4600, actualDraw: null },
-      { month: 'Feb', plan: 10750, actual: null, requiredDraw: 4950, actualDraw: null },
-      { month: 'Mar', plan: 10750, actual: null, requiredDraw: 5300, actualDraw: null },
-      { month: 'Apr', plan: 11500, actual: null, requiredDraw: 5650, actualDraw: null },
-      { month: 'May', plan: 13250, actual: null, requiredDraw: 6000, actualDraw: null },
-      { month: 'Jun', plan: 13250, actual: null, requiredDraw: 6250, actualDraw: null },
-      { month: 'Jul', plan: 14750, actual: null, requiredDraw: 6550, actualDraw: null }
-    ]
-  },
-  pipeline: {
-    qualifiedProspects: 0,
-    contacted: 0,
-    discoveryCalls: 0,
-    proposals: 0,
-    paidStarters: 0,
-    activeRetainers: 0,
-    currentMonthRetainerTarget: 3,
-    retainerTarget: 9,
-    weeklyTargets: {
-      qualifiedProspects: '10–15',
-      personalizedContacts: '10–15',
-      followUps: '5+',
-      callsScheduled: '2+',
-      callsCompleted: '1–2',
-      proposals: '1+'
-    },
-    managementNote: 'The pipeline has not yet produced customer proof. Outreach and discovery work must begin before launch rather than after it.'
-  },
-  training: {
-    loggedHours: 2.98,
-    verifiedHours: 1.98,
-    totalRequiredHours: 20,
-    note: 'Training eligibility remains subject to SEAP verification. Logged time is not automatically treated as approved training.'
-  },
-  compliance: {
-    deadlines: [
-      { date: 'Aug. 10, 2026', item: 'Individual Services Plan', status: 'Open' },
-      { date: 'Aug. 24, 2026', item: 'Individual Progress Report', status: 'Open' },
-      { date: 'Aug. 31, 2026', item: 'First 10 training hours verification', status: 'Open' },
-      { date: 'Sep. 7, 2026', item: 'Business Strategy', status: 'Open' },
-      { date: 'Sep. 21, 2026', item: 'Final 10 training hours verification', status: 'Open' },
-      { date: 'Before Sep. 7', item: 'Two business-counselor meetings', status: 'Open' }
-    ]
-  },
-  professionalGates: [
-    { name: 'Attorney review', status: 'Pending', action: 'Entity, agreement, IP, releases, confidentiality, privacy, AI-use disclosure, and station references.' },
-    { name: 'CPA / tax review', status: 'Pending', action: 'Books, tax year, entity treatment, sales tax, estimated taxes, and deductions.' },
-    { name: 'Insurance review', status: 'Pending', action: 'General liability, E&O, cyber, and equipment coverage.' },
-    { name: 'Cybersecurity review', status: 'Pending', action: 'Credentials, sensitive data, backups, access control, and incident readiness.' },
-    { name: 'SCORE / VBOC / SBDC review', status: 'Pending', action: 'External challenge, validation, and accountability.' }
-  ],
-  actions: [
-    'Build the first 40-prospect qualification list and record every contact in the CRM.',
-    'Schedule at least two discovery conversations each week.',
-    'Complete the client agreement and professional review gates before accepting complex work.',
-    'Confirm the first SEAP counselor meeting and training-verification path.',
-    'Enter financial actuals monthly and quantify any outside-income bridge immediately.',
-    'Raise pricing when delivery value and scope exceed launch assumptions.'
-  ],
-  alerts: [
-    { level: 'high', message: 'Customer and revenue validation are not yet established.' },
-    { level: 'medium', message: 'Only 1.98 training hours are currently treated as verified or eligible.' },
-    { level: 'medium', message: 'Professional legal, tax, insurance, and cybersecurity reviews remain open.' },
-    { level: 'low', message: 'The public dashboard contains no account-level or client-identifying data.' }
-  ],
-  dataSources: [
-    { name: 'FY financial model', status: 'Approved snapshot' },
-    { name: 'CRM', status: 'Manual totals pending' },
-    { name: 'Project Control Center', status: 'Established' },
-    { name: 'Training log', status: 'Established' },
-    { name: 'Bank and accounting actuals', status: 'Not connected' },
-    { name: 'Private client records', status: 'Excluded from browser app' }
-  ]
-};
+const num = (value) => Number(String(value ?? '').replace(/[$,%]/g, '').replace(/,/g, '')) || 0;
+const filled = (row) => row && row.some((value) => String(value ?? '').trim() !== '');
+const last = (rows) => [...rows].reverse().find(filled) || [];
+const latestOpen = (rows) => [...rows].reverse().find((row) => String(row[2] || '').toLowerCase() === 'open') || last(rows);
+const plural = (value, singular, pluralForm = `${singular}s`) => `${value} ${value === 1 ? singular : pluralForm}`;
 
-function loadData() {
-  if (!process.env.PRIVATE_DASHBOARD_DATA_JSON) return safeDefault;
-  try {
-    return JSON.parse(process.env.PRIVATE_DASHBOARD_DATA_JSON);
-  } catch {
-    return {
-      ...safeDefault,
-      meta: {
-        ...safeDefault.meta,
-        overallStatus: 'Secure data configuration error',
-        statusExplanation: 'PRIVATE_DASHBOARD_DATA_JSON could not be parsed. The safe default snapshot is displayed instead.'
-      }
-    };
-  }
+function actionRecord(row = []) {
+  return {
+    recordId: row[0] || '',
+    date: row[1] || '',
+    status: row[2] || '',
+    objective: row[3] || '',
+    actualStart: row[6] || '',
+    actualEnd: row[7] || '',
+    breakMinutes: num(row[8]),
+    workHours: num(row[9]),
+    contactsSent: num(row[11]),
+    responses: num(row[12]),
+    meetingsSet: num(row[13]),
+    prospectingHours: num(row[14]),
+    followUpNotes: row[15] || '',
+    closeoutComments: row[16] || '',
+    tomorrowFirstAction: row[17] || '',
+    savedAt: row[18] || '',
+    closedAt: row[19] || ''
+  };
 }
 
-export default function handler(req, res) {
+function formatStamp(value) {
+  if (!value) return new Date().toISOString();
+  return String(value).replace('T', ' ').replace(/\.\d{3}Z$/, ' UTC');
+}
+
+async function buildData() {
+  const [actionRows, archiveRows, pipelineRows, outreachRows, discoveryRows, proposalRows, workRows, trainingRows, kanbanRows, riskRows, decisionRows, readinessRows] = await Promise.all([
+    readActionRows(),
+    readArchiveRows(),
+    readValues(SPREADSHEETS.crm, "'Prospect Pipeline'!A5:R500"),
+    readValues(SPREADSHEETS.crm, "'Outreach Log'!A5:M500"),
+    readValues(SPREADSHEETS.crm, "'Discovery Calls'!A5:O500"),
+    readValues(SPREADSHEETS.crm, "'Proposals'!A5:L500"),
+    readValues(SPREADSHEETS.workLog, "'Daily Work Log'!A5:M1000"),
+    readValues(SPREADSHEETS.training, "'Dashboard'!A4:G12"),
+    readValues(SPREADSHEETS.control, "'Kanban Tasks'!A5:M100"),
+    readValues(SPREADSHEETS.control, "'Risk Register'!A5:M80"),
+    readValues(SPREADSHEETS.control, "'Decision Log'!A5:L100"),
+    readValues(SPREADSHEETS.control, "'Launch Readiness'!A5:J40")
+  ]);
+
+  const active = actionRecord(latestOpen(actionRows));
+  const actionHistory = [...archiveRows, ...actionRows]
+    .filter((row) => filled(row) && String(row[0] || '').trim() !== 'Record ID')
+    .map(actionRecord)
+    .filter((record) => record.recordId);
+
+  const cumulative = actionHistory.reduce((total, record) => ({
+    contactsSent: total.contactsSent + record.contactsSent,
+    responses: total.responses + record.responses,
+    meetingsSet: total.meetingsSet + record.meetingsSet,
+    prospectingHours: total.prospectingHours + record.prospectingHours,
+    workHours: total.workHours + record.workHours,
+    breakMinutes: total.breakMinutes + record.breakMinutes
+  }), { contactsSent: 0, responses: 0, meetingsSet: 0, prospectingHours: 0, workHours: 0, breakMinutes: 0 });
+
+  const latestProgress = [...actionHistory].reverse().find((record) =>
+    record.contactsSent || record.responses || record.meetingsSet || record.workHours || record.followUpNotes || record.closeoutComments
+  ) || active;
+
+  const prospects = pipelineRows.filter(filled);
+  const outreach = outreachRows.filter(filled);
+  const discovery = discoveryRows.filter(filled);
+  const proposals = proposalRows.filter(filled);
+  const work = workRows.filter(filled);
+  const trainingMap = Object.fromEntries(trainingRows.filter((row) => row[0]).map((row) => [row[0], row[1]]));
+  const currentTasks = kanbanRows.filter(filled).filter((row) => !/completed/i.test(row[4] || '')).slice(0, 6);
+  const activeRisks = riskRows.filter(filled).filter((row) => !/closed/i.test(row[5] || '')).slice(0, 5);
+  const decisions = decisionRows.filter(filled).slice(-8).reverse();
+  const professionalGates = readinessRows.filter(filled).filter((row) => /legal|insurance|pricing/i.test(`${row[1]} ${row[2]}`));
+
+  const uniqueProspectsContacted = prospects.filter((row) => row[9]).length;
+  const currentlyScheduled = prospects.filter((row) => /discovery scheduled/i.test(row[6] || '')).length;
+  const preliminaryValue = prospects.reduce((sum, row) => sum + num(row[13]), 0);
+  const collectedRevenue = proposals.reduce((sum, row) => sum + num(row[10]), 0);
+  const confirmedHours = work.reduce((sum, row) => sum + num(row[5]), 0);
+  const eligibleTraining = num(trainingMap['Completed Eligible Hours']);
+  const pendingTraining = num(trainingMap['Pending Verification Hours']);
+  const totalTraining = eligibleTraining + pendingTraining;
+  const discoveryScheduled = Math.max(cumulative.meetingsSet, currentlyScheduled);
+
+  const currentActions = [
+    active.tomorrowFirstAction,
+    ...currentTasks.map((row) => row[3])
+  ].filter(Boolean).slice(0, 7);
+
+  return {
+    meta: {
+      currentFiscalYear: 'FY 2026–27',
+      asOf: formatStamp(active.savedAt || latestProgress.savedAt),
+      overallStatus: `Pre-launch cumulative — ${plural(cumulative.contactsSent, 'contact')}, ${plural(cumulative.responses, 'response')}, ${plural(discoveryScheduled, 'meeting')} scheduled`,
+      cumulativeNarrative: `Launch progress to date includes ${prospects.length} qualified prospects representing $${preliminaryValue.toLocaleString('en-US')} in preliminary opportunity value, ${cumulative.contactsSent} personalized contacts, ${cumulative.responses} responses, ${discoveryScheduled} meeting scheduled, ${totalTraining.toFixed(2)} training hours logged, and ${confirmedHours.toFixed(2)} confirmed startup work hours. Client-facing sales materials, the relationship-first conversation process, and the Sales SOP remain part of the cumulative launch record.`,
+      statusExplanation: `Current priority: ${active.objective || active.tomorrowFirstAction || 'Continue the documented launch plan.'}`,
+      syncSource: 'Google Sheets cumulative live sync'
+    },
+    financial: {
+      actualRevenueToDate: collectedRevenue,
+      actualExpensesToDate: 0,
+      endingCash: collectedRevenue,
+      actualOwnerDrawToDate: 0,
+      requiredOwnerDrawToDate: 0,
+      outsideIncomeUsed: 0,
+      bridgeNote: 'Financial actuals are cumulative and remain zero until transactions are recorded.',
+      monthly: [
+        { month: 'Aug', plan: 5500, actual: 0, expenses: 0, actualDraw: 0 },
+        { month: 'Sep', plan: 6050, actual: 0, expenses: 0, actualDraw: 0 },
+        { month: 'Oct', plan: 6600, actual: 0, expenses: 0, actualDraw: 0 },
+        { month: 'Nov', plan: 7500, actual: 0, expenses: 0, actualDraw: 0 },
+        { month: 'Dec', plan: 9250, actual: 0, expenses: 0, actualDraw: 0 },
+        { month: 'Jan', plan: 9250, actual: 0, expenses: 0, actualDraw: 0 },
+        { month: 'Feb', plan: 10750, actual: 0, expenses: 0, actualDraw: 0 },
+        { month: 'Mar', plan: 10750, actual: 0, expenses: 0, actualDraw: 0 },
+        { month: 'Apr', plan: 11500, actual: 0, expenses: 0, actualDraw: 0 },
+        { month: 'May', plan: 13250, actual: 0, expenses: 0, actualDraw: 0 },
+        { month: 'Jun', plan: 13250, actual: 0, expenses: 0, actualDraw: 0 },
+        { month: 'Jul', plan: 14750, actual: 0, expenses: 0, actualDraw: 0 }
+      ]
+    },
+    pipeline: {
+      qualifiedProspects: prospects.length,
+      preliminaryValue,
+      contactsSent: cumulative.contactsSent,
+      contacted: uniqueProspectsContacted,
+      responses: cumulative.responses,
+      discoveryScheduled,
+      discoveryCalls: discovery.length,
+      proposals: proposals.length,
+      paidStarters: prospects.filter((row) => /^won$/i.test(row[6] || '')).length,
+      activeRetainers: prospects.filter((row) => /retainer/i.test(row[6] || '')).length,
+      prospectingHours: Number(cumulative.prospectingHours.toFixed(2)),
+      currentActions
+    },
+    workload: {
+      confirmedHours: Number(confirmedHours.toFixed(2)),
+      actionSheetHours: Number(cumulative.workHours.toFixed(2)),
+      cumulativeBreakMinutes: cumulative.breakMinutes,
+      pendingEntries: active.actualStart && !active.actualEnd ? 1 : 0,
+      capacityStatus: active.actualStart && !active.actualEnd
+        ? `The ${active.date || 'current'} workday is open. Final hours remain pending closeout.`
+        : `The latest completed record is preserved in the archive. ${latestProgress.closeoutComments || ''}`
+    },
+    training: {
+      loggedHours: Number(totalTraining.toFixed(2)),
+      eligibleHours: Number(eligibleTraining.toFixed(2)),
+      pendingHours: Number(pendingTraining.toFixed(2)),
+      remainingHours: Number(Math.max(0, 20 - totalTraining).toFixed(2)),
+      totalRequiredHours: 20
+    },
+    projects: currentTasks.map((row) => `${row[0]} — ${row[3]} (${row[4]}, due ${row[7] || 'not set'})`),
+    risks: activeRisks.map((row) => ({ risk: row[2], response: row[7] || row[8] || 'Review required.' })),
+    compliance: {
+      deadlines: [
+        { date: 'August 10, 2026', item: 'Individual Services Plan', status: 'Open' },
+        { date: 'August 24, 2026', item: 'Individual Progress Report', status: 'Open' },
+        { date: 'August 31, 2026', item: 'First ten training hours verification', status: eligibleTraining >= 10 ? 'Ready' : 'Open' },
+        { date: 'September 7, 2026', item: 'Business Strategy', status: 'Open — two counselor meetings required first' },
+        { date: 'September 21, 2026', item: 'Final training verification', status: eligibleTraining >= 20 ? 'Ready' : 'Open' }
+      ]
+    },
+    professionalGates: professionalGates.map((row) => ({ name: row[1], status: row[5], action: row[8] || row[9] || 'Review required.' })),
+    actions: currentActions,
+    decisions: decisions.map((row) => `${row[1]} — ${row[2]} (${row[7] || 'Status not set'})`),
+    outreachCount: outreach.length,
+    recordLinks: [
+      { name: 'Project Control Center', url: 'https://docs.google.com/spreadsheets/d/19nKETpDwsD1kw267zcUH6_4bmSTMLsQY79mdfsmYZyU/edit' },
+      { name: 'Daily Work Log', url: 'https://docs.google.com/spreadsheets/d/1GSJyMOu10lqLnfqEW87BElRRClYrFdRvsbZmRrsiDVQ/edit' },
+      { name: 'CRM and Prospect Records', url: 'https://docs.google.com/spreadsheets/d/1lVwua0SBfcAJLGnt60n1kEEamKNp-XVMVmnpqdDGbhc/edit' },
+      { name: 'Training and Education Log', url: 'https://docs.google.com/spreadsheets/d/1hfMefQV_gISQ6gqZAR5ZG_iXzveGzCumRyfwJplFwM4/edit' }
+    ],
+    approvedDocuments: []
+  };
+}
+
+export default async function handler(req, res) {
   if (req.method !== 'GET') return json(res, 405, { message: 'Method not allowed.' });
-  if (!configured()) return json(res, 503, { message: 'Secure portal is not configured.' });
+  if (!configured()) return json(res, 503, { message: 'Secure dashboard is not configured.' });
   if (!isAuthenticated(req)) return json(res, 401, { message: 'Unauthorized.' });
-  return json(res, 200, loadData());
+  try {
+    return json(res, 200, await buildData());
+  } catch (error) {
+    return json(res, 500, { message: error.message || 'Live dashboard data could not be loaded.' });
+  }
 }
