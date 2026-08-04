@@ -1,11 +1,11 @@
 window.OD_PUBLIC_DATA = {
   meta: {
     promise: 'Helping meaningful voices be seen, heard, trusted, and found.',
-    phase: 'Controlled soft launch, candidate outreach, SEAP compliance, and follow-up execution',
-    outreachStart: 'Active — five Candidate Voice & Digital Brand Campaign proposal emails sent August 2, 2026',
-    updated: 'August 2, 2026 — candidate proposal wave and operating records synchronized'
+    phase: 'Controlled soft launch, SEAP compliance closed for ISP, active proposal follow-up, and training execution',
+    outreachStart: 'Active — five Candidate Voice & Digital Brand Campaign proposal emails sent August 2, 2026; first follow-ups completed August 4, 2026',
+    updated: 'August 4, 2026 — ISP processed, proposal follow-ups completed, and operating records closed'
   },
-  metrics: { prospects: 41, pipeline: 40500, trainingLogged: 3.20, trainingRequired: 20, contacts: 9 },
+  metrics: { prospects: 41, pipeline: 40500, trainingLogged: 0.22, trainingRequired: 20, contacts: 17 },
   purpose: [
     ['Problem', 'Important messages are underused because organizations lack time, systems, or in-house production capacity.'],
     ['Solution', 'One source message becomes professional podcast, web, social, email, and search content.'],
@@ -40,8 +40,10 @@ window.OD_PUBLIC_DATA = {
     ['July 19, 2026', 'Preparation readiness checkpoint', 'Dashboard modernization, mobile review, production access, operating records, and first-wave prospect preparation were reviewed and closed out.'],
     ['July 21, 2026', 'Controlled outreach and sales system advanced', 'Three personalized contacts were completed, two positive responses were received, one meeting was scheduled, client-facing sales materials were completed, and SBA Journey 9 was applied to the Sales SOP.'],
     ['August 1, 2026', 'Controlled soft launch active', 'Outreach, proposal activity, CRM tracking, and follow-up controls are active; launch remains controlled, not a finished company.'],
-    ['August 2, 2026', 'Candidate proposal wave completed', 'Five proposal emails covering six candidates were sent, entered in the CRM, assigned August 4 follow-ups, and separated from the radio-advertising outreach track.'],
-    ['August 10, 2026', 'Individual Services Plan due', 'Completed form submitted and confirmation retained.'],
+    ['August 2, 2026', 'Candidate proposal wave completed', 'Five proposal emails covering six candidates were sent, entered in the CRM, and separated from the radio-advertising outreach track.'],
+    ['August 4, 2026', 'ISP milestone closed and follow-up cycle completed', 'NYS DOL confirmed the Individual Services Plan was received and processed. Seven active proposal follow-ups were completed, the second SCORE counselor meeting was requested, and all operating records were synchronized.'],
+    ['August 13, 2026', 'SEAP Group Session', 'Attend from 9:30 a.m. to 11:30 a.m., retain attendance proof, and confirm whether the session qualifies toward training hours.'],
+    ['August 24, 2026', 'Individual Progress Report due', 'Complete, submit, and retain the form and confirmation.'],
     ['August 31, 2026', 'First training verification due', 'First ten hours completed, verified, submitted, and retained.'],
     ['September 7, 2026', 'Business Strategy due', 'Strategy submitted after two counselor meetings.'],
     ['September 21, 2026', 'Final training verification due', 'All twenty hours completed, verified, submitted, and retained.'],
