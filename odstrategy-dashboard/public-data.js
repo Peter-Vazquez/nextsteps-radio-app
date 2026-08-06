@@ -1,9 +1,9 @@
 window.OD_PUBLIC_DATA = {
   meta: {
     promise: 'Helping meaningful voices be seen, heard, trusted, and found.',
-    phase: 'Controlled soft launch, SEAP compliance closed for ISP, active proposal follow-up, and training execution',
-    outreachStart: 'Active — five Candidate Voice & Digital Brand Campaign proposal emails sent August 2, 2026; first follow-ups completed August 4, 2026',
-    updated: 'August 4, 2026 — ISP processed, proposal follow-ups completed, and operating records closed'
+    phase: 'Controlled soft launch, active proposal conversion, first candidate closing meeting scheduled, and training execution',
+    outreachStart: 'Active — five Candidate Voice & Digital Brand Campaign proposal emails sent August 2, first follow-ups completed August 4, and the Kalinda Washington campaign meeting scheduled for August 8 at 10:00 a.m.',
+    updated: 'August 5, 2026 — Kalinda campaign manager response recorded and digital package meeting scheduled'
   },
   metrics: { prospects: 41, pipeline: 40500, trainingLogged: 0.22, trainingRequired: 20, contacts: 17 },
   purpose: [
@@ -42,6 +42,7 @@ window.OD_PUBLIC_DATA = {
     ['August 1, 2026', 'Controlled soft launch active', 'Outreach, proposal activity, CRM tracking, and follow-up controls are active; launch remains controlled, not a finished company.'],
     ['August 2, 2026', 'Candidate proposal wave completed', 'Five proposal emails covering six candidates were sent, entered in the CRM, and separated from the radio-advertising outreach track.'],
     ['August 4, 2026', 'ISP milestone closed and follow-up cycle completed', 'NYS DOL confirmed the Individual Services Plan was received and processed. Seven active proposal follow-ups were completed, the second SCORE counselor meeting was requested, and all operating records were synchronized.'],
+    ['August 5, 2026', 'First candidate closing meeting scheduled', 'Kalinda Washington campaign manager Kim requested a package meeting. The meeting is scheduled for August 8 at 10:00 a.m. and is focused on the $1,500 digital campaign. Political radio advertising remains separate under station staff.'],
     ['August 13, 2026', 'SEAP Group Session', 'Attend from 9:30 a.m. to 11:30 a.m., retain attendance proof, and confirm whether the session qualifies toward training hours.'],
     ['August 24, 2026', 'Individual Progress Report due', 'Complete, submit, and retain the form and confirmation.'],
     ['August 31, 2026', 'First training verification due', 'First ten hours completed, verified, submitted, and retained.'],
