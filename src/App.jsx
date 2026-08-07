@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import './App.css';
 
 const STREAM_URL = 'https://s9.citrus3.com:8272/stream';
