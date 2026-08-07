@@ -1,0 +1,55 @@
+name: Finalize Phase 1
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout hardening branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/foundation-hardening
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
+        continue-on-error: true
+
+      - name: Setup Node without cache if lockfile is absent
+        if: ${{ hashFiles('package-lock.json') == '' }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Generate deterministic lockfile
+        run: npm install --package-lock-only --ignore-scripts
+
+      - name: Commit lockfile if changed
+        run: |
+          if git diff --quiet -- package-lock.json && git ls-files --error-unmatch package-lock.json >/dev/null 2>&1; then
+            echo "package-lock.json is already current."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add package-lock.json
+            git commit -m "Add deterministic package lockfile"
+            git push origin HEAD:agent/foundation-hardening
+          fi
+
+      - name: Clean install
+        run: npm ci
+
+      - name: Run Phase 1 checks
+        run: npm run check
+
+      - name: Audit high-severity vulnerabilities
+        run: npm audit --audit-level=high
