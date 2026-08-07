@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  validate:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,10 +17,20 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
+          cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm run test
+
+      - name: Validate PWA foundation
+        run: npm run validate:pwa
 
       - name: Build
         run: npm run build
