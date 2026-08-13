@@ -51,6 +51,7 @@ function staticOperatingCase() {
       ['August 1, 2026', 'Controlled soft launch', 'Offers, CRM, payment method, client controls, and production workflow ready.'],
       ['August 4, 2026', 'Individual Services Plan completed', 'Submitted through NYS DOL secure messaging and confirmed received and processed.'],
       ['August 12, 2026', 'Second SCORE counseling session completed', 'The two-meeting counselor prerequisite was completed. The session focused on target customers, customer ROI, prospect development, sales-pitch clarity, and continued mentorship.'],
+      ['August 13, 2026', 'Pipeline reset and prospect qualification launched', 'Research targets and nurture-only records were separated from active opportunity value, and the prior-show-guest intake was staged for qualification before CRM promotion.'],
       ['August 24, 2026', 'Individual Progress Report due', 'Complete, submit, and retain the form and confirmation.'],
       ['August 31, 2026', 'First training verification due', 'First ten hours completed, verified, submitted, and retained.'],
       ['September 7, 2026', 'Business Strategy due', 'Counselor prerequisite completed August 12; finish, submit, and retain the strategy and confirmation.'],
@@ -95,6 +96,10 @@ async function buildData() {
   ) || active;
 
   const prospects = pipelineRows.filter(filled);
+  const activeProspects = prospects.filter((row) => {
+    const stage = String(row[6] || '').trim();
+    return stage && !/^(Target|Nurture|Lost \/ No Decision)$/i.test(stage);
+  });
   const outreach = outreachRows.filter(filled);
   const discovery = discoveryRows.filter(filled);
   const proposals = proposalRows.filter(filled);
@@ -103,10 +108,10 @@ async function buildData() {
   const trainingMap = Object.fromEntries(trainingRows.filter((row) => row[0]).map((row) => [row[0], row[1]]));
 
   const uniqueProspectsContacted = prospects.filter((row) => row[9]).length;
-  const currentlyScheduled = prospects.filter((row) => /discovery scheduled/i.test(row[6] || '')).length;
+  const currentlyScheduled = activeProspects.filter((row) => /discovery scheduled/i.test(row[6] || '')).length;
   const won = prospects.filter((row) => /^won$/i.test(row[6] || '')).length;
   const activeRetainers = prospects.filter((row) => /retainer/i.test(row[6] || '')).length;
-  const preliminaryValue = prospects.reduce((sum, row) => sum + num(row[13]), 0);
+  const preliminaryValue = activeProspects.reduce((sum, row) => sum + num(row[13]), 0);
   const collectedRevenue = proposals.reduce((sum, row) => sum + num(row[10]), 0);
   const confirmedHours = work.reduce((sum, row) => sum + num(row[5]), 0);
   const eligibleTraining = num(trainingMap['Completed Eligible Hours']);
@@ -159,7 +164,7 @@ async function buildData() {
       ]
     },
     pipeline: {
-      qualifiedProspects: prospects.length,
+      qualifiedProspects: activeProspects.length,
       preliminaryValue,
       contactsSent: cumulativeActivity.contactsSent,
       contacted: uniqueProspectsContacted,
@@ -211,6 +216,7 @@ async function buildData() {
       { name: 'Daily Work Log', url: 'https://docs.google.com/spreadsheets/d/1GSJyMOu10lqLnfqEW87BElRRClYrFdRvsbZmRrsiDVQ/edit' },
       { name: 'CRM and Prospect Records', url: 'https://docs.google.com/spreadsheets/d/1lVwua0SBfcAJLGnt60n1kEEamKNp-XVMVmnpqdDGbhc/edit' },
       { name: 'Training and Education Log', url: 'https://docs.google.com/spreadsheets/d/1hfMefQV_gISQ6gqZAR5ZG_iXzveGzCumRyfwJplFwM4/edit' },
+      { name: 'Prior-Show-Guest Prospect Intake', url: 'https://docs.google.com/spreadsheets/d/1NSTwH86lvt-S_Yux98gcG45D6ZQYNz1PQKVzZDUC5q8/edit' },
       { name: 'SCORE Counseling Session 2 Archive', url: 'https://drive.google.com/drive/folders/1wDVGyUC3sx_RYmCyjA12hvT8eLuUVjDq' }
     ],
     approvedDocuments: []
