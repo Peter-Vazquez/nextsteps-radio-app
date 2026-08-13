@@ -49,9 +49,11 @@ function staticOperatingCase() {
     milestones: [
       ['July 21, 2026', 'First outreach and sales-system checkpoint', 'Three contacts sent, two positive responses received, one meeting scheduled, client-ready materials completed, and SBA Journey 9 applied to the Sales SOP.'],
       ['August 1, 2026', 'Controlled soft launch', 'Offers, CRM, payment method, client controls, and production workflow ready.'],
-      ['August 10, 2026', 'Individual Services Plan due', 'Completed form submitted and confirmation retained.'],
+      ['August 4, 2026', 'Individual Services Plan completed', 'Submitted through NYS DOL secure messaging and confirmed received and processed.'],
+      ['August 12, 2026', 'Second SCORE counseling session completed', 'The two-meeting counselor prerequisite was completed. The session focused on target customers, customer ROI, prospect development, sales-pitch clarity, and continued mentorship.'],
+      ['August 24, 2026', 'Individual Progress Report due', 'Complete, submit, and retain the form and confirmation.'],
       ['August 31, 2026', 'First training verification due', 'First ten hours completed, verified, submitted, and retained.'],
-      ['September 7, 2026', 'Business Strategy due', 'Strategy submitted after two counselor meetings.'],
+      ['September 7, 2026', 'Business Strategy due', 'Counselor prerequisite completed August 12; finish, submit, and retain the strategy and confirmation.'],
       ['September 21, 2026', 'Final training verification due', 'All twenty hours completed, verified, submitted, and retained.']
     ]
   };
@@ -127,7 +129,7 @@ async function buildData() {
     meta: {
       currentFiscalYear: 'FY 2026–27',
       asOf: active.savedAt ? formatStamp(active.savedAt) : latestProgress.savedAt ? formatStamp(latestProgress.savedAt) : `live spreadsheet sync — ${new Date().toISOString()}`,
-      overallStatus: `Pre-launch cumulative — ${plural(cumulativeActivity.contactsSent, 'contact')}, ${plural(cumulativeActivity.responses, 'response')}, ${plural(cumulativeActivity.meetingsSet, 'meeting')} scheduled`,
+      overallStatus: `Controlled soft launch cumulative — ${plural(cumulativeActivity.contactsSent, 'contact')}, ${plural(cumulativeActivity.responses, 'response')}, ${plural(cumulativeActivity.meetingsSet, 'meeting')} scheduled`,
       statusExplanation: `Cumulative operating totals are preserved across closed and active days. Current priority: ${active.objective || active.tomorrowFirstAction || latestProgress.followUpNotes || 'Continue the documented launch plan.'}`,
       syncSource: 'Google Sheets cumulative live sync',
       activeRecordId: active.recordId,
@@ -192,11 +194,11 @@ async function buildData() {
     risks: activeRisks.map((row) => ({ risk: row[2], response: row[7] || row[8] || 'Review required.' })),
     compliance: {
       deadlines: [
-        { date: 'August 10, 2026', item: 'Individual Services Plan', status: 'Open' },
-        { date: 'August 24, 2026', item: 'Individual Progress Report', status: 'Open' },
-        { date: 'August 31, 2026', item: 'First ten training hours verification', status: eligibleTraining >= 10 ? 'Ready' : 'Open' },
-        { date: 'September 7, 2026', item: 'Business Strategy', status: 'Open — two counselor meetings required first' },
-        { date: 'September 21, 2026', item: 'Final training verification', status: eligibleTraining >= 20 ? 'Ready' : 'Open' }
+        { date: 'August 10, 2026', item: 'Individual Services Plan', status: 'Completed — submitted and processed August 4' },
+        { date: 'August 24, 2026', item: 'Individual Progress Report', status: 'Open — preparation required' },
+        { date: 'August 31, 2026', item: 'First ten training hours verification', status: eligibleTraining >= 10 ? 'Ready' : 'Open — verified hours remain below 10' },
+        { date: 'September 7, 2026', item: 'Business Strategy', status: 'Open — counselor prerequisite completed August 12' },
+        { date: 'September 21, 2026', item: 'Final training verification', status: eligibleTraining >= 20 ? 'Ready' : 'Open — verified hours remain below 20' }
       ]
     },
     professionalGates: readinessRows.filter((row) => /legal|insurance|pricing/i.test(`${row[1]} ${row[2]}`)).map((row) => ({ name: row[1], status: row[5], action: row[8] || row[9] || 'Review required.' })),
@@ -208,7 +210,8 @@ async function buildData() {
       { name: 'Project Control Center', url: 'https://docs.google.com/spreadsheets/d/19nKETpDwsD1kw267zcUH6_4bmSTMLsQY79mdfsmYZyU/edit' },
       { name: 'Daily Work Log', url: 'https://docs.google.com/spreadsheets/d/1GSJyMOu10lqLnfqEW87BElRRClYrFdRvsbZmRrsiDVQ/edit' },
       { name: 'CRM and Prospect Records', url: 'https://docs.google.com/spreadsheets/d/1lVwua0SBfcAJLGnt60n1kEEamKNp-XVMVmnpqdDGbhc/edit' },
-      { name: 'Training and Education Log', url: 'https://docs.google.com/spreadsheets/d/1hfMefQV_gISQ6gqZAR5ZG_iXzveGzCumRyfwJplFwM4/edit' }
+      { name: 'Training and Education Log', url: 'https://docs.google.com/spreadsheets/d/1hfMefQV_gISQ6gqZAR5ZG_iXzveGzCumRyfwJplFwM4/edit' },
+      { name: 'SCORE Counseling Session 2 Archive', url: 'https://drive.google.com/drive/folders/1wDVGyUC3sx_RYmCyjA12hvT8eLuUVjDq' }
     ],
     approvedDocuments: []
   };
