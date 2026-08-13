@@ -3,9 +3,9 @@ window.OD_PUBLIC_DATA = {
     promise: 'Helping meaningful voices be seen, heard, trusted, and found.',
     phase: 'Controlled soft launch, verified training rebuild, warm-lead conversion, and targeted prospect qualification',
     outreachStart: 'Active: responsive warm opportunities are being managed through the CRM while a new prior-show-guest research pool is qualified before selected prospects enter the active pipeline.',
-    updated: 'August 13, 2026: pipeline pruned, August 13 priorities reset, and prior-show-guest prospect qualification launched'
+    updated: 'August 13, 2026: active pipeline reconciled, August 13 priorities reset, and prior-show-guest prospect qualification launched'
   },
-  metrics: { prospects: 41, pipeline: 18000, trainingLogged: 0.22, trainingRequired: 20, contacts: 10 },
+  metrics: { prospects: 4, pipeline: 4950, trainingLogged: 0.22, trainingRequired: 20, contacts: 10 },
   purpose: [
     ['Problem', 'Important messages are underused because organizations lack time, systems, or in-house production capacity.'],
     ['Solution', 'One source message becomes professional podcast, web, social, email, and search content.'],
@@ -44,7 +44,7 @@ window.OD_PUBLIC_DATA = {
     ['August 4, 2026', 'ISP milestone closed and follow-up cycle completed', 'NYS DOL confirmed the Individual Services Plan was received and processed. Seven active proposal follow-ups were completed, the second SCORE counselor meeting was requested, and all operating records were synchronized.'],
     ['August 5, 2026', 'First candidate closing meeting scheduled', 'A qualified campaign prospect requested a package meeting as part of the controlled market-validation process.'],
     ['August 12, 2026', 'Second SCORE counseling session completed', 'The two-meeting counselor prerequisite was completed. The session focused on target customers, customer ROI, prospect development, and sales-pitch clarity. Jerry Boger agreed to continue as an ongoing mentor.'],
-    ['August 13, 2026', 'Pipeline reset and targeted prospecting launched', 'Routine low-response outreach was pruned, responsive warm opportunities were preserved, and a 240-row prior-show-guest intake pool was staged for research and qualification rather than treated as automatically qualified pipeline. Training evidence and the August 24 progress report remain immediate compliance priorities.'],
+    ['August 13, 2026', 'Pipeline reset and targeted prospecting launched', 'Routine low-response outreach was pruned, responsive warm opportunities were preserved, and a 240-row prior-show-guest intake pool was staged for research and qualification rather than treated as automatically qualified pipeline. Active opportunity value excludes research targets, closed records, and nurture-only prospects. Training evidence and the August 24 progress report remain immediate compliance priorities.'],
     ['August 24, 2026', 'Individual Progress Report due', 'Complete, submit, and retain the form and confirmation.'],
     ['August 31, 2026', 'First training verification due', 'First ten hours completed, verified, submitted, and retained.'],
     ['September 7, 2026', 'Business Strategy due', 'Counselor prerequisite completed August 12; finish, submit, and retain the Business Strategy and confirmation.'],
