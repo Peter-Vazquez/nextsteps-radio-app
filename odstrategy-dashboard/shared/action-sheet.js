@@ -1,10 +1,6 @@
 const el=id=>document.getElementById(id);
 let plan={};
-let timeState={};
 
-function esc(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function tasks(){return Object.fromEntries([...document.querySelectorAll('[data-task]')].map(x=>[x.dataset.task,x.checked]));}
-function taskTimes(){return Object.fromEntries([...document.querySelectorAll('[data-time]')].map(x=>[x.dataset.time,x.value]));}
 function payload(action='save'){
   const date=el('date').value;
   return {
@@ -19,7 +15,7 @@ function payload(action='save'){
     actualEnd:el('actualEnd').value,
     breakMinutes:Number(el('breakMinutes').value||0),
     workHours:Number(el('hours').value||0),
-    taskStatus:{...tasks(),_plan:plan,_time:taskTimes()},
+    taskStatus:{_plan:plan},
     contactsSent:Number(el('contacts').value||0),
     responses:Number(el('responses').value||0),
     meetingsSet:Number(el('meetings').value||0),
@@ -35,40 +31,35 @@ function formatDate(value){
   if(Number.isNaN(d.getTime()))return value||'Operating Day';
   return d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
 }
+function status(t,c=''){el('status').textContent=t;el('status').className=`status ${c}`;}
+function yn(value,yes,no){return value?yes:no;}
+
 function updateCover(){
   el('coverDate').textContent=formatDate(el('date').value);
-  el('coverStart').textContent=el('actualStart').value||el('plannedStart').value||'Not recorded';
-  const b=Number(el('breakMinutes').value||0);
-  el('coverBreak').textContent=b?`${b} minutes`:'Not yet taken';
+  const h=Number(el('hours').value||0);
+  const contacts=Number(el('contacts').value||0);
+  const responses=Number(el('responses').value||0);
+  const meetings=Number(el('meetings').value||0);
+  el('coverHours').textContent=h?`${h.toFixed(2)} hours`:'Not recorded';
+  el('coverBusiness').textContent=(contacts||responses||meetings)?`${contacts} contacts / ${responses} responses / ${meetings} meetings`:'No activity recorded';
 }
-function status(t,c=''){el('status').textContent=t;el('status').className=`status ${c}`;}
 
-function renderAgenda(p={}){
-  plan=p;
-  el('operatingRule').textContent=p.operatingRule||'Advance all three lanes today — Revenue, Build, and Compliance.';
-  const list=el('agendaList');
-  const items=p.agenda||[
-    {key:'compliance',number:1,title:p.compliance?.title||'Compliance lane',duration:p.compliance?.duration||'30–45 minutes',action:p.compliance?.action||p.compliance?.copy,completion:p.compliance?.completion},
-    {key:'build',number:2,title:p.build?.title||'Build lane',duration:p.build?.duration||'90 minutes',action:p.build?.action||p.build?.copy,completion:p.build?.completion},
-    {key:'training',number:3,title:p.training?.title||'Training lane',duration:p.training?.duration||'60–90 minutes',action:p.training?.action,completion:p.training?.completion},
-    {key:'revenue',number:4,title:p.revenue?.title||'Revenue lane',duration:p.revenue?.duration||'45–60 minutes',action:p.revenue?.action||p.revenue?.copy,completion:p.revenue?.completion},
-    {key:'record',number:5,title:p.record?.title||'End-of-day synchronization',duration:p.record?.duration||'20–30 minutes',action:p.record?.action||p.record?.copy,completion:p.record?.completion}
-  ];
-  list.innerHTML=items.map(item=>`
-    <article class="agenda-item ${item.key==='break'?'break':''} ${item.key==='record'?'closeout':''}">
-      <input type="checkbox" data-task="${esc(item.key)}" aria-label="Complete ${esc(item.title)}">
-      <div class="agenda-copy">
-        <h3>${esc(item.number)}. ${esc(item.title)}</h3>
-        <p><strong>Action:</strong> ${esc(item.action||item.copy||'')}</p>
-        <p class="completion"><strong>Completion standard:</strong> ${esc(item.completion||'Complete the documented milestone and retain evidence.')}</p>
-        <label class="field" style="display:block;margin-top:6px"><span style="font-size:8px;text-transform:uppercase;font-weight:800;color:#6a7984">Actual time / note</span><input data-time="${esc(item.key)}" value="${esc(timeState[item.key]||'')}"></label>
-      </div>
-      <div class="duration">${esc(item.duration||'')}</div>
-    </article>`).join('');
-
-  const min=p.minimumFinish||[];
-  el('minimumList').innerHTML=min.map((item,i)=>`<div class="minimum-item"><input type="checkbox" data-task="minimum-${i}"><span>${esc(item)}</span></div>`).join('');
-  el('deferred').textContent=p.deferred||'';
+function updatePosition(r={}){
+  const pieces=[];
+  if(r.responses)pieces.push(`${r.responses} response${r.responses===1?'':'s'}`);
+  if(r.meetingsSet)pieces.push(`${r.meetingsSet} meeting${r.meetingsSet===1?'':'s'} set`);
+  if(r.workHours)pieces.push(`${Number(r.workHours).toFixed(2)} work hours recorded`);
+  if(r.prospectingHours)pieces.push(`${Number(r.prospectingHours).toFixed(2)} prospecting hours`);
+  el('positionSummary').textContent=pieces.length?pieces.join('. ')+'.':'No operating activity has been recorded yet for this day.';
+  el('coverStatus').textContent=r.status||'Open';
+  el('workLogState').textContent=yn(r.workLogSynced,'Synced','Pending');
+  el('workLogState').className=r.workLogSynced?'ok':'warn';
+  el('scorecardState').textContent=yn(r.scorecardSynced,'Synced','Pending');
+  el('scorecardState').className=r.scorecardSynced?'ok':'warn';
+  el('crmState').textContent=r.crmReviewRequired?'Review required':'Current';
+  el('crmState').className=r.crmReviewRequired?'warn':'ok';
+  el('kanbanState').textContent=r.kanbanReviewRequired?'Review required':'Current';
+  el('kanbanState').className=r.kanbanReviewRequired?'warn':'ok';
 }
 
 function apply(r){
@@ -82,15 +73,9 @@ function apply(r){
   el('followUp').value=r.followUpNotes||'';
   el('comments').value=r.closeoutComments||'';
   el('tomorrow').value=r.tomorrowFirstAction||'';
-  const s=r.taskStatus||{};
-  timeState=s._time||{};
-  renderAgenda(s._plan||{});
-  Object.entries(s).forEach(([k,v])=>{
-    if(k.startsWith('_'))return;
-    const x=document.querySelector(`[data-task="${CSS.escape(k)}"]`);
-    if(x)x.checked=!!v;
-  });
+  plan=r.taskStatus?._plan||{};
   updateCover();
+  updatePosition(r);
 }
 
 async function load(){
@@ -99,13 +84,13 @@ async function load(){
     const b=await r.json();
     if(!r.ok)throw new Error(b.message);
     apply(b.record);
-    status(b.source==='created'?'A new priority-agenda action sheet was created from the current roadmap. All tasks and totals were reset.':'Today’s active priority agenda loaded.','ok');
+    status(b.source==='created'?'A new daily operating summary was created from the current source records.':'Current daily operating summary loaded.','ok');
   }catch(e){status(e.message,'warn');}
 }
 
 async function send(action){
-  if(action==='close'&&!confirm('Close, archive, and retire this agenda? A new printable priority agenda will be generated from the current roadmap with all tasks and daily totals reset.'))return;
-  status(action==='close'?'Closing and regenerating the priority agenda…':'Saving progress…');
+  if(action==='close'&&!confirm('Close and archive this operating day? The current summary will be retained as the stakeholder record and a new daily record will be created for the next operating day.'))return;
+  status(action==='close'?'Closing and archiving the operating day…':'Saving summary…');
   try{
     const r=await fetch('/api/action-sheet',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload(action))});
     const b=await r.json();
@@ -115,7 +100,7 @@ async function send(action){
   }catch(e){status(e.message,'warn');}
 }
 
-['date','plannedStart','actualStart','breakMinutes'].forEach(id=>el(id).addEventListener('input',updateCover));
+['date','hours','contacts','responses','meetings'].forEach(id=>el(id).addEventListener('input',updateCover));
 el('save').onclick=()=>send('save');
 el('close').onclick=()=>send('close');
 load();
