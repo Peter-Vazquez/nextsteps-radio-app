@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
-  <title>Daily Executive Action Sheet | OD Strategy</title>
+  <title>Daily Operating Summary | OD Strategy</title>
   <link rel="stylesheet" href="/styles.css">
   <style>
-    :root{--ink:#162d3c;--blue:#213a4b;--blue2:#2f536b;--line:#cbd5db;--soft:#f3f6f8;--gold:#c79b39;--green:#2d7b50}
+    :root{--ink:#162d3c;--blue:#213a4b;--blue2:#2f536b;--line:#cbd5db;--soft:#f3f6f8;--gold:#c79b39;--green:#2d7b50;--muted:#667784}
     body{margin:0;background:#e7ecef;color:var(--ink);font-family:Arial,Helvetica,sans-serif}
     .toolbar,.sheet{max-width:980px;margin:12px auto}
     .toolbar{display:flex;justify-content:space-between;gap:8px;align-items:center}
@@ -22,85 +22,110 @@
     .cover-meta div{border:1px solid #ffffff38;background:#ffffff0d;padding:10px 12px;border-radius:4px}
     .cover-meta span{display:block;font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:#d9e3e9}
     .cover-meta strong{display:block;margin-top:3px;font-size:12px}
-    .agenda{padding:24px 32px 28px}
-    .agenda-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;border-bottom:3px solid var(--gold);padding-bottom:9px;margin-bottom:12px}
-    .agenda-head h2{margin:0;font-size:20px;color:var(--blue)}.agenda-head p{margin:4px 0 0;font-size:10px;color:#596b77}
-    .date-row{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:8px;min-width:310px}
-    .field label,.metric label{display:block;font-size:8px;text-transform:uppercase;font-weight:800;color:#6a7984;margin-bottom:3px}
-    .field input,.field textarea,.metric input{width:100%;box-sizing:border-box;padding:6px;border:1px solid var(--line);border-radius:4px;font:inherit;color:var(--ink);background:#fff}
-    .field textarea{min-height:52px;resize:vertical}
-    .operating-rule{border:1px solid var(--blue2);background:#f7f9fa;padding:9px 11px;margin:0 0 12px}
-    .operating-rule strong{font-size:12px}.operating-rule textarea{margin-top:5px}
-    .section{margin-top:15px}.section-title{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:4px}
+    .summary{padding:24px 32px 28px}
+    .summary-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;border-bottom:3px solid var(--gold);padding-bottom:9px;margin-bottom:12px}
+    .summary-head h2{margin:0;font-size:20px;color:var(--blue)}.summary-head p{margin:4px 0 0;font-size:10px;color:#596b77;max-width:620px}
+    .date-row{min-width:190px}.field label,.metric label{display:block;font-size:8px;text-transform:uppercase;font-weight:800;color:#6a7984;margin-bottom:3px}
+    .field input,.field textarea,.metric input{width:100%;box-sizing:border-box;padding:7px;border:1px solid var(--line);border-radius:4px;font:inherit;color:var(--ink);background:#fff}
+    .field textarea{min-height:68px;resize:vertical}
+    .stakeholder-note{border:1px solid var(--blue2);background:#f7f9fa;padding:10px 12px;margin:0 0 14px;font-size:10px;line-height:1.45}
+    .stakeholder-note strong{color:var(--blue)}
+    .section{margin-top:17px}.section-title{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:5px}
     .section-title h2{font-size:12px;letter-spacing:.04em;margin:0;color:var(--blue)}.section-title span{font-size:8px;text-transform:uppercase;color:#72818b}
-    .agenda-list{display:grid;gap:7px;margin-top:8px}
-    .agenda-item{display:grid;grid-template-columns:24px 1fr auto;gap:9px;border:1px solid var(--line);border-left:5px solid var(--blue2);padding:9px;background:#fff}
-    .agenda-item.break{border-left-color:var(--gold)}.agenda-item.closeout{border-left-color:var(--green)}
-    .agenda-item input[type=checkbox]{width:16px;height:16px;margin-top:2px}
-    .agenda-copy h3{font-size:12px;margin:0 0 2px;color:var(--blue)}.agenda-copy p{font-size:9.5px;margin:2px 0;color:#394d5a}.agenda-copy .completion{font-size:9px;color:#5d6d77}
-    .duration{font-size:9px;font-weight:800;color:var(--blue);white-space:nowrap}
-    .metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}.metric input{font-size:10px}
-    .notes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
-    .minimum-list{display:grid;gap:5px;margin-top:7px}.minimum-item{display:grid;grid-template-columns:18px 1fr;gap:7px;font-size:9.5px;padding:5px 0;border-bottom:1px solid #e4e9ec}
-    .deferred{font-size:9.5px;background:#f7f9fa;border-left:4px solid var(--gold);padding:8px 9px;margin-top:7px}
-    .status{font-size:10px;font-weight:700;color:#687984;margin-top:10px}.status.ok{color:var(--green)}.status.warn{color:#a05f16}
-    footer{margin-top:11px;border-top:1px solid var(--line);padding-top:7px;font-size:8px;color:#6a7882;display:flex;justify-content:space-between;gap:15px}
+    .snapshot{display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-top:9px}.position-card{border:1px solid var(--line);background:var(--soft);padding:12px;border-radius:4px}.position-card h3{font-size:10px;text-transform:uppercase;letter-spacing:.05em;margin:0 0 5px;color:var(--blue)}.position-card p{margin:0;font-size:11px;line-height:1.45;color:#394d5a}
+    .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:9px}.metric input{font-size:10px}
+    .integrity{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:9px}.integrity-card{border:1px solid var(--line);padding:9px;border-radius:4px;background:#fff}.integrity-card span{display:block;font-size:8px;text-transform:uppercase;color:#6a7984;font-weight:800}.integrity-card strong{display:block;margin-top:4px;font-size:10px;color:var(--blue)}.integrity-card strong.ok{color:var(--green)}.integrity-card strong.warn{color:#a05f16}
+    .notes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}
+    .next-action{margin-top:9px}
+    .status{font-size:10px;font-weight:700;color:#687984;margin-top:12px}.status.ok{color:var(--green)}.status.warn{color:#a05f16}
+    footer{margin-top:13px;border-top:1px solid var(--line);padding-top:8px;font-size:8px;color:#6a7882;display:flex;justify-content:space-between;gap:15px}
     @media(max-width:1000px){.toolbar,.sheet{margin:10px}}
-    @media(max-width:760px){.toolbar{align-items:stretch;flex-direction:column}.toolbar>div{display:flex;flex-wrap:wrap;gap:6px}.cover,.agenda{padding:22px}.cover h1{font-size:28px}.cover-meta,.date-row,.metrics,.notes{grid-template-columns:1fr}.agenda-head{display:block}.date-row{min-width:0;margin-top:12px}.agenda-item{grid-template-columns:22px 1fr}.duration{grid-column:2}}
+    @media(max-width:760px){.toolbar{align-items:stretch;flex-direction:column}.toolbar>div{display:flex;flex-wrap:wrap;gap:6px}.cover,.summary{padding:22px}.cover h1{font-size:28px}.cover-meta,.snapshot,.metrics,.integrity,.notes{grid-template-columns:1fr}.summary-head{display:block}.date-row{min-width:0;margin-top:12px}}
     @page{size:letter;margin:.25in}
-    @media print{body{background:#fff}.toolbar{display:none}.sheet{box-shadow:none;margin:0;max-width:none}.cover{padding:.28in .38in .22in;page-break-after:auto}.agenda{padding:.25in .35in}.agenda-item{break-inside:avoid}.section{break-inside:avoid}}
+    @media print{body{background:#fff}.toolbar{display:none}.sheet{box-shadow:none;margin:0;max-width:none}.cover{padding:.28in .38in .22in;page-break-after:auto}.summary{padding:.25in .35in}.section{break-inside:avoid}.stakeholder-note{break-inside:avoid}}
   </style>
 </head>
 <body>
   <div class="toolbar">
     <a href="/shared/">Back to Private Dashboard</a>
-    <div><button id="save" class="primary">Save Progress</button> <button id="close" class="close">Close Out Day</button> <button onclick="print()">Print / Save PDF</button></div>
+    <div><button id="save" class="primary">Save Summary</button> <button id="close" class="close">Close Out Day</button> <button onclick="print()">Print / Save PDF</button></div>
   </div>
   <main class="sheet">
     <section class="cover">
       <p class="kicker">Next Steps Media &amp; Digital Services</p>
-      <h1>Today’s Priority Agenda</h1>
+      <h1>Daily Operating Summary</h1>
       <h2 id="coverDate">Operating Day</h2>
       <div class="rule"></div>
       <div class="cover-meta">
-        <div><span>Workday Start</span><strong id="coverStart">—</strong></div>
-        <div><span>Break</span><strong id="coverBreak">Not yet taken</strong></div>
-        <div><span>Operating Rule</span><strong>Advance all three lanes today</strong></div>
+        <div><span>Total Work Hours</span><strong id="coverHours">Not recorded</strong></div>
+        <div><span>Business Development</span><strong id="coverBusiness">No activity recorded</strong></div>
+        <div><span>Record Status</span><strong id="coverStatus">Open</strong></div>
       </div>
     </section>
 
-    <section class="agenda">
-      <header class="agenda-head">
-        <div><h2>Priority Agenda</h2><p>Complete the work in order unless a client or compliance event requires a controlled change.</p></div>
-        <div class="date-row">
-          <div class="field"><label>Date</label><input id="date" type="date" readonly></div>
-          <div class="field"><label>Planned Start</label><input id="plannedStart"></div>
-          <div class="field"><label>Planned End</label><input id="plannedEnd"></div>
-        </div>
+    <section class="summary">
+      <header class="summary-head">
+        <div><h2>Stakeholder Operating View</h2><p>A concise, evidence-based view for mentors, investors, advisers, and family. Internal daily planning and task management are maintained in Slack.</p></div>
+        <div class="date-row"><div class="field"><label>Date</label><input id="date" type="date" readonly></div></div>
       </header>
 
-      <div class="operating-rule field"><strong id="operatingRule">Advance all three lanes today — Revenue, Build, and Compliance.</strong><label style="margin-top:7px">Primary Objective</label><textarea id="objective"></textarea></div>
+      <div class="stakeholder-note"><strong>Operating rule:</strong> Governing source records establish the facts. This summary consolidates the verified operating day for stakeholder review. Slack remains the internal command center for agendas, to-dos, due dates, prospect interactions, and project organization.</div>
 
-      <section class="section"><div class="section-title"><h2>Today’s Agenda</h2><span>Recreated daily</span></div><div class="agenda-list" id="agendaList"></div></section>
+      <input id="plannedStart" type="hidden"><input id="plannedEnd" type="hidden">
 
-      <section class="section"><div class="section-title"><h2>Current Conversion Position</h2><span>Today only</span></div><div class="metrics">
-        <div class="metric"><label>Contacts Sent</label><input id="contacts" type="number" min="0"></div>
-        <div class="metric"><label>Responses</label><input id="responses" type="number" min="0"></div>
-        <div class="metric"><label>Meetings Set</label><input id="meetings" type="number" min="0"></div>
-        <div class="metric"><label>Prospecting Hours</label><input id="prospecting" type="number" step=".25" min="0"></div>
-        <div class="metric"><label>Break Minutes</label><input id="breakMinutes" type="number" min="0"></div>
-        <div class="metric"><label>Total Work Hours</label><input id="hours" type="number" step=".01" min="0"></div>
-      </div></section>
-
-      <section class="section"><div class="section-title"><h2>Today’s Minimum Successful Finish</h2><span>Completion standard</span></div><div class="minimum-list" id="minimumList"></div><div class="deferred" id="deferred"></div></section>
-
-      <section class="section"><div class="section-title"><h2>Operating Notes and Closeout</h2><span>Retire when closed</span></div>
-        <div class="notes"><div class="field"><label>Responses, Commitments, and Follow-Up Notes</label><textarea id="followUp"></textarea></div><div class="field"><label>Closeout Comments</label><textarea id="comments"></textarea></div></div>
-        <div class="notes"><div class="field"><label>Actual Start</label><input id="actualStart"></div><div class="field"><label>Actual End</label><input id="actualEnd"><label style="margin-top:7px">Tomorrow’s First Action</label><textarea id="tomorrow"></textarea></div></div>
+      <section class="section">
+        <div class="section-title"><h2>Executive Snapshot</h2><span>Current operating position</span></div>
+        <div class="snapshot">
+          <div class="field"><label>Primary Objective / Operating Focus</label><textarea id="objective"></textarea></div>
+          <div class="position-card"><h3>Current Position</h3><p id="positionSummary">No operating activity has been recorded yet for this day.</p></div>
+        </div>
       </section>
 
-      <p id="status" class="status">Creating today’s action sheet…</p>
-      <footer><span>Closed sheets are archived and removed from the active workspace.</span><span>Next Steps Media &amp; Digital Services</span></footer>
+      <section class="section">
+        <div class="section-title"><h2>Business Development Snapshot</h2><span>Verified daily activity</span></div>
+        <div class="metrics">
+          <div class="metric"><label>Contacts Sent</label><input id="contacts" type="number" min="0"></div>
+          <div class="metric"><label>Responses</label><input id="responses" type="number" min="0"></div>
+          <div class="metric"><label>Meetings Set</label><input id="meetings" type="number" min="0"></div>
+          <div class="metric"><label>Prospecting Hours</label><input id="prospecting" type="number" step=".25" min="0"></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title"><h2>Time &amp; Accountability</h2><span>Actuals only</span></div>
+        <div class="metrics">
+          <div class="metric"><label>Actual Start</label><input id="actualStart"></div>
+          <div class="metric"><label>Actual End</label><input id="actualEnd"></div>
+          <div class="metric"><label>Break Minutes</label><input id="breakMinutes" type="number" min="0"></div>
+          <div class="metric"><label>Total Work Hours</label><input id="hours" type="number" step=".01" min="0"></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title"><h2>Record Integrity</h2><span>Source-system status</span></div>
+        <div class="integrity">
+          <div class="integrity-card"><span>Work Log</span><strong id="workLogState">Pending</strong></div>
+          <div class="integrity-card"><span>Scorecard</span><strong id="scorecardState">Pending</strong></div>
+          <div class="integrity-card"><span>CRM Review</span><strong id="crmState">Required</strong></div>
+          <div class="integrity-card"><span>Project Control Review</span><strong id="kanbanState">Required</strong></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title"><h2>Key Developments &amp; Closeout</h2><span>What changed and why it matters</span></div>
+        <div class="notes">
+          <div class="field"><label>Responses, Commitments, and Follow-Up Notes</label><textarea id="followUp"></textarea></div>
+          <div class="field"><label>Operating Results, Risks, Decisions, and Closeout Comments</label><textarea id="comments"></textarea></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title"><h2>Next Action</h2><span>Forward-looking accountability</span></div>
+        <div class="field next-action"><label>Most Important Next Action</label><textarea id="tomorrow"></textarea></div>
+      </section>
+
+      <p id="status" class="status">Loading the current operating summary…</p>
+      <footer><span>Closed summaries are archived as the operating record for that day.</span><span>Next Steps Media &amp; Digital Services</span></footer>
     </section>
   </main>
   <script src="/shared/action-sheet.js"></script>
