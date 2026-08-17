@@ -88,11 +88,22 @@ function addDays(value, days) {
   return date.toISOString().slice(0, 10);
 }
 
+function weekdayOnOrAfter(value) {
+  let date = value;
+  let day = new Date(`${date}T12:00:00`).getDay();
+  while (day === 0 || day === 6) {
+    date = addDays(date, 1);
+    day = new Date(`${date}T12:00:00`).getDay();
+  }
+  return date;
+}
+
 function nextOperatingDate(archiveRows = []) {
   const latestClosed = [...archiveRows].reverse().find(filled) || [];
   const latestDate = String(latestClosed[1] || '');
   const today = localDate();
-  return latestDate && latestDate >= today ? addDays(latestDate, 1) : today;
+  const candidate = latestDate && latestDate >= today ? addDays(latestDate, 1) : today;
+  return weekdayOnOrAfter(candidate);
 }
 
 function dateValue(value) {
@@ -237,7 +248,7 @@ async function buildPlan(operatingDate) {
     duration: '20–30 minutes',
     action: 'Update all operating records, enter end time and break, and synchronize the CRM, Daily Work Log, Training Log, Project Control Center, scorecard, dashboards, Kanban, Gantt, and readiness.',
     copy: 'Update every controlling record before closing the day.',
-    completion: "Today's Action Sheet is closed, archived, retired, and replaced by a newly generated sheet for the next operating day."
+    completion: 'The Daily Operating Summary is closed and archived, and the next weekday operating record is generated. Weekend records are opened only when deliberately needed.'
   };
 
   const agenda = [breakItem, compliance, build, training, revenue, record].map((item, index) => ({
@@ -256,8 +267,8 @@ async function buildPlan(operatingDate) {
   return {
     generatedAt: new Date().toISOString(),
     date: operatingDate,
-    operatingRule: 'Advance all three lanes today — Revenue, Build, and Compliance.',
-    objective: `Advance all three required lanes: ${revenue.title.replace('Revenue lane — ', '')}; ${build.title.replace('Build lane — ', '')}; and ${compliance.title.replace('Compliance lane — ', '')}.`,
+    operatingRule: 'Protect compliance, training, revenue, and record integrity while advancing the controlled launch.',
+    objective: `Advance the current revenue, build, compliance, and training priorities: ${revenue.title.replace('Revenue lane — ', '')}; ${build.title.replace('Build lane — ', '')}; ${compliance.title.replace('Compliance lane — ', '')}; and ${training.title.replace('Training lane — ', '')}.`,
     revenue,
     build,
     compliance,
@@ -272,15 +283,15 @@ async function buildPlan(operatingDate) {
     ],
     deferred: deferredTasks.length
       ? `Deferred until the next dedicated build block: ${deferredTasks.join('; ')}.`
-      : 'No additional launch-critical work is deferred from today’s agenda.',
+      : 'No additional launch-critical work is deferred from the current operating record.',
     workspace: {
       title: 'Open the required operating workspace',
-      copy: 'Review the newly generated sheet, CRM commitments, current deadlines, and only the records needed for today.'
+      copy: 'Review Slack for the internal agenda, then use the governing source records for facts, evidence, and closeout.'
     },
     record,
     followUp: {
       title: followUps.length ? 'Complete due prospect follow-ups' : 'Check active responses at controlled intervals',
-      copy: followUps.length ? followUps.join(' | ') : 'Monitor active channels without allowing inbox activity to replace the planned revenue, build, and compliance work.',
+      copy: followUps.length ? followUps.join(' | ') : 'Monitor active channels without allowing inbox activity to replace the planned revenue, compliance, training, and delivery work.',
       respondTitle: 'Respond, schedule, and update the CRM',
       respondCopy: 'Convert every response into a dated next action, meeting, proposal step, or documented follow-up.',
       prepareTitle: 'Protect the next operating actions',
@@ -293,12 +304,12 @@ async function freshRecord(archiveRows) {
   const date = nextOperatingDate(archiveRows);
   const plan = await buildPlan(date);
   return {
-    recordId: `DAS-${date}`,
+    recordId: `DOS-${date}`,
     date,
     status: 'Open',
     objective: plan.objective,
-    plannedStart: '6:00 AM',
-    plannedEnd: '8:00 PM',
+    plannedStart: '7:00 AM',
+    plannedEnd: '',
     actualStart: '',
     actualEnd: '',
     breakMinutes: 0,
@@ -359,17 +370,17 @@ export default async function handler(req, res) {
         const record = await freshRecord([...archiveRows, values]);
         await saveActionRow(serialize(record, 'Open'));
         return json(res, 200, {
-          message: 'Day closed, archived, and retired. A new priority-agenda action sheet was generated from the current roadmap with all tasks and daily totals reset.',
+          message: 'Day closed and archived. The next weekday Daily Operating Summary was generated with daily totals reset; weekend work remains opt-in only.',
           record,
           retiredRecord: normalize(values)
         });
       }
       await saveActionRow(values);
-      return json(res, 200, { message: 'Progress saved.', record: normalize(values) });
+      return json(res, 200, { message: 'Summary saved.', record: normalize(values) });
     }
 
     return json(res, 405, { message: 'Method not allowed.' });
   } catch (error) {
-    return json(res, 500, { message: error.message || 'Action sheet could not be saved.' });
+    return json(res, 500, { message: error.message || 'Daily Operating Summary could not be saved.' });
   }
 }
