@@ -10,41 +10,42 @@ function readableDate(value) {
   return Number.isNaN(date.getTime()) ? value : date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 }
 
-function buildPlan(row) {
+function buildSummary(row) {
   const date = row[1] || '';
-  const objective = row[3] || 'Complete the highest-priority operating work and document every result.';
-  const followUp = row[15] || 'Review current responses, commitments, and open next actions.';
-  const tomorrow = row[17] || 'Complete the next controlled action in the launch plan.';
+  const objective = row[3] || 'Complete the highest-priority operating work and document every verified result.';
+  const followUp = row[15] || 'No material response or follow-up note has been recorded yet.';
+  const nextAction = row[17] || 'Complete the next controlled action in the launch plan.';
   const status = String(row[2] || 'Open');
+  const plannedStart = row[4] || '7:00 AM';
   return {
     date: readableDate(date),
     focus: objective,
-    source: 'Live Daily Action Sheet',
+    source: 'Live Daily Operating Summary',
     status,
     tasks: [
       {
-        what: 'Complete the current primary objective',
-        when: row[4] && row[5] ? `${row[4]}–${row[5]}` : 'During the protected operating block',
-        where: 'Daily Action Sheet and linked operating systems',
-        why: 'The active action record is the controlling plan for the workday.',
+        what: 'Operating focus',
+        when: `Weekday operating day begins at ${plannedStart}`,
+        where: 'Governing source records and Slack internal command center',
+        why: 'The stakeholder view should state the day’s controlling objective without duplicating Slack task management.',
         how: objective,
-        status: 'Priority'
+        status: status === 'Closed' ? 'Completed' : 'Current'
       },
       {
-        what: 'Manage responses and confirmed next actions',
-        when: 'At controlled intervals during the workday',
-        where: 'CRM, email, messages, calendar, and prospect notes',
-        why: 'Prompt follow-up converts interest into scheduled conversations and documented commitments.',
+        what: 'Responses, commitments, and material follow-up',
+        when: 'As verified activity is recorded',
+        where: 'CRM, calendar, source records, and operating summary',
+        why: 'Material changes should be visible to authorized reviewers without exposing a duplicate internal task list.',
         how: followUp,
-        status: 'Active'
+        status: 'Current'
       },
       {
-        what: 'Protect the next operating step',
-        when: 'Before pausing or closing the workday',
-        where: 'Project Control Center, CRM, logs, and dashboard',
-        why: 'Every active day must end with a clear next action and synchronized records.',
-        how: tomorrow,
-        status: status === 'Closed' ? 'Completed' : 'Queued'
+        what: 'Most important next action',
+        when: 'Before the next operating transition',
+        where: 'Project Control Center, Slack, CRM, calendar, and applicable compliance records',
+        why: 'Every active day should preserve one clear forward action and synchronized evidence.',
+        how: nextAction,
+        status: status === 'Closed' ? 'Completed' : 'Next'
       }
     ]
   };
@@ -57,8 +58,8 @@ export default async function handler(req, res) {
   try {
     res.setHeader('Cache-Control', 'no-store, max-age=0');
     const rows = await readActionRows();
-    return json(res, 200, buildPlan(latestOpen(rows)));
+    return json(res, 200, buildSummary(latestOpen(rows)));
   } catch (error) {
-    return json(res, 500, { message: error.message || 'Daily plan could not be loaded.' });
+    return json(res, 500, { message: error.message || 'Daily operating summary could not be loaded.' });
   }
 }
