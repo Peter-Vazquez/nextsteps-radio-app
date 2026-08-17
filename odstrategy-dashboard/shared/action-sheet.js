@@ -1,11 +1,12 @@
 const el=id=>document.getElementById(id);
 let plan={};
+let currentRecordId='';
 
 function payload(action='save'){
   const date=el('date').value;
   return {
     action,
-    recordId:`DAS-${date}`,
+    recordId:currentRecordId||`DOS-${date}`,
     date,
     status:action==='close'?'Closed':'Open',
     objective:el('objective').value,
@@ -63,6 +64,7 @@ function updatePosition(r={}){
 }
 
 function apply(r){
+  currentRecordId=r.recordId||currentRecordId;
   ['date','objective','plannedStart','plannedEnd','actualStart','actualEnd'].forEach(k=>{if(el(k)&&r[k]!=null)el(k).value=r[k]});
   el('hours').value=r.workHours||0;
   el('breakMinutes').value=r.breakMinutes||0;
@@ -84,12 +86,12 @@ async function load(){
     const b=await r.json();
     if(!r.ok)throw new Error(b.message);
     apply(b.record);
-    status(b.source==='created'?'A new daily operating summary was created from the current source records.':'Current daily operating summary loaded.','ok');
+    status(b.source==='created'?'A new Daily Operating Summary was created from the current source records.':'Current Daily Operating Summary loaded.','ok');
   }catch(e){status(e.message,'warn');}
 }
 
 async function send(action){
-  if(action==='close'&&!confirm('Close and archive this operating day? The current summary will be retained as the stakeholder record and a new daily record will be created for the next operating day.'))return;
+  if(action==='close'&&!confirm('Close and archive this operating day? The current summary will be retained as the stakeholder record and the next weekday summary will be created automatically. Weekend work remains opt-in only.'))return;
   status(action==='close'?'Closing and archiving the operating day…':'Saving summary…');
   try{
     const r=await fetch('/api/action-sheet',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload(action))});
