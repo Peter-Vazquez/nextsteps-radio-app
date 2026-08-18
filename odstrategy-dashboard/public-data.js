@@ -1,9 +1,9 @@
 window.OD_PUBLIC_DATA = {
   meta: {
     promise: 'Helping meaningful voices be seen, heard, trusted, and found.',
-    phase: 'Controlled soft launch with protected compliance, training, qualified outreach, and revenue conversion',
-    outreachStart: 'Active: warm opportunities and evidence-supported prospects are being managed through the CRM while research-stage names remain outside the active forecast until valid outreach is sent.',
-    updated: 'August 16, 2026: operating records reconciled, Voice of Liberty advanced to Verbal Yes, three warm prospects activated, Vince Giardino advanced to Engaged, and weekday compliance and training controls established'
+    phase: 'Controlled soft launch with active client delivery, protected compliance and training milestones, qualified outreach, and revenue conversion',
+    outreachStart: 'Active: Voice of Liberty Month 1 delivery is underway, qualified warm-market outreach remains active, and research-stage names stay outside the active forecast until valid outreach is sent.',
+    updated: 'August 18, 2026: August 17 work reconciled at 5.50 total business hours, Voice of Liberty Month 1 delivery active, SEAP milestone controls protected, and conflict-free calendar governance implemented'
   },
   metrics: { prospects: 44, pipeline: 6600, trainingLogged: 0.22, trainingRequired: 20, contacts: 13 },
   purpose: [
@@ -41,12 +41,13 @@ window.OD_PUBLIC_DATA = {
     ['August 1, 2026', 'Controlled soft launch active', 'Outreach, proposal activity, CRM tracking, and follow-up controls are active; launch remains controlled, not a finished company.'],
     ['August 4, 2026', 'ISP milestone closed', 'NYS DOL confirmed the Individual Services Plan was received and processed; the next benchmark is the Individual Progress Report due August 24.'],
     ['August 12, 2026', 'Second SCORE counseling session completed', 'The two-meeting counselor prerequisite was completed. The session focused on target customers, customer ROI, prospect development, and sales-pitch clarity. Jerry Boger agreed to continue as an ongoing mentor.'],
-    ['August 16, 2026', 'Qualified warm-market conversion advanced', 'Voice of Liberty moved to Verbal Yes on the $3,300 90-day pilot with agreement and prepayment controls still required. Justin Cogswell, Carrie Carl, and Vince Giardino were activated as warm prospects; Vince responded positively and advanced to Engaged. Meaning Made Known Phase 1 cross-links were completed and live-verified.'],
-    ['August 16, 2026', 'Operating and compliance cadence established', 'The governing operating system now uses a 7:00 a.m. Monday-Friday start, weekends only as needed, protected SEAP entrepreneurial training, technical training, entity and compliance review, and Friday evidence closeout. A New York single-member LLC remains the working formation recommendation subject to attorney and CPA review.'],
+    ['August 16, 2026', 'Qualified warm-market conversion advanced', 'Voice of Liberty moved to Verbal Yes on the $3,300 90-day pilot with agreement and prepayment evidence still requiring reconciliation. Justin Cogswell, Carrie Carl, and Vince Giardino were activated as warm prospects; Vince responded positively and advanced to Engaged. Meaning Made Known Phase 1 cross-links were completed and live-verified.'],
+    ['August 17, 2026', 'Voice of Liberty Month 1 execution began', 'A 2.50-hour timed client-delivery session materially advanced the Podbean baseline, WYSL and WLEA public digital inventory, quality-control findings, and the first network-level content direction. An additional 3.00 owner-reported research hours brought total August 17 business work to 5.50 hours; no training hours were claimed.'],
+    ['August 18, 2026', 'Calendar and operating governance reconciled', 'Business scheduling was consolidated onto the dedicated Next Steps Media & Digital Marketing Services calendar, cross-calendar conflict checks were formalized, 11:30 a.m. to 1:30 p.m. was protected for The Next Steps Show, SEAP milestone controls were scheduled around known availability, and future morning and Monday blackout periods were incorporated into operating controls.'],
     ['August 24, 2026', 'Individual Progress Report due', 'Complete, submit, and retain the form and confirmation.'],
-    ['August 31, 2026', 'First training verification due', 'First ten hours completed, verified, submitted, and retained.'],
+    ['August 31, 2026', 'First training verification due', 'First ten hours must be supported by retained evidence; no backfill or double counting.'],
     ['September 7, 2026', 'Business Strategy due', 'Counselor prerequisite completed August 12; finish, submit, and retain the Business Strategy and confirmation.'],
-    ['September 21, 2026', 'Final training verification due', 'All twenty hours completed, verified, submitted, and retained.'],
+    ['September 21, 2026', 'Final training verification due', 'All twenty hours must be completed, verified, submitted, and retained.'],
     ['September 22, 2026', 'Stabilization review', 'Pipeline, paid work, capacity, cash, compliance, and corrective actions reviewed.']
   ]
 };
