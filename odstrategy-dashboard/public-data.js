@@ -1,26 +1,26 @@
 window.OD_PUBLIC_DATA = {
   meta: {
     promise: 'Helping meaningful voices be seen, heard, trusted, and found.',
-    phase: 'Controlled soft launch with active client delivery, protected compliance and training milestones, qualified outreach, and revenue conversion',
-    outreachStart: 'Active: Voice of Liberty Month 1 delivery is underway, qualified warm-market outreach remains active, and research-stage names stay outside the active forecast until valid outreach is sent.',
-    updated: 'August 18, 2026: August 17 work reconciled at 5.50 total business hours, Voice of Liberty Month 1 delivery active, SEAP milestone controls protected, and conflict-free calendar governance implemented'
+    phase: 'Focused soft launch: Podcast Production and Digital Content Support, active client delivery, protected compliance and training milestones, qualified outreach, and revenue conversion',
+    outreachStart: 'Active: standardized content delivery and qualified warm-market outreach are underway. Scope remains focused on production, packaging, repurposing, basic digital visibility, and simple content-performance measurement rather than full-service agency expansion.',
+    updated: 'August 18, 2026: launch scope reaffirmed, Voice of Liberty aligned as a Digital Content & Visibility pilot using existing station material, weekly sales cadence restored, and operating/calendar controls reconciled'
   },
   metrics: { prospects: 44, pipeline: 6600, trainingLogged: 0.22, trainingRequired: 20, contacts: 13 },
   purpose: [
-    ['Problem', 'Important messages are underused because organizations lack time, systems, or in-house production capacity.'],
-    ['Solution', 'One source message becomes professional podcast, web, social, email, and search content.'],
-    ['Customer', 'Small businesses, nonprofits, ministries, professional services, public voices, creators, and community organizations.'],
-    ['Proof required', 'Paid starter work, recurring retainers, disciplined delivery hours, testimonials, referrals, and dependable cash performance.']
+    ['Problem', 'Important messages are underused because organizations lack time, systems, consistency, or in-house production capacity.'],
+    ['Solution', 'A source message becomes professional podcast, web, social, email, and search content through standardized production, packaging, repurposing, and basic digital visibility.'],
+    ['Launch boundary', 'Podcast Production and Digital Content Support is the primary launch service. The business is not launching as a full-service agency.'],
+    ['Proof required', 'Qualified conversations, paid starter work, recurring retainers, disciplined delivery hours, client results, referrals, and collected cash.']
   ],
   services: [
     ['Message-to-Media Starter', 550, 'First paid test', 'One source message, edited media, title, description, summary, four social posts, and one revision.'],
-    ['Content Continuity Retainer', 1100, 'Monthly execution', 'Two content cycles, edits, show notes, social posts, clips or graphics, one web or email asset, planning call, and one revision.']
+    ['Content Continuity Retainer', 1100, 'Monthly execution', 'Two content cycles, edits, show notes, social posts, clips or graphics, one web or email content asset, planning call, and one revision.']
   ],
   market: [
     ['Primary launch market', 'Warm-network nonprofits, ministries, professional-service owners, prior guests, veteran-owned organizations, and trusted referrals.'],
     ['Operating advantage', 'Founder access, broadcast discipline, executive judgment, owned workspace, regional credibility, and integrated content delivery.'],
-    ['Capacity discipline', 'Growth is constrained by delivery quality and owner capacity, not by the total number of organizations in the region.'],
-    ['Validation standard', 'Demand is proven through qualified conversations, paid projects, repeat delivery, retainer conversion, and collected cash.']
+    ['Scope discipline', 'Content-layer website support, basic SEO/local visibility, repurposing, and measurement are tied to produced content. Full website administration, paid-ad management, and open-ended agency work are not launch defaults.'],
+    ['Validation standard', 'Demand is proven through qualified conversations, paid projects, repeat delivery, retainer conversion, collected cash, and sustainable delivery hours.']
   ],
   annualPlans: [
     ['FY 2026–27', 118400, 57050, 19844, 'Required operating target'],
@@ -30,10 +30,10 @@ window.OD_PUBLIC_DATA = {
     ['FY 2030–31', 325800, 138000, 115571, 'Selective scale']
   ],
   growth: [
-    ['1. Prove demand', 'Complete qualified outreach, discovery calls, proposals, paid starter projects, and customer interviews.'],
-    ['2. Prove delivery', 'Deliver the same standardized scope more than once, within planned hours and quality controls.'],
-    ['3. Prove recurring value', 'Convert successful starter projects into prepaid monthly retainers and referrals.'],
-    ['4. Expand selectively', 'Add pricing, capacity, contractors, tools, or secondary services only after cash, quality, and demand justify them.']
+    ['1. Prove demand', 'Complete qualified outreach, follow-up, discovery calls, proposals, paid starter projects, and customer interviews.'],
+    ['2. Prove delivery', 'Deliver the same standardized content scope more than once, within planned hours and quality controls.'],
+    ['3. Prove recurring value', 'Convert successful starter work into prepaid monthly content retainers and referrals.'],
+    ['4. Expand selectively', 'Add secondary services, pricing, capacity, contractors, or tools only after cash, quality, recurring demand, and owner capacity justify them.']
   ],
   milestones: [
     ['July 16, 2026', 'Standalone accountability platform launched', 'OD Strategy deployed at odstrategy.com with public and secure private access; obsolete branches and legacy dashboard deployments retired.'],
@@ -42,12 +42,12 @@ window.OD_PUBLIC_DATA = {
     ['August 4, 2026', 'ISP milestone closed', 'NYS DOL confirmed the Individual Services Plan was received and processed; the next benchmark is the Individual Progress Report due August 24.'],
     ['August 12, 2026', 'Second SCORE counseling session completed', 'The two-meeting counselor prerequisite was completed. The session focused on target customers, customer ROI, prospect development, and sales-pitch clarity. Jerry Boger agreed to continue as an ongoing mentor.'],
     ['August 16, 2026', 'Qualified warm-market conversion advanced', 'Voice of Liberty moved to Verbal Yes on the $3,300 90-day pilot with agreement and prepayment evidence still requiring reconciliation. Justin Cogswell, Carrie Carl, and Vince Giardino were activated as warm prospects; Vince responded positively and advanced to Engaged. Meaning Made Known Phase 1 cross-links were completed and live-verified.'],
-    ['August 17, 2026', 'Voice of Liberty Month 1 execution began', 'A 2.50-hour timed client-delivery session materially advanced the Podbean baseline, WYSL and WLEA public digital inventory, quality-control findings, and the first network-level content direction. An additional 3.00 owner-reported research hours brought total August 17 business work to 5.50 hours; no training hours were claimed.'],
-    ['August 18, 2026', 'Calendar and operating governance reconciled', 'Business scheduling was consolidated onto the dedicated Next Steps Media & Digital Marketing Services calendar, cross-calendar conflict checks were formalized, 11:30 a.m. to 1:30 p.m. was protected for The Next Steps Show, SEAP milestone controls were scheduled around known availability, and future morning and Monday blackout periods were incorporated into operating controls.'],
+    ['August 17, 2026', 'Voice of Liberty Month 1 execution began', 'A 2.50-hour timed client-delivery session materially advanced the Podbean baseline, WYSL and WLEA public content inventory, quality-control findings, and the first network-level content direction. An additional 3.00 owner-reported research hours brought total August 17 business work to 5.50 hours; no training hours were claimed.'],
+    ['August 18, 2026', 'Operating and launch-scope governance reconciled', 'The primary launch service was formally reaffirmed as Podcast Production and Digital Content Support, with a stabilization-period freeze on full-service-agency expansion. Voice of Liberty was clarified as a Digital Content & Visibility pilot using existing station material. The governing weekly sales cadence was restored, optional systems work was subordinated to revenue, client delivery, compliance and training, and conflict-free calendar controls were preserved.'],
     ['August 24, 2026', 'Individual Progress Report due', 'Complete, submit, and retain the form and confirmation.'],
     ['August 31, 2026', 'First training verification due', 'First ten hours must be supported by retained evidence; no backfill or double counting.'],
     ['September 7, 2026', 'Business Strategy due', 'Counselor prerequisite completed August 12; finish, submit, and retain the Business Strategy and confirmation.'],
     ['September 21, 2026', 'Final training verification due', 'All twenty hours must be completed, verified, submitted, and retained.'],
-    ['September 22, 2026', 'Stabilization review', 'Pipeline, paid work, capacity, cash, compliance, and corrective actions reviewed.']
+    ['September 22, 2026', 'Stabilization review', 'Review pipeline, collected revenue, standardized delivery, capacity, cash, compliance, scope discipline, and corrective actions before any service expansion.']
   ]
 };
