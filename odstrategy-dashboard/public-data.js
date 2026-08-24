@@ -3,9 +3,9 @@ window.OD_PUBLIC_DATA = {
     promise: 'Helping meaningful voices be seen, heard, trusted, and found.',
     phase: 'Focused soft launch: Podcast Production and Digital Content Support, active client delivery, protected compliance and training milestones, qualified outreach, and revenue conversion',
     outreachStart: 'Active: standardized content delivery and qualified warm-market outreach are underway. Scope remains focused on production, packaging, repurposing, basic digital visibility, and simple content-performance measurement rather than full-service agency expansion.',
-    updated: 'August 19, 2026: SEAP training evidence reconciled to 2.00 verified eligible hours plus 1.22 hours pending; August 18 Entity Formation work session documented as approximately 1.00 hour webinar training plus 2.00 hours follow-on business research'
+    updated: 'August 23, 2026: ES161.3 Individual Progress Report signed and submitted through NYS DOL Secure Messaging at 10:14 PM; submission proof retained; next SEAP benchmark is first training verification due August 31'
   },
-  metrics: { prospects: 44, pipeline: 6600, trainingLogged: 2.00, trainingPending: 1.22, trainingRequired: 20, contacts: 13 },
+  metrics: { prospects: 44, pipeline: 5450, trainingLogged: 2.00, trainingPending: 1.22, trainingRequired: 20, contacts: 13 },
   purpose: [
     ['Problem', 'Important messages are underused because organizations lack time, systems, consistency, or in-house production capacity.'],
     ['Solution', 'A source message becomes professional podcast, web, social, email, and search content through standardized production, packaging, repurposing, and basic digital visibility.'],
@@ -45,7 +45,7 @@ window.OD_PUBLIC_DATA = {
     ['August 16, 2026', 'Qualified warm-market conversion advanced', 'Voice of Liberty moved to Verbal Yes on the $3,300 90-day pilot with agreement and prepayment evidence still requiring reconciliation. Justin Cogswell, Carrie Carl, and Vince Giardino were activated as warm prospects; Vince responded positively and advanced to Engaged. Meaning Made Known Phase 1 cross-links were completed and live-verified.'],
     ['August 17, 2026', 'Voice of Liberty Month 1 execution began', 'A 2.50-hour timed client-delivery session materially advanced the Podbean baseline, WYSL and WLEA public content inventory, quality-control findings, and the first network-level content direction. An additional 3.00 owner-reported research hours brought total August 17 business work to 5.50 hours; no training hours were claimed.'],
     ['August 18, 2026', 'Operating scope and entity-training work advanced', 'The primary launch service was reaffirmed as Podcast Production and Digital Content Support, Voice of Liberty was clarified as a Digital Content & Visibility pilot, and Peter reports a 9:30 p.m.-12:30 a.m. Entity Formation work session. Approximately 1.00 hour was spent completing the VBOC webinar presented by Angela Tylock, Esq. and is recorded as completed pending verification; approximately 2.00 hours were follow-on business research and are not counted as SEAP training.'],
-    ['August 24, 2026', 'Individual Progress Report due', 'Complete, submit, and retain the form and confirmation.'],
+    ['August 23, 2026', 'Individual Progress Report submitted', 'Signed ES161.3 was submitted through the NYS DOL Secure Message Center at 10:14 p.m., before the August 24 deadline. Submission proof is retained; the next SEAP benchmark is first training verification due August 31.'],
     ['August 31, 2026', 'First training verification due', 'First ten hours must be supported by retained evidence; no backfill or double counting.'],
     ['September 7, 2026', 'Business Strategy due', 'Counselor prerequisite completed August 12; finish, submit, and retain the Business Strategy and confirmation.'],
     ['September 21, 2026', 'Final training verification due', 'All twenty hours must be completed, verified, submitted, and retained.'],
