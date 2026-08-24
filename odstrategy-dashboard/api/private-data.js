@@ -52,7 +52,7 @@ function staticOperatingCase() {
       ['August 4, 2026', 'Individual Services Plan completed', 'Submitted through NYS DOL secure messaging and confirmed received and processed.'],
       ['August 12, 2026', 'Second SCORE counseling session completed', 'The two-meeting counselor prerequisite was completed. The session focused on target customers, customer ROI, prospect development, sales-pitch clarity, and continued mentorship.'],
       ['August 13, 2026', 'Pipeline reset and prospect qualification launched', 'Research targets and nurture-only records were separated from active opportunity value, and the prior-show-guest intake was staged for qualification before CRM promotion.'],
-      ['August 24, 2026', 'Individual Progress Report due', 'Complete, submit, and retain the form and confirmation.'],
+      ['August 23, 2026', 'Individual Progress Report submitted', 'Signed ES161.3 was submitted through NYS DOL Secure Messaging at 10:14 PM before the August 24 deadline. Submission proof is retained; awaiting any separate DOL acknowledgment.'],
       ['August 31, 2026', 'First training verification due', 'First ten hours completed, verified, submitted, and retained.'],
       ['September 7, 2026', 'Business Strategy due', 'Counselor prerequisite completed August 12; finish, submit, and retain the strategy and confirmation.'],
       ['September 21, 2026', 'Final training verification due', 'All twenty hours completed, verified, submitted, and retained.']
@@ -200,7 +200,7 @@ async function buildData() {
     compliance: {
       deadlines: [
         { date: 'August 10, 2026', item: 'Individual Services Plan', status: 'Completed — submitted and processed August 4' },
-        { date: 'August 24, 2026', item: 'Individual Progress Report', status: 'Open — preparation required' },
+        { date: 'August 24, 2026', item: 'Individual Progress Report', status: 'Completed — signed and submitted August 23 at 10:14 PM; proof retained; awaiting any separate DOL acknowledgment' },
         { date: 'August 31, 2026', item: 'First ten training hours verification', status: eligibleTraining >= 10 ? 'Ready' : 'Open — verified hours remain below 10' },
         { date: 'September 7, 2026', item: 'Business Strategy', status: 'Open — counselor prerequisite completed August 12' },
         { date: 'September 21, 2026', item: 'Final training verification', status: eligibleTraining >= 20 ? 'Ready' : 'Open — verified hours remain below 20' }
@@ -217,7 +217,8 @@ async function buildData() {
       { name: 'CRM and Prospect Records', url: 'https://docs.google.com/spreadsheets/d/1lVwua0SBfcAJLGnt60n1kEEamKNp-XVMVmnpqdDGbhc/edit' },
       { name: 'Training and Education Log', url: 'https://docs.google.com/spreadsheets/d/1hfMefQV_gISQ6gqZAR5ZG_iXzveGzCumRyfwJplFwM4/edit' },
       { name: 'Prior-Show-Guest Prospect Intake', url: 'https://docs.google.com/spreadsheets/d/1NSTwH86lvt-S_Yux98gcG45D6ZQYNz1PQKVzZDUC5q8/edit' },
-      { name: 'SCORE Counseling Session 2 Archive', url: 'https://drive.google.com/drive/folders/1wDVGyUC3sx_RYmCyjA12hvT8eLuUVjDq' }
+      { name: 'SCORE Counseling Session 2 Archive', url: 'https://drive.google.com/drive/folders/1wDVGyUC3sx_RYmCyjA12hvT8eLuUVjDq' },
+      { name: 'ES161.3 Submission Archive', url: 'https://drive.google.com/drive/folders/19ROUIgmJa_zoXxyhv_llsAPYQtKBEDkJ' }
     ],
     approvedDocuments: []
   };
