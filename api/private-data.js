@@ -13,14 +13,9 @@ function actionRecord(row = []) {
     date: row[1] || '',
     status: row[2] || '',
     objective: row[3] || '',
-    actualStart: row[6] || '',
-    actualEnd: row[7] || '',
-    breakMinutes: num(row[8]),
-    workHours: num(row[9]),
     contactsSent: num(row[11]),
     responses: num(row[12]),
     meetingsSet: num(row[13]),
-    prospectingHours: num(row[14]),
     followUpNotes: row[15] || '',
     closeoutComments: row[16] || '',
     tomorrowFirstAction: row[17] || '',
@@ -35,14 +30,13 @@ function formatStamp(value) {
 }
 
 async function buildData() {
-  const [actionRows, archiveRows, pipelineRows, outreachRows, discoveryRows, proposalRows, workRows, trainingRows, kanbanRows, riskRows, decisionRows, readinessRows] = await Promise.all([
+  const [actionRows, archiveRows, pipelineRows, outreachRows, discoveryRows, proposalRows, trainingRows, kanbanRows, riskRows, decisionRows, readinessRows] = await Promise.all([
     readActionRows(),
     readArchiveRows(),
     readValues(SPREADSHEETS.crm, "'Prospect Pipeline'!A5:R500"),
     readValues(SPREADSHEETS.crm, "'Outreach Log'!A5:M500"),
     readValues(SPREADSHEETS.crm, "'Discovery Calls'!A5:O500"),
     readValues(SPREADSHEETS.crm, "'Proposals'!A5:L500"),
-    readValues(SPREADSHEETS.workLog, "'Daily Work Log'!A5:M1000"),
     readValues(SPREADSHEETS.training, "'Dashboard'!A4:G12"),
     readValues(SPREADSHEETS.control, "'Kanban Tasks'!A5:M100"),
     readValues(SPREADSHEETS.control, "'Risk Register'!A5:M80"),
@@ -59,21 +53,17 @@ async function buildData() {
   const cumulative = actionHistory.reduce((total, record) => ({
     contactsSent: total.contactsSent + record.contactsSent,
     responses: total.responses + record.responses,
-    meetingsSet: total.meetingsSet + record.meetingsSet,
-    prospectingHours: total.prospectingHours + record.prospectingHours,
-    workHours: total.workHours + record.workHours,
-    breakMinutes: total.breakMinutes + record.breakMinutes
-  }), { contactsSent: 0, responses: 0, meetingsSet: 0, prospectingHours: 0, workHours: 0, breakMinutes: 0 });
+    meetingsSet: total.meetingsSet + record.meetingsSet
+  }), { contactsSent: 0, responses: 0, meetingsSet: 0 });
 
   const latestProgress = [...actionHistory].reverse().find((record) =>
-    record.contactsSent || record.responses || record.meetingsSet || record.workHours || record.followUpNotes || record.closeoutComments
+    record.contactsSent || record.responses || record.meetingsSet || record.followUpNotes || record.closeoutComments
   ) || active;
 
   const prospects = pipelineRows.filter(filled);
   const outreach = outreachRows.filter(filled);
   const discovery = discoveryRows.filter(filled);
   const proposals = proposalRows.filter(filled);
-  const work = workRows.filter(filled);
   const trainingMap = Object.fromEntries(trainingRows.filter((row) => row[0]).map((row) => [row[0], row[1]]));
   const currentTasks = kanbanRows.filter(filled).filter((row) => !/completed/i.test(row[4] || '')).slice(0, 6);
   const activeRisks = riskRows.filter(filled).filter((row) => !/closed/i.test(row[5] || '')).slice(0, 5);
@@ -84,7 +74,6 @@ async function buildData() {
   const currentlyScheduled = prospects.filter((row) => /discovery scheduled/i.test(row[6] || '')).length;
   const preliminaryValue = prospects.reduce((sum, row) => sum + num(row[13]), 0);
   const collectedRevenue = proposals.reduce((sum, row) => sum + num(row[10]), 0);
-  const confirmedHours = work.reduce((sum, row) => sum + num(row[5]), 0);
   const eligibleTraining = num(trainingMap['Completed Eligible Hours']);
   const pendingTraining = num(trainingMap['Pending Verification Hours']);
   const totalTraining = eligibleTraining + pendingTraining;
@@ -99,8 +88,8 @@ async function buildData() {
     meta: {
       currentFiscalYear: 'FY 2026–27',
       asOf: formatStamp(active.savedAt || latestProgress.savedAt),
-      overallStatus: `Pre-launch cumulative — ${plural(cumulative.contactsSent, 'contact')}, ${plural(cumulative.responses, 'response')}, ${plural(discoveryScheduled, 'meeting')} scheduled`,
-      cumulativeNarrative: `Launch progress to date includes ${prospects.length} qualified prospects representing $${preliminaryValue.toLocaleString('en-US')} in preliminary opportunity value, ${cumulative.contactsSent} personalized contacts, ${cumulative.responses} responses, ${discoveryScheduled} meeting scheduled, ${totalTraining.toFixed(2)} training hours logged, and ${confirmedHours.toFixed(2)} confirmed startup work hours. Client-facing sales materials, the relationship-first conversation process, and the Sales SOP remain part of the cumulative launch record.`,
+      overallStatus: `Operating cumulative — ${plural(cumulative.contactsSent, 'contact')}, ${plural(cumulative.responses, 'response')}, ${plural(discoveryScheduled, 'meeting')} scheduled`,
+      cumulativeNarrative: `Launch progress to date includes ${prospects.length} qualified prospects representing $${preliminaryValue.toLocaleString('en-US')} in preliminary opportunity value, ${cumulative.contactsSent} personalized contacts, ${cumulative.responses} responses, ${discoveryScheduled} meeting scheduled, and ${totalTraining.toFixed(2)} SEAP training hours logged or pending verification. Business work hours are intentionally not tracked; execution is measured through outcomes, pipeline movement, deliverables, cash, compliance, and retained evidence.`,
       statusExplanation: `Current priority: ${active.objective || active.tomorrowFirstAction || 'Continue the documented launch plan.'}`,
       syncSource: 'Google Sheets cumulative live sync'
     },
@@ -138,17 +127,13 @@ async function buildData() {
       proposals: proposals.length,
       paidStarters: prospects.filter((row) => /^won$/i.test(row[6] || '')).length,
       activeRetainers: prospects.filter((row) => /retainer/i.test(row[6] || '')).length,
-      prospectingHours: Number(cumulative.prospectingHours.toFixed(2)),
       currentActions
     },
     workload: {
-      confirmedHours: Number(confirmedHours.toFixed(2)),
-      actionSheetHours: Number(cumulative.workHours.toFixed(2)),
-      cumulativeBreakMinutes: cumulative.breakMinutes,
-      pendingEntries: active.actualStart && !active.actualEnd ? 1 : 0,
-      capacityStatus: active.actualStart && !active.actualEnd
-        ? `The ${active.date || 'current'} workday is open. Final hours remain pending closeout.`
-        : `The latest completed record is preserved in the archive. ${latestProgress.closeoutComments || ''}`
+      trackingMode: 'Outcome-based; owner business work hours are not tracked.',
+      activeRecordStatus: active.status || '',
+      latestOutcome: latestProgress.closeoutComments || '',
+      capacityStatus: 'Capacity is monitored through backlog, deadlines, delivery quality, client load, scope, and cash performance rather than owner clock hours.'
     },
     training: {
       loggedHours: Number(totalTraining.toFixed(2)),
@@ -161,10 +146,10 @@ async function buildData() {
     risks: activeRisks.map((row) => ({ risk: row[2], response: row[7] || row[8] || 'Review required.' })),
     compliance: {
       deadlines: [
-        { date: 'August 10, 2026', item: 'Individual Services Plan', status: 'Open' },
-        { date: 'August 24, 2026', item: 'Individual Progress Report', status: 'Open' },
+        { date: 'August 10, 2026', item: 'Individual Services Plan', status: 'Completed' },
+        { date: 'August 24, 2026', item: 'Individual Progress Report', status: 'Submitted August 23' },
         { date: 'August 31, 2026', item: 'First ten training hours verification', status: eligibleTraining >= 10 ? 'Ready' : 'Open' },
-        { date: 'September 7, 2026', item: 'Business Strategy', status: 'Open — two counselor meetings required first' },
+        { date: 'September 7, 2026', item: 'Business Strategy', status: 'Open — two counselor meetings completed' },
         { date: 'September 21, 2026', item: 'Final training verification', status: eligibleTraining >= 20 ? 'Ready' : 'Open' }
       ]
     },
