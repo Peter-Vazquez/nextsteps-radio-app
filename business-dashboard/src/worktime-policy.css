@@ -3,6 +3,11 @@
    but they are not current performance measures. SEAP training duration remains visible
    because verified training hours are a program requirement. */
 
+/* Public executive metrics: hide hour-derived capacity KPI. */
+.metrics-grid > .kpi:nth-child(4) {
+  display: none;
+}
+
 /* Public startup progress: hide confirmed owner work-hours KPI. */
 .live-progress-grid > .kpi:nth-child(3) {
   display: none;
@@ -18,7 +23,8 @@
   display: none;
 }
 
-/* Public fiscal-year detail: do not display average delivery-hours-per-month measure. */
-.final-year-detail .detail-metrics > div:nth-child(10) {
+/* Public fiscal-year detail: do not display delivery-hour or hour-derived capacity measures. */
+.final-year-detail .detail-metrics > div:nth-child(10),
+.final-year-detail .detail-metrics > div:nth-child(11) {
   display: none;
 }
