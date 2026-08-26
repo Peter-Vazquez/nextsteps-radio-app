@@ -1,0 +1,24 @@
+/* Owner business work-time tracking is intentionally disabled.
+   Historical/model time fields may remain in source records for prior documentation,
+   but they are not current performance measures. SEAP training duration remains visible
+   because verified training hours are a program requirement. */
+
+/* Public startup progress: hide confirmed owner work-hours KPI. */
+.live-progress-grid > .kpi:nth-child(3) {
+  display: none;
+}
+
+/* Public reporting cadence: hide end-of-day actual-hours language block. */
+.cadence-card dl > div:nth-child(2) {
+  display: none;
+}
+
+/* Public service cards: do not display planned owner-hour assumptions as a KPI. */
+.service-detail-grid article dl > div:first-child {
+  display: none;
+}
+
+/* Public fiscal-year detail: do not display average delivery-hours-per-month measure. */
+.final-year-detail .detail-metrics > div:nth-child(10) {
+  display: none;
+}
