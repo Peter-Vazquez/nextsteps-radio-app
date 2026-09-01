@@ -33,13 +33,7 @@
     setText('shared-updated', `Updated ${closeout.asOf}`);
     setText('shared-overall-status', closeout.overallStatus);
     setText('shared-status-copy', closeout.statusExplanation);
-    setHtml('capacity-summary', `<p><strong>Confirmed hours:</strong> ${closeout.confirmedHours}</p><p><strong>Pending entries:</strong> ${closeout.pendingEntries}</p><p><strong>Capacity:</strong> ${closeout.capacityStatus}</p>`);
-
-    document.querySelectorAll('.private-kpi').forEach((card) => {
-      const label = card.querySelector('span');
-      const value = card.querySelector('strong');
-      if (label && value && label.textContent.trim() === 'Work hours') value.textContent = closeout.confirmedHours;
-    });
+    setHtml('capacity-summary', `<p><strong>Accountability model:</strong> Outcome-based</p><p>${closeout.capacityStatus}</p><p><strong>Record state:</strong> ${closeout.recordStatus}</p>`);
   }
 
   async function refreshOperatingCase() {
