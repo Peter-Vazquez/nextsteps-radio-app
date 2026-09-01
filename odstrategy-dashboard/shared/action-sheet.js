@@ -10,17 +10,17 @@ function payload(action='save'){
     date,
     status:action==='close'?'Closed':'Open',
     objective:el('objective').value,
-    plannedStart:el('plannedStart').value,
-    plannedEnd:el('plannedEnd').value,
-    actualStart:el('actualStart').value,
-    actualEnd:el('actualEnd').value,
-    breakMinutes:Number(el('breakMinutes').value||0),
-    workHours:Number(el('hours').value||0),
+    plannedStart:'',
+    plannedEnd:'',
+    actualStart:'',
+    actualEnd:'',
+    breakMinutes:0,
+    workHours:0,
     taskStatus:{_plan:plan},
     contactsSent:Number(el('contacts').value||0),
     responses:Number(el('responses').value||0),
     meetingsSet:Number(el('meetings').value||0),
-    prospectingHours:Number(el('prospecting').value||0),
+    prospectingHours:0,
     followUpNotes:el('followUp').value,
     closeoutComments:el('comments').value,
     tomorrowFirstAction:el('tomorrow').value
@@ -37,21 +37,18 @@ function yn(value,yes,no){return value?yes:no;}
 
 function updateCover(){
   el('coverDate').textContent=formatDate(el('date').value);
-  const h=Number(el('hours').value||0);
   const contacts=Number(el('contacts').value||0);
   const responses=Number(el('responses').value||0);
   const meetings=Number(el('meetings').value||0);
-  el('coverHours').textContent=h?`${h.toFixed(2)} hours`:'Not recorded';
   el('coverBusiness').textContent=(contacts||responses||meetings)?`${contacts} contacts / ${responses} responses / ${meetings} meetings`:'No activity recorded';
 }
 
 function updatePosition(r={}){
   const pieces=[];
+  if(r.contactsSent)pieces.push(`${r.contactsSent} contact${r.contactsSent===1?'':'s'} sent`);
   if(r.responses)pieces.push(`${r.responses} response${r.responses===1?'':'s'}`);
   if(r.meetingsSet)pieces.push(`${r.meetingsSet} meeting${r.meetingsSet===1?'':'s'} set`);
-  if(r.workHours)pieces.push(`${Number(r.workHours).toFixed(2)} work hours recorded`);
-  if(r.prospectingHours)pieces.push(`${Number(r.prospectingHours).toFixed(2)} prospecting hours`);
-  el('positionSummary').textContent=pieces.length?pieces.join('. ')+'.':'No operating activity has been recorded yet for this day.';
+  el('positionSummary').textContent=pieces.length?pieces.join('. ')+'.':'No business-development activity has been recorded yet for this day. Use the objective, closeout, and next-action fields for other verified operating results.';
   el('coverStatus').textContent=r.status||'Open';
   el('workLogState').textContent=yn(r.workLogSynced,'Synced','Pending');
   el('workLogState').className=r.workLogSynced?'ok':'warn';
@@ -65,13 +62,11 @@ function updatePosition(r={}){
 
 function apply(r){
   currentRecordId=r.recordId||currentRecordId;
-  ['date','objective','plannedStart','plannedEnd','actualStart','actualEnd'].forEach(k=>{if(el(k)&&r[k]!=null)el(k).value=r[k]});
-  el('hours').value=r.workHours||0;
-  el('breakMinutes').value=r.breakMinutes||0;
+  if(el('date')&&r.date!=null)el('date').value=r.date;
+  if(el('objective')&&r.objective!=null)el('objective').value=r.objective;
   el('contacts').value=r.contactsSent||0;
   el('responses').value=r.responses||0;
   el('meetings').value=r.meetingsSet||0;
-  el('prospecting').value=r.prospectingHours||0;
   el('followUp').value=r.followUpNotes||'';
   el('comments').value=r.closeoutComments||'';
   el('tomorrow').value=r.tomorrowFirstAction||'';
@@ -91,8 +86,8 @@ async function load(){
 }
 
 async function send(action){
-  if(action==='close'&&!confirm('Close and archive this operating day? The current summary will be retained as the stakeholder record and the next weekday summary will be created automatically. Weekend work remains opt-in only.'))return;
-  status(action==='close'?'Closing and archiving the operating day…':'Saving summary…');
+  if(action==='close'&&!confirm('Close and archive this operating day? The current summary will be retained as the stakeholder record and the next weekday summary will be created automatically.'))return;
+  status(action==='close'?'Closing and archiving the operating day...':'Saving summary...');
   try{
     const r=await fetch('/api/action-sheet',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload(action))});
     const b=await r.json();
@@ -102,7 +97,7 @@ async function send(action){
   }catch(e){status(e.message,'warn');}
 }
 
-['date','hours','contacts','responses','meetings'].forEach(id=>el(id).addEventListener('input',updateCover));
+['date','contacts','responses','meetings'].forEach(id=>el(id).addEventListener('input',updateCover));
 el('save').onclick=()=>send('save');
 el('close').onclick=()=>send('close');
 load();
