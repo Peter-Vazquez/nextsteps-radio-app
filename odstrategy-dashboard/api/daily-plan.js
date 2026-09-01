@@ -16,7 +16,6 @@ function buildSummary(row) {
   const followUp = row[15] || 'No material response or follow-up note has been recorded yet.';
   const nextAction = row[17] || 'Complete the next controlled action in the launch plan.';
   const status = String(row[2] || 'Open');
-  const plannedStart = row[4] || '7:00 AM';
   return {
     date: readableDate(date),
     focus: objective,
@@ -25,24 +24,24 @@ function buildSummary(row) {
     tasks: [
       {
         what: 'Operating focus',
-        when: `Weekday operating day begins at ${plannedStart}`,
-        where: 'Governing source records and Slack internal command center',
-        why: 'The stakeholder view should state the day’s controlling objective without duplicating Slack task management.',
+        when: 'Current operating day',
+        where: 'Governing source records and Project Control Center',
+        why: 'The stakeholder view should state the controlling objective without duplicating task systems.',
         how: objective,
         status: status === 'Closed' ? 'Completed' : 'Current'
       },
       {
         what: 'Responses, commitments, and material follow-up',
         when: 'As verified activity is recorded',
-        where: 'CRM, calendar, source records, and operating summary',
-        why: 'Material changes should be visible to authorized reviewers without exposing a duplicate internal task list.',
+        where: 'CRM, calendar, source records, and Daily Operating Summary',
+        why: 'Material changes should be visible to authorized reviewers without creating a competing source of truth.',
         how: followUp,
         status: 'Current'
       },
       {
         what: 'Most important next action',
         when: 'Before the next operating transition',
-        where: 'Project Control Center, Slack, CRM, calendar, and applicable compliance records',
+        where: 'Project Control Center, CRM, calendar, and applicable compliance records',
         why: 'Every active day should preserve one clear forward action and synchronized evidence.',
         how: nextAction,
         status: status === 'Closed' ? 'Completed' : 'Next'
