@@ -33,7 +33,7 @@
     .section{margin-top:17px}.section-title{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:5px}
     .section-title h2{font-size:12px;letter-spacing:.04em;margin:0;color:var(--blue)}.section-title span{font-size:8px;text-transform:uppercase;color:#72818b}
     .snapshot{display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-top:9px}.position-card{border:1px solid var(--line);background:var(--soft);padding:12px;border-radius:4px}.position-card h3{font-size:10px;text-transform:uppercase;letter-spacing:.05em;margin:0 0 5px;color:var(--blue)}.position-card p{margin:0;font-size:11px;line-height:1.45;color:#394d5a}
-    .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:9px}.metric input{font-size:10px}
+    .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:9px}.metric input{font-size:10px}
     .integrity{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:9px}.integrity-card{border:1px solid var(--line);padding:9px;border-radius:4px;background:#fff}.integrity-card span{display:block;font-size:8px;text-transform:uppercase;color:#6a7984;font-weight:800}.integrity-card strong{display:block;margin-top:4px;font-size:10px;color:var(--blue)}.integrity-card strong.ok{color:var(--green)}.integrity-card strong.warn{color:#a05f16}
     .notes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}
     .next-action{margin-top:9px}
@@ -57,21 +57,21 @@
       <h2 id="coverDate">Operating Day</h2>
       <div class="rule"></div>
       <div class="cover-meta">
-        <div><span>Total Work Hours</span><strong id="coverHours">Not recorded</strong></div>
         <div><span>Business Development</span><strong id="coverBusiness">No activity recorded</strong></div>
+        <div><span>Accountability Standard</span><strong>Outcomes and evidence</strong></div>
         <div><span>Record Status</span><strong id="coverStatus">Open</strong></div>
       </div>
     </section>
 
     <section class="summary">
       <header class="summary-head">
-        <div><h2>Stakeholder Operating View</h2><p>A concise, evidence-based view for mentors, investors, advisers, and family. Internal daily planning and task management are maintained in Slack.</p></div>
+        <div><h2>Stakeholder Operating View</h2><p>A concise, evidence-based view for mentors, investors, advisers, and family. Governing source records and the Project Control Center establish operational facts.</p></div>
         <div class="date-row"><div class="field"><label>Date</label><input id="date" type="date" readonly></div></div>
       </header>
 
-      <div class="stakeholder-note"><strong>Operating rule:</strong> Governing source records establish the facts. This summary consolidates the verified operating day for stakeholder review. Slack remains the internal command center for agendas, to-dos, due dates, prospect interactions, and project organization. Monday through Friday begins at 7:00 a.m.; weekend work is opened only when deliberately needed.</div>
+      <div class="stakeholder-note"><strong>Operating rule:</strong> Governing source records establish the facts. Slack is retired. This summary consolidates verified outcomes, pipeline movement, deliverables, compliance, risks and decisions, evidence, and the next action. Business work hours are not tracked. SEAP training duration remains documented separately when required.</div>
 
-      <input id="plannedStart" type="hidden"><input id="plannedEnd" type="hidden">
+      <input id="plannedStart" type="hidden"><input id="plannedEnd" type="hidden"><input id="actualStart" type="hidden"><input id="actualEnd" type="hidden"><input id="breakMinutes" type="hidden" value="0"><input id="hours" type="hidden" value="0"><input id="prospecting" type="hidden" value="0">
 
       <section class="section">
         <div class="section-title"><h2>Executive Snapshot</h2><span>Current operating position</span></div>
@@ -87,17 +87,6 @@
           <div class="metric"><label>Contacts Sent</label><input id="contacts" type="number" min="0"></div>
           <div class="metric"><label>Responses</label><input id="responses" type="number" min="0"></div>
           <div class="metric"><label>Meetings Set</label><input id="meetings" type="number" min="0"></div>
-          <div class="metric"><label>Prospecting Hours</label><input id="prospecting" type="number" step=".25" min="0"></div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-title"><h2>Time &amp; Accountability</h2><span>Actuals only</span></div>
-        <div class="metrics">
-          <div class="metric"><label>Actual Start</label><input id="actualStart"></div>
-          <div class="metric"><label>Actual End</label><input id="actualEnd"></div>
-          <div class="metric"><label>Break Minutes</label><input id="breakMinutes" type="number" min="0"></div>
-          <div class="metric"><label>Total Work Hours</label><input id="hours" type="number" step=".01" min="0"></div>
         </div>
       </section>
 
@@ -124,7 +113,7 @@
         <div class="field next-action"><label>Most Important Next Action</label><textarea id="tomorrow"></textarea></div>
       </section>
 
-      <p id="status" class="status">Loading the current operating summary…</p>
+      <p id="status" class="status">Loading the current operating summary...</p>
       <footer><span>Closed summaries are archived as the operating record for that day.</span><span>Next Steps Media &amp; Digital Marketing Services</span></footer>
     </section>
   </main>
