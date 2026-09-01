@@ -13,9 +13,8 @@ function actionRecord(row = []) {
   try { taskStatus = JSON.parse(row[10] || '{}'); } catch { taskStatus = {}; }
   return {
     recordId: row[0] || '', date: row[1] || '', status: row[2] || '', objective: row[3] || '',
-    plannedStart: row[4] || '', plannedEnd: row[5] || '', actualStart: row[6] || '', actualEnd: row[7] || '',
-    breakMinutes: num(row[8]), workHours: num(row[9]), taskStatus,
-    contactsSent: num(row[11]), responses: num(row[12]), meetingsSet: num(row[13]), prospectingHours: num(row[14]),
+    taskStatus,
+    contactsSent: num(row[11]), responses: num(row[12]), meetingsSet: num(row[13]),
     followUpNotes: row[15] || '', closeoutComments: row[16] || '', tomorrowFirstAction: row[17] || '',
     savedAt: row[18] || '', closedAt: row[19] || ''
   };
@@ -27,7 +26,7 @@ function staticOperatingCase() {
       ['Problem', 'Important messages are underused because organizations lack time, systems, or in-house production capacity.'],
       ['Solution', 'One source message becomes professional podcast, web, social, email, and search content.'],
       ['Customer', 'Small businesses, nonprofits, ministries, professional services, public voices, creators, and community organizations.'],
-      ['Proof required', 'Paid starter work, recurring retainers, disciplined delivery hours, testimonials, referrals, and dependable cash performance.']
+      ['Proof required', 'Paid starter work, recurring retainers, consistent delivery quality, testimonials, referrals, and dependable cash performance.']
     ],
     services: [
       ['Message-to-Media Starter', 550, 'First paid test', 'One source message, edited media, title, description, summary, four social posts, and one revision.'],
@@ -42,7 +41,7 @@ function staticOperatingCase() {
     beachhead: 'Begin with warm-network nonprofits, ministries, professional-service owners, prior guests, veteran relationships, and trusted referrals. Expansion follows proof, not enthusiasm.',
     growth: [
       ['1. Prove demand', 'Complete qualified outreach, discovery calls, proposals, paid starter projects, and customer interviews.'],
-      ['2. Prove delivery', 'Deliver the same standardized scope more than once, within planned hours and quality controls.'],
+      ['2. Prove delivery', 'Deliver the same standardized scope more than once with consistent quality and controlled client capacity.'],
       ['3. Prove recurring value', 'Convert successful starter projects into prepaid monthly retainers and referrals.'],
       ['4. Expand selectively', 'Add pricing, capacity, contractors, tools, or secondary services only after cash, quality, and demand justify them.']
     ],
@@ -52,16 +51,16 @@ function staticOperatingCase() {
       ['August 4, 2026', 'Individual Services Plan completed', 'Submitted through NYS DOL secure messaging and confirmed received and processed.'],
       ['August 12, 2026', 'Second SCORE counseling session completed', 'The two-meeting counselor prerequisite was completed. The session focused on target customers, customer ROI, prospect development, sales-pitch clarity, and continued mentorship.'],
       ['August 13, 2026', 'Pipeline reset and prospect qualification launched', 'Research targets and nurture-only records were separated from active opportunity value, and the prior-show-guest intake was staged for qualification before CRM promotion.'],
-      ['August 23, 2026', 'Individual Progress Report submitted', 'Signed ES161.3 was submitted through NYS DOL Secure Messaging at 10:14 PM before the August 24 deadline. Submission proof is retained; awaiting any separate DOL acknowledgment.'],
-      ['August 31, 2026', 'First training verification due', 'First ten hours completed, verified, submitted, and retained.'],
+      ['August 23, 2026', 'Individual Progress Report submitted', 'Signed ES161.3 was submitted through NYS DOL Secure Messaging at 10:14 PM before the August 24 deadline. Submission proof is retained.'],
+      ['August 31, 2026', 'First training verification submitted', 'The ES161.4 first 10-hour package was submitted through NYS DOL Secure Messaging at 9:26 PM. The package documents 11.22 actual ISP-listed training hours, proof is retained, and DOL review/acceptance remains pending.'],
       ['September 7, 2026', 'Business Strategy due', 'Counselor prerequisite completed August 12; finish, submit, and retain the strategy and confirmation.'],
-      ['September 21, 2026', 'Final training verification due', 'All twenty hours completed, verified, submitted, and retained.']
+      ['September 21, 2026', 'Final training verification due', 'All twenty hours must be completed, verified, submitted, and retained.']
     ]
   };
 }
 
 async function buildData() {
-  const [actionRows, archiveRows, controlMetrics, kanban, risks, decisions, readiness, scorecard, pipelineRows, outreachRows, discoveryRows, proposalRows, workRows, trainingRows] = await Promise.all([
+  const [actionRows, archiveRows, controlMetrics, kanban, risks, decisions, readiness, scorecard, pipelineRows, outreachRows, discoveryRows, proposalRows, trainingRows] = await Promise.all([
     readActionRows(),
     readArchiveRows(),
     readValues(SPREADSHEETS.control, "'Control Dashboard'!A5:H12"),
@@ -74,7 +73,6 @@ async function buildData() {
     readValues(SPREADSHEETS.crm, "'Outreach Log'!A5:M500"),
     readValues(SPREADSHEETS.crm, "'Discovery Calls'!A5:O500"),
     readValues(SPREADSHEETS.crm, "'Proposals'!A5:L500"),
-    readValues(SPREADSHEETS.workLog, "'Daily Work Log'!A5:M1000"),
     readValues(SPREADSHEETS.training, "'Dashboard'!A4:G12")
   ]);
 
@@ -86,13 +84,10 @@ async function buildData() {
   const cumulativeActivity = actionHistory.reduce((total, record) => ({
     contactsSent: total.contactsSent + record.contactsSent,
     responses: total.responses + record.responses,
-    meetingsSet: total.meetingsSet + record.meetingsSet,
-    prospectingHours: total.prospectingHours + record.prospectingHours,
-    workHours: total.workHours + record.workHours,
-    breakMinutes: total.breakMinutes + record.breakMinutes
-  }), { contactsSent: 0, responses: 0, meetingsSet: 0, prospectingHours: 0, workHours: 0, breakMinutes: 0 });
+    meetingsSet: total.meetingsSet + record.meetingsSet
+  }), { contactsSent: 0, responses: 0, meetingsSet: 0 });
   const latestProgress = [...actionHistory].reverse().find((record) =>
-    record.contactsSent || record.responses || record.meetingsSet || record.workHours || record.followUpNotes || record.closeoutComments
+    record.contactsSent || record.responses || record.meetingsSet || record.followUpNotes || record.closeoutComments
   ) || active;
 
   const prospects = pipelineRows.filter(filled);
@@ -103,7 +98,6 @@ async function buildData() {
   const outreach = outreachRows.filter(filled);
   const discovery = discoveryRows.filter(filled);
   const proposals = proposalRows.filter(filled);
-  const work = workRows.filter(filled);
   const weekly = last(scorecard.filter(filled));
   const trainingMap = Object.fromEntries(trainingRows.filter((row) => row[0]).map((row) => [row[0], row[1]]));
 
@@ -113,7 +107,6 @@ async function buildData() {
   const activeRetainers = prospects.filter((row) => /retainer/i.test(row[6] || '')).length;
   const preliminaryValue = activeProspects.reduce((sum, row) => sum + num(row[13]), 0);
   const collectedRevenue = proposals.reduce((sum, row) => sum + num(row[10]), 0);
-  const confirmedHours = work.reduce((sum, row) => sum + num(row[5]), 0);
   const eligibleTraining = num(trainingMap['Completed Eligible Hours']);
   const pendingTraining = num(trainingMap['Pending Verification Hours']);
   const totalLoggedTraining = eligibleTraining + pendingTraining;
@@ -132,10 +125,10 @@ async function buildData() {
 
   return {
     meta: {
-      currentFiscalYear: 'FY 2026–27',
-      asOf: active.savedAt ? formatStamp(active.savedAt) : latestProgress.savedAt ? formatStamp(latestProgress.savedAt) : `live spreadsheet sync — ${new Date().toISOString()}`,
-      overallStatus: `Controlled soft launch cumulative — ${plural(cumulativeActivity.contactsSent, 'contact')}, ${plural(cumulativeActivity.responses, 'response')}, ${plural(cumulativeActivity.meetingsSet, 'meeting')} scheduled`,
-      statusExplanation: `Cumulative operating totals are preserved across closed and active days. Current priority: ${active.objective || active.tomorrowFirstAction || latestProgress.followUpNotes || 'Continue the documented launch plan.'}`,
+      currentFiscalYear: 'FY 2026-27',
+      asOf: active.savedAt ? formatStamp(active.savedAt) : latestProgress.savedAt ? formatStamp(latestProgress.savedAt) : `live spreadsheet sync - ${new Date().toISOString()}`,
+      overallStatus: `Controlled soft launch cumulative - ${plural(cumulativeActivity.contactsSent, 'contact')}, ${plural(cumulativeActivity.responses, 'response')}, ${plural(cumulativeActivity.meetingsSet, 'meeting')} scheduled`,
+      statusExplanation: `Cumulative operating results are preserved across closed and active days. Current priority: ${active.objective || active.tomorrowFirstAction || latestProgress.followUpNotes || 'Continue the documented launch plan.'}`,
       syncSource: 'Google Sheets cumulative live sync',
       activeRecordId: active.recordId,
       readinessScore,
@@ -158,9 +151,9 @@ async function buildData() {
         { month: 'Jun', plan: 13250, actual: 0, expenses: 0, actualDraw: 0 }, { month: 'Jul', plan: 14750, actual: 0, expenses: 0, actualDraw: 0 }
       ],
       annualPlans: [
-        ['FY 2026–27', 118400, 57050, 19844, 'Required operating target'], ['FY 2027–28', 174000, 84300, 42788, 'Household-supporting base case'],
-        ['FY 2028–29', 228000, 99000, 70796, 'Pricing and service expansion'], ['FY 2029–30', 262800, 117000, 91023, 'Mature premium practice'],
-        ['FY 2030–31', 325800, 138000, 115571, 'Selective scale']
+        ['FY 2026-27', 118400, 57050, 19844, 'Required operating target'], ['FY 2027-28', 174000, 84300, 42788, 'Household-supporting base case'],
+        ['FY 2028-29', 228000, 99000, 70796, 'Pricing and service expansion'], ['FY 2029-30', 262800, 117000, 91023, 'Mature premium practice'],
+        ['FY 2030-31', 325800, 138000, 115571, 'Selective scale']
       ]
     },
     pipeline: {
@@ -174,20 +167,14 @@ async function buildData() {
       proposals: proposals.length,
       paidStarters: won,
       activeRetainers,
-      prospectingHours: Number(cumulativeActivity.prospectingHours.toFixed(2)),
       weeklyContacts: num(weekly[2]),
       currentActions
     },
     operatingCase: staticOperatingCase(),
-    projects: currentTasks.map((row) => `${row[0]} — ${row[3]} (${row[4]}, due ${row[7] || 'not set'})`),
+    projects: currentTasks.map((row) => `${row[0]} - ${row[3]} (${row[4]}, due ${row[7] || 'not set'})`),
     workload: {
-      confirmedHours: Number(confirmedHours.toFixed(2)),
-      actionSheetHours: Number(cumulativeActivity.workHours.toFixed(2)),
-      cumulativeBreakMinutes: cumulativeActivity.breakMinutes,
-      pendingEntries: active.actualStart && !active.actualEnd ? 1 : 0,
-      capacityStatus: active.actualStart && !active.actualEnd
-        ? `The ${active.date || 'current'} workday is open. Start: ${active.actualStart}; breaks: ${active.breakMinutes}; final hours remain pending closeout.`
-        : `Cumulative confirmed startup hours are shown above. ${latestProgress.closeoutComments || 'The latest completed operating record is preserved in the archive.'}`
+      capacityStatus: 'Owner business hours are not tracked. Capacity is evaluated through client load, deliverable quality, pipeline movement, deadlines, compliance, cash, and risk.',
+      pendingEntries: 0
     },
     training: {
       loggedHours: Number(totalLoggedTraining.toFixed(2)),
@@ -199,16 +186,16 @@ async function buildData() {
     risks: activeRisks.map((row) => ({ risk: row[2], response: row[7] || row[8] || 'Review required.' })),
     compliance: {
       deadlines: [
-        { date: 'August 10, 2026', item: 'Individual Services Plan', status: 'Completed — submitted and processed August 4' },
-        { date: 'August 24, 2026', item: 'Individual Progress Report', status: 'Completed — signed and submitted August 23 at 10:14 PM; proof retained; awaiting any separate DOL acknowledgment' },
-        { date: 'August 31, 2026', item: 'First ten training hours verification', status: eligibleTraining >= 10 ? 'Ready' : 'Open — verified hours remain below 10' },
-        { date: 'September 7, 2026', item: 'Business Strategy', status: 'Open — counselor prerequisite completed August 12' },
-        { date: 'September 21, 2026', item: 'Final training verification', status: eligibleTraining >= 20 ? 'Ready' : 'Open — verified hours remain below 20' }
+        { date: 'August 10, 2026', item: 'Individual Services Plan', status: 'Completed - submitted and processed August 4' },
+        { date: 'August 24, 2026', item: 'Individual Progress Report', status: 'Completed - signed and submitted August 23 at 10:14 PM; proof retained' },
+        { date: 'August 31, 2026', item: 'First ten training hours verification', status: 'Completed - ES161.4 first 10-hour package submitted August 31 at 9:26 PM; proof retained; DOL acceptance pending' },
+        { date: 'September 7, 2026', item: 'Business Strategy', status: 'Open - counselor prerequisite completed August 12' },
+        { date: 'September 21, 2026', item: 'Final training verification', status: eligibleTraining >= 20 ? 'Ready' : 'Open - continue ISP-listed training and verification' }
       ]
     },
     professionalGates: readinessRows.filter((row) => /legal|insurance|pricing/i.test(`${row[1]} ${row[2]}`)).map((row) => ({ name: row[1], status: row[5], action: row[8] || row[9] || 'Review required.' })),
     actions: currentActions,
-    decisions: currentDecisions.map((row) => `${row[1]} — ${row[2]} (${row[7] || 'Status not set'})`),
+    decisions: currentDecisions.map((row) => `${row[1]} - ${row[2]} (${row[7] || 'Status not set'})`),
     controlMetrics: controlMetrics.filter(filled).map((row) => ({ metric: row[0], current: row[1], target: row[2] })),
     outreachCount: outreach.length,
     recordLinks: [
@@ -218,7 +205,8 @@ async function buildData() {
       { name: 'Training and Education Log', url: 'https://docs.google.com/spreadsheets/d/1hfMefQV_gISQ6gqZAR5ZG_iXzveGzCumRyfwJplFwM4/edit' },
       { name: 'Prior-Show-Guest Prospect Intake', url: 'https://docs.google.com/spreadsheets/d/1NSTwH86lvt-S_Yux98gcG45D6ZQYNz1PQKVzZDUC5q8/edit' },
       { name: 'SCORE Counseling Session 2 Archive', url: 'https://drive.google.com/drive/folders/1wDVGyUC3sx_RYmCyjA12hvT8eLuUVjDq' },
-      { name: 'ES161.3 Submission Archive', url: 'https://drive.google.com/drive/folders/19ROUIgmJa_zoXxyhv_llsAPYQtKBEDkJ' }
+      { name: 'ES161.3 Submission Archive', url: 'https://drive.google.com/drive/folders/19ROUIgmJa_zoXxyhv_llsAPYQtKBEDkJ' },
+      { name: 'ES161.4 First 10-Hour Submission Archive', url: 'https://drive.google.com/drive/folders/1HwN8hi2f31qt--gWYcLwvhLJqsZoJLJ8' }
     ],
     approvedDocuments: []
   };
