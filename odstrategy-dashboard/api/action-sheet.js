@@ -20,17 +20,10 @@ function normalize(values = [], generatedPlan = null) {
     date: values[1] || '',
     status: values[2] || 'Open',
     objective: taskStatus._plan?.objective || values[3] || '',
-    plannedStart: values[4] || '',
-    plannedEnd: values[5] || '',
-    actualStart: values[6] || '',
-    actualEnd: values[7] || '',
-    breakMinutes: Number(values[8] || 0),
-    workHours: Number(values[9] || 0),
     taskStatus,
     contactsSent: Number(values[11] || 0),
     responses: Number(values[12] || 0),
     meetingsSet: Number(values[13] || 0),
-    prospectingHours: Number(values[14] || 0),
     followUpNotes: values[15] || '',
     closeoutComments: values[16] || '',
     tomorrowFirstAction: values[17] || '',
@@ -50,17 +43,17 @@ function serialize(data, status) {
     data.date,
     status,
     data.objective,
-    data.plannedStart,
-    data.plannedEnd,
-    data.actualStart,
-    data.actualEnd,
-    Number(data.breakMinutes || 0),
-    Number(data.workHours || 0),
+    '',
+    '',
+    '',
+    '',
+    0,
+    0,
     JSON.stringify(data.taskStatus || {}),
     Number(data.contactsSent || 0),
     Number(data.responses || 0),
     Number(data.meetingsSet || 0),
-    Number(data.prospectingHours || 0),
+    0,
     data.followUpNotes || '',
     data.closeoutComments || '',
     data.tomorrowFirstAction || '',
@@ -127,14 +120,13 @@ function chooseTask(tasks, pattern, excluded = new Set()) {
     .sort((a, b) => taskScore(a) - taskScore(b))[0] || null;
 }
 
-function taskPlan(row, lane, fallbackTitle, fallbackAction, duration) {
+function taskPlan(row, lane, fallbackTitle, fallbackAction) {
   if (!row) {
     return {
       lane,
       title: fallbackTitle,
       action: fallbackAction,
       copy: fallbackAction,
-      duration,
       taskId: '',
       completion: fallbackAction
     };
@@ -144,10 +136,9 @@ function taskPlan(row, lane, fallbackTitle, fallbackAction, duration) {
   return {
     lane,
     taskId: row[0] || '',
-    title: `${lane} lane — ${task}`,
+    title: `${lane} lane - ${task}`,
     action: `${task}. Due ${row[7] || 'as soon as practical'}.`,
     copy: `Due ${row[7] || 'as soon as practical'}. Completion standard: ${completion}`,
-    duration,
     completion
   };
 }
@@ -167,10 +158,9 @@ function trainingPlan(nextTraining) {
     return {
       lane: 'Training',
       taskId: '',
-      title: 'Training lane — Complete the next sequenced training block',
-      duration: '60–90 minutes',
-      action: 'Complete a focused training block tied directly to a required launch deliverable.',
-      completion: 'Actual start and end time, modules completed, evidence, key lessons, and business application recorded.'
+      title: 'Training lane - Complete the next sequenced ISP-listed training requirement',
+      action: 'Complete the next required training session, record actual training duration, and preserve acceptable evidence.',
+      completion: 'Training duration, modules completed, evidence, key lessons, and business application recorded.'
     };
   }
   const program = nextTraining[2] || 'the next sequenced course';
@@ -178,10 +168,9 @@ function trainingPlan(nextTraining) {
   return {
     lane: 'Training',
     taskId: nextTraining[0] || '',
-    title: `Training lane — Begin or continue ${program}`,
-    duration: '60–90 minutes',
-    action: `Complete a focused training block and apply the lessons directly to ${deliverable}.`,
-    completion: 'Actual start and end time, modules completed, screenshots or evidence, key lessons, and business application recorded.'
+    title: `Training lane - Begin or continue ${program}`,
+    action: `Complete the next required training session and apply the lessons directly to ${deliverable}. Record actual SEAP training duration only.`,
+    completion: 'Training duration, modules completed, screenshots or evidence, key lessons, and business application recorded.'
   };
 }
 
@@ -205,23 +194,20 @@ async function buildPlan(operatingDate) {
   const revenue = taskPlan(
     revenueRow,
     'Revenue',
-    'Revenue lane — Complete the next protected prospecting and follow-up block',
-    'Send or advance qualified contacts, convert responses into scheduled conversations, and update the CRM.',
-    '45–60 minutes'
+    'Revenue lane - Complete the next protected prospecting and follow-up action',
+    'Send or advance qualified contacts, convert responses into scheduled conversations, and update the CRM.'
   );
   const build = taskPlan(
     buildRow,
     'Build',
-    'Build lane — Complete one launch asset',
-    'Finish one website, presentation, client-material, production, proof, or social-media deliverable.',
-    '90 minutes'
+    'Build lane - Complete one launch asset',
+    'Finish one website, presentation, client-material, production, proof, or social-media deliverable.'
   );
   const compliance = taskPlan(
     complianceRow,
     'Compliance',
-    'Compliance lane — Complete one compliance milestone',
-    'Advance counseling, SEAP forms, formation, financial controls, or professional review and retain evidence.',
-    '30–45 minutes'
+    'Compliance lane - Complete one compliance milestone',
+    'Advance SEAP forms, formation, financial controls, insurance, or professional review and retain evidence.'
   );
 
   const followUps = dueFollowUps(pipelineRows, operatingDate);
@@ -232,29 +218,19 @@ async function buildPlan(operatingDate) {
     .sort((a, b) => Number(a[13] || 999) - Number(b[13] || 999))[0];
   const training = trainingPlan(nextTraining);
 
-  const breakItem = {
-    lane: 'Break',
-    taskId: '',
-    title: 'BREAK',
-    duration: '20 minutes',
-    action: 'Step away. Return rested and ready to work through the remaining agenda in order.',
-    completion: 'Break is logged. Record final break minutes when work resumes.'
-  };
-
   const record = {
     lane: 'Closeout',
     taskId: '',
     title: 'END-OF-DAY SYNCHRONIZATION',
-    duration: '20–30 minutes',
-    action: 'Update all operating records, enter end time and break, and synchronize the CRM, Daily Work Log, Training Log, Project Control Center, scorecard, dashboards, Kanban, Gantt, and readiness.',
-    copy: 'Update every controlling record before closing the day.',
-    completion: 'The Daily Operating Summary is closed and archived, and the next weekday operating record is generated. Weekend records are opened only when deliberately needed.'
+    action: 'Update only governing records changed by verified activity: CRM, Daily Work Log, Training Log when applicable, Project Control Center, scorecard, Daily Operating Summary, OD Strategy, Kanban, Gantt, readiness, risks, and decisions.',
+    copy: 'Update controlling records before closing the day. Slack is retired and receives no updates.',
+    completion: 'The Daily Operating Summary is closed and archived with evidence, decisions, risks, and the next action synchronized.'
   };
 
-  const agenda = [breakItem, compliance, build, training, revenue, record].map((item, index) => ({
+  const agenda = [compliance, build, training, revenue, record].map((item, index) => ({
     ...item,
     number: index + 1,
-    key: ['break', 'compliance', 'build', 'training', 'revenue', 'record'][index]
+    key: ['compliance', 'build', 'training', 'revenue', 'record'][index]
   }));
 
   const deferredTasks = openTasks
@@ -267,8 +243,8 @@ async function buildPlan(operatingDate) {
   return {
     generatedAt: new Date().toISOString(),
     date: operatingDate,
-    operatingRule: 'Protect compliance, training, revenue, and record integrity while advancing the controlled launch.',
-    objective: `Advance the current revenue, build, compliance, and training priorities: ${revenue.title.replace('Revenue lane — ', '')}; ${build.title.replace('Build lane — ', '')}; ${compliance.title.replace('Compliance lane — ', '')}; and ${training.title.replace('Training lane — ', '')}.`,
+    operatingRule: 'Protect compliance, training, revenue, delivery quality, and record integrity while advancing the controlled launch.',
+    objective: `Advance the current revenue, build, compliance, and training priorities: ${revenue.title.replace('Revenue lane - ', '')}; ${build.title.replace('Build lane - ', '')}; ${compliance.title.replace('Compliance lane - ', '')}; and ${training.title.replace('Training lane - ', '')}.`,
     revenue,
     build,
     compliance,
@@ -282,16 +258,16 @@ async function buildPlan(operatingDate) {
       record.completion
     ],
     deferred: deferredTasks.length
-      ? `Deferred until the next dedicated build block: ${deferredTasks.join('; ')}.`
+      ? `Deferred until the next appropriate build action: ${deferredTasks.join('; ')}.`
       : 'No additional launch-critical work is deferred from the current operating record.',
     workspace: {
-      title: 'Open the required operating workspace',
-      copy: 'Review Slack for the internal agenda, then use the governing source records for facts, evidence, and closeout.'
+      title: 'Use the governing operating records',
+      copy: 'Use source records and the Project Control Center for facts, evidence, decisions, and closeout. Slack is retired.'
     },
     record,
     followUp: {
       title: followUps.length ? 'Complete due prospect follow-ups' : 'Check active responses at controlled intervals',
-      copy: followUps.length ? followUps.join(' | ') : 'Monitor active channels without allowing inbox activity to replace the planned revenue, compliance, training, and delivery work.',
+      copy: followUps.length ? followUps.join(' | ') : 'Monitor active channels without allowing inbox activity to replace revenue, compliance, training, and delivery priorities.',
       respondTitle: 'Respond, schedule, and update the CRM',
       respondCopy: 'Convert every response into a dated next action, meeting, proposal step, or documented follow-up.',
       prepareTitle: 'Protect the next operating actions',
@@ -308,17 +284,10 @@ async function freshRecord(archiveRows) {
     date,
     status: 'Open',
     objective: plan.objective,
-    plannedStart: '7:00 AM',
-    plannedEnd: '',
-    actualStart: '',
-    actualEnd: '',
-    breakMinutes: 0,
-    workHours: 0,
-    taskStatus: { _plan: plan, _time: {} },
+    taskStatus: { _plan: plan },
     contactsSent: 0,
     responses: 0,
     meetingsSet: 0,
-    prospectingHours: 0,
     followUpNotes: '',
     closeoutComments: '',
     tomorrowFirstAction: '',
@@ -346,7 +315,6 @@ export default async function handler(req, res) {
         if (!current.taskStatus._plan?.agenda) {
           const plan = await buildPlan(current.date || localDate());
           current.taskStatus._plan = plan;
-          current.taskStatus._time = current.taskStatus._time || {};
           current.objective = plan.objective;
           await saveActionRow(serialize(current, 'Open'));
         }
@@ -370,7 +338,7 @@ export default async function handler(req, res) {
         const record = await freshRecord([...archiveRows, values]);
         await saveActionRow(serialize(record, 'Open'));
         return json(res, 200, {
-          message: 'Day closed and archived. The next weekday Daily Operating Summary was generated with daily totals reset; weekend work remains opt-in only.',
+          message: 'Day closed and archived. The next weekday Daily Operating Summary was generated with outcome-based fields reset.',
           record,
           retiredRecord: normalize(values)
         });
