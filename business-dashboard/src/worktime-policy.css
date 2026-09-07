@@ -1,30 +1,8 @@
 /* Owner business work-time tracking is intentionally disabled.
-   Historical/model time fields may remain in source records for prior documentation,
-   but they are not current performance measures. SEAP training duration remains visible
-   because verified training hours are a program requirement. */
+   The current public and owner dashboards no longer render ordinary business
+   work-hour or utilization metrics. SEAP instructional duration remains visible
+   only because verified training hours are a program requirement.
 
-/* Public executive metrics: hide hour-derived capacity KPI. */
-.metrics-grid > .kpi:nth-child(4) {
-  display: none;
-}
-
-/* Public startup progress: hide confirmed owner work-hours KPI. */
-.live-progress-grid > .kpi:nth-child(3) {
-  display: none;
-}
-
-/* Public reporting cadence: hide end-of-day actual-hours language block. */
-.cadence-card dl > div:nth-child(2) {
-  display: none;
-}
-
-/* Public service cards: do not display planned owner-hour assumptions as a KPI. */
-.service-detail-grid article dl > div:first-child {
-  display: none;
-}
-
-/* Public fiscal-year detail: do not display delivery-hour or hour-derived capacity measures. */
-.final-year-detail .detail-metrics > div:nth-child(10),
-.final-year-detail .detail-metrics > div:nth-child(11) {
-  display: none;
-}
+   No positional hiding rules are used here. Earlier versions hid specific KPI
+   positions, which could conceal unrelated current metrics after dashboard
+   sections changed. */
