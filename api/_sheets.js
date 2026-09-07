@@ -4,7 +4,8 @@ export const SPREADSHEETS = {
   control: '19nKETpDwsD1kw267zcUH6_4bmSTMLsQY79mdfsmYZyU',
   crm: '1lVwua0SBfcAJLGnt60n1kEEamKNp-XVMVmnpqdDGbhc',
   workLog: '1GSJyMOu10lqLnfqEW87BElRRClYrFdRvsbZmRrsiDVQ',
-  training: '1hfMefQV_gISQ6gqZAR5ZG_iXzveGzCumRyfwJplFwM4'
+  training: '1hfMefQV_gISQ6gqZAR5ZG_iXzveGzCumRyfwJplFwM4',
+  financial: '1fTuTTGJ-nzRBjdHlfMhAv463Qv1WyfdIhcpJdrpDaNo'
 };
 
 const CURRENT_RANGE = "'Daily Action Sheet'!A5:X200";
@@ -39,7 +40,7 @@ async function accessToken() {
   const response = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({ grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer', assertion })
+    body: new URLSearchParams({ grant_type: 'urn:ietf:params:oauth-type:jwt-bearer', assertion })
   });
   const body = await response.json();
   if (!response.ok || !body.access_token) throw new Error(body.error_description || 'Google authentication failed.');
