@@ -1,11 +1,5 @@
-import React, { useMemo, useState } from 'react';
-import {
-  Bar, BarChart, CartesianGrid, Cell, ComposedChart, Legend, Line, Pie, PieChart,
-  ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis,
-} from 'recharts';
+import React, { useState } from 'react';
 import { dashboardData as data, money, number } from './dashboardData.js';
-
-const palette = ['#123f5a', '#2f7d7b', '#cf9d3a', '#6d7f8b', '#8a5a44'];
 
 function SectionTitle({ eyebrow, title, copy }) {
   return <div className="section-title"><p className="eyebrow">{eyebrow}</p><h2>{title}</h2>{copy && <p>{copy}</p>}</div>;
@@ -15,35 +9,15 @@ function Kpi({ label, value, detail, tone = '' }) {
   return <article className={`kpi ${tone}`}><span>{label}</span><strong>{value}</strong><p>{detail}</p></article>;
 }
 
-function ChartCard({ title, copy, children, note }) {
-  return <article className="chart-card"><header><h3>{title}</h3><p>{copy}</p></header><div className="chart-wrap">{children}</div>{note && <small>{note}</small>}</article>;
-}
-
-function CurrencyTooltip({ active, payload, label }) {
-  if (!active || !payload?.length) return null;
-  return <div className="chart-tooltip"><strong>{label}</strong>{payload.map((item) => <span key={item.dataKey}>{item.name}: {money.format(item.value)}</span>)}</div>;
-}
-
 function PublicDashboard() {
   const [selectedYear, setSelectedYear] = useState(0);
   const year = data.fiscalYears[selectedYear];
   const progress = data.operatingSnapshot;
-  const fiveYearRevenue = useMemo(() => data.fiscalYears.reduce((sum, item) => sum + item.revenue, 0), []);
-  const fiveYearDraw = useMemo(() => data.fiscalYears.reduce((sum, item) => sum + item.ownerDraw, 0), []);
-  const annual = data.fiscalYears.map((item) => ({
-    year: item.year.replace('FY ', ''), Revenue: item.revenue, 'Owner draw': item.ownerDraw, 'Ending cash': item.endingCash,
-  }));
-  const monthly = data.firstYearMonthly.map((item) => ({ ...item, 'Revenue target': item.revenue, 'Owner draw': item.draw }));
-  const serviceMix = [
-    { name: 'Recurring services', value: year.recurringMix },
-    { name: 'Defined projects', value: year.projectMix },
-    { name: 'Strategic engagements', value: year.strategicMix },
-  ];
 
   return <div className="site-shell final-dashboard">
     <header className="topbar">
-      <a className="brand" href="#overview"><span className="brand-mark">NS</span><span><strong>Next Steps</strong><small>Media & Digital Services</small></span></a>
-      <nav><a href="#progress">Progress</a><a href="#market">Market</a><a href="#services">Services</a><a href="#financials">Financials</a><a href="#sales">Sales</a><a href="#operations">Operations</a><a href="#risk">Risk</a></nav>
+      <a className="brand" href="#overview"><span className="brand-mark">NS</span><span><strong>Next Steps</strong><small>Media & Digital Marketing Services</small></span></a>
+      <nav><a href="#progress">Progress</a><a href="#case">Business Case</a><a href="#services">Services</a><a href="#financials">Financials</a><a href="#sales">Sales</a><a href="#operations">Operations</a><a href="#risk">Risk</a></nav>
       <div className="toolbar"><button type="button" onClick={() => window.print()}>Print / PDF</button><a className="owner-link" href="/owner">Owner portal</a></div>
     </header>
 
@@ -51,101 +25,99 @@ function PublicDashboard() {
       <div className="data-strip"><span><strong>Data:</strong> {data.meta.dataMode}</span><span><strong>As of:</strong> {data.meta.asOf}</span><span><strong>Fiscal cycle:</strong> {data.meta.fiscalCycle}</span><span><strong>Privacy:</strong> Public approved summaries only</span></div>
 
       <section className="hero" id="overview">
-        <div className="hero-copy-block"><p className="eyebrow">Executive business plan and performance dashboard</p><h1>{data.meta.promise}</h1><p className="hero-copy">Next Steps Media & Digital Services is a founder-led media and content company built to convert expertise, mission, and long-form ideas into credible content that audiences can understand, trust, and act upon.</p><div className="hero-actions"><a className="button primary" href="#progress">View current progress</a><a className="button secondary" href="#financials">Examine the financial case</a></div></div>
-        <aside className="hero-panel"><div><span>Current phase</span><strong>{progress.phase}</strong></div><div><span>Outreach begins</span><strong>{progress.outreachStart}</strong></div><div><span>Controlled launch</span><strong>{data.meta.launchDate}</strong></div><div><span>Stabilization review</span><strong>{data.meta.stabilizationDate}</strong></div></aside>
+        <div className="hero-copy-block">
+          <p className="eyebrow">Executive business plan and performance dashboard</p>
+          <h1>{data.meta.promise}</h1>
+          <p className="hero-copy">Next Steps Media & Digital Marketing Services helps meaningful voices turn valuable ideas, interviews, sermons, expertise, and long-form messages into professional media and digital content that can keep working after the original moment ends.</p>
+          <div className="hero-actions"><a className="button primary" href="#progress">View current progress</a><a className="button secondary" href="#sales">View the conversion test</a></div>
+        </div>
+        <aside className="hero-panel">
+          <div><span>Current phase</span><strong>{progress.phase}</strong></div>
+          <div><span>Revenue conversion</span><strong>{progress.outreachStart}</strong></div>
+          <div><span>Controlled launch</span><strong>{data.meta.launchDate}</strong></div>
+          <div><span>Stabilization review</span><strong>{data.meta.stabilizationDate}</strong></div>
+        </aside>
       </section>
 
       <section className="metrics-grid">
-        <Kpi label="First-year revenue requirement" value={money.format(data.fiscalYears[0].revenue)} detail="The household-supporting base case—not a casual aspiration." tone="navy" />
-        <Kpi label="Five-year modeled revenue" value={money.format(fiveYearRevenue)} detail="Cumulative revenue across five August-to-July fiscal years." />
-        <Kpi label="Five-year owner draws" value={money.format(fiveYearDraw)} detail="Planned household distributions, subject to actual cash performance." />
-        <Kpi label="Maximum first-year capacity" value={`${data.fiscalYears[0].capacity}%`} detail="Below the 80% warning threshold, but only if scope and hours remain controlled." />
+        <Kpi label="CRM prospect records" value={number.format(progress.qualifiedProspects)} detail="Research, closed records, and nurture records are not automatically active opportunities." tone="navy" />
+        <Kpi label="Active cash pipeline" value={money.format(progress.preliminaryPipelineValue)} detail="Current dated cash opportunities only. Barter and closed/nurture records are excluded." />
+        <Kpi label="Collected cash revenue" value={money.format(0)} detail="Cash proof remains the immediate commercial test. The current client win is a noncash barter relationship." />
+        <Kpi label="Actual ISP-listed training" value={`${progress.trainingLoggedHours.toFixed(2)} / ${progress.trainingRequiredHours}`} detail={`${progress.trainingEligibleHours.toFixed(2)} hours are verified eligible; 9.22 remain pending explicit verification/acceptance.`} />
       </section>
 
       <section className="section progress-section" id="progress">
-        <SectionTitle eyebrow="Live startup progress and accountability" title="The plan, the work, the numbers, and the next decision are visible in one place." copy="This section is the current operating snapshot. It distinguishes completed work from planned work and keeps family, advisors, and authorized stakeholders informed without exposing private client or account-level information." />
+        <SectionTitle eyebrow="Live startup progress and accountability" title="The business has launched. Now the evidence has to catch up with the plan." copy="Current records distinguish pipeline from cash, submission from acceptance, a client win from a cash-paying win, and scheduled training from completed training." />
         <div className="progress-status-banner"><div><span>Current status</span><strong>{progress.status}</strong></div><p>{progress.updateCadence}</p><small>Last synchronized: {progress.lastSync}</small></div>
         <div className="live-progress-grid">
-          <Kpi label="Qualified prospect accounts" value={number.format(progress.qualifiedProspects)} detail="First 40 launch accounts are entered, scored, and assigned next actions." tone="navy" />
-          <Kpi label="Preliminary pipeline value" value={money.format(progress.preliminaryPipelineValue)} detail="Unweighted starter-project assumption; not collected revenue or a forecast." />
-          <Kpi label="Confirmed work hours" value={progress.confirmedWorkHours.toFixed(2)} detail={`${progress.pendingTimeEntries} July 16 work sessions still require actual start and end times.`} />
-          <Kpi label="Training progress" value={`${progress.trainingLoggedHours.toFixed(2)} / ${progress.trainingRequiredHours}`} detail={`${progress.trainingEligibleHours.toFixed(2)} hours currently treated as eligible pending SEAP confirmation.`} />
-          <Kpi label="Personalized contacts" value={number.format(progress.personalizedContacts)} detail={`Outreach begins ${progress.outreachStart} after the fixed preparation window.`} />
-          <Kpi label="Discovery calls" value={number.format(progress.discoveryCalls)} detail="Customer proof begins when preparation converts into real conversations." />
-          <Kpi label="Proposals sent" value={number.format(progress.proposals)} detail="Every qualified proposal will have a decision date and follow-up cadence." />
-          <Kpi label="Clients won" value={number.format(progress.clientsWon)} detail="No customer or revenue proof is claimed before payment is received." />
+          <Kpi label="Personalized contacts" value={number.format(progress.personalizedContacts)} detail="Verified delivered personalized outreach. Unsent drafts and research do not count." tone="navy" />
+          <Kpi label="Discovery calls completed" value={number.format(progress.discoveryCalls)} detail="Qualified conversations where need, fit, authority, timing, and value are tested." />
+          <Kpi label="Proposals sent" value={number.format(progress.proposals)} detail="Eight proposals have been issued; cash conversion remains the next test." />
+          <Kpi label="Clients won" value={number.format(progress.clientsWon)} detail="One active client win is a noncash barter relationship. Cash-paying wins remain zero." />
         </div>
         <div className="accountability-layout">
-          <article className="accountability-card"><p className="eyebrow">Preparation priorities through Sunday</p><h3>Be ready to begin outreach without improvisation.</h3><ol>{progress.currentPriorities.map((item) => <li key={item}>{item}</li>)}</ol></article>
-          <article className="accountability-card"><p className="eyebrow">Completed foundation</p><h3>What has already been built.</h3><ul>{progress.accomplishments.map((item) => <li key={item}>{item}</li>)}</ul></article>
-          <article className="accountability-card cadence-card"><p className="eyebrow">Reporting discipline</p><h3>Dashboard update standard</h3><dl><div><dt>Morning</dt><dd>Planned work, priorities, deadlines, blockers, and commitments</dd></div><div><dt>End of day</dt><dd>Actual hours, completed deliverables, training, pipeline changes, risks, and next actions</dd></div><div><dt>Minimum</dt><dd>One complete update every active workday</dd></div><div><dt>Next sync</dt><dd>{progress.nextSync}</dd></div><div><dt>Counselor status</dt><dd>{progress.counselorStatus}</dd></div></dl></article>
+          <article className="accountability-card"><p className="eyebrow">Current operating priorities</p><h3>Revenue first, without losing compliance discipline.</h3><ol>{progress.currentPriorities.map((item) => <li key={item}>{item}</li>)}</ol></article>
+          <article className="accountability-card"><p className="eyebrow">Verified progress</p><h3>What has materially changed.</h3><ul>{progress.accomplishments.map((item) => <li key={item}>{item}</li>)}</ul></article>
+          <article className="accountability-card cadence-card"><p className="eyebrow">Reporting discipline</p><h3>Outcome-based accountability</h3><dl><div><dt>Track</dt><dd>Pipeline movement, delivered outreach, proposals, cash, compliance, training evidence, client delivery, risks, and next actions.</dd></div><div><dt>Do not track</dt><dd>Owner business start time, end time, breaks, or ordinary work hours.</dd></div><div><dt>Training exception</dt><dd>Actual SEAP instructional duration is recorded only because verified training hours are a program requirement.</dd></div><div><dt>Next sync</dt><dd>{progress.nextSync}</dd></div><div><dt>Counselor / SEAP</dt><dd>{progress.counselorStatus}</dd></div></dl></article>
         </div>
       </section>
 
       <section className="section" id="case">
-        <SectionTitle eyebrow="Executive business case" title="The opportunity is not merely content production. It is disciplined translation of expertise into trust." copy="The business succeeds only when a defined customer problem, a clear commercial offer, repeatable delivery, and dependable cash performance work together." />
-        <div className="case-grid">
-          {Object.entries(data.executiveCase).map(([key, value]) => <article key={key}><span>{key.replace(/([A-Z])/g, ' $1')}</span><p>{value}</p></article>)}
-        </div>
+        <SectionTitle eyebrow="Executive business case" title="The opportunity is not more content. It is giving valuable messages a longer life." copy="The business succeeds when a real communication problem meets a clear offer, disciplined production, measurable client value, and collected cash." />
+        <div className="case-grid">{Object.entries(data.executiveCase).map(([key, value]) => <article key={key}><span>{key.replace(/([A-Z])/g, ' $1')}</span><p>{value}</p></article>)}</div>
       </section>
 
       <section className="section" id="market">
-        <SectionTitle eyebrow="Market and customer fit" title="The customer does not need more noise. The customer needs a reliable way to communicate with authority." copy="The launch market is intentionally broad enough to create opportunity but narrow enough to share one recurring problem: valuable messages are trapped inside busy organizations and inconsistent workflows." />
+        <SectionTitle eyebrow="Market and customer fit" title="The strongest clients already have something worth saying. They need a system that keeps it from disappearing." copy="The launch market centers on established professionals, service businesses, nonprofits, ministries, and other trusted voices with recurring source material and a practical need for production and repurposing support." />
         <div className="segment-grid">{data.marketSegments.map((item) => <article key={item.name}><h3>{item.name}</h3><p><strong>Need:</strong> {item.need}</p><p><strong>Best fit:</strong> {item.fit}</p></article>)}</div>
-        <div className="positioning-callout"><div><p className="eyebrow">Competitive position</p><h3>Not an ad agency. Not a commodity editor. Not a do-it-yourself software subscription.</h3></div><p>Next Steps competes through founder access, message clarity, broadcast discipline, executive judgment, regional credibility, and the ability to carry one source idea across audio, video, social, web, and email assets.</p></div>
+        <div className="positioning-callout"><div><p className="eyebrow">Competitive position</p><h3>Focused media production and content continuity, not open-ended agency work.</h3></div><p>Next Steps competes through founder access, broadcast discipline, message judgment, regional credibility, and the ability to turn one approved source message into coordinated podcast, web, social, email, and search-ready content.</p></div>
       </section>
 
       <section className="section" id="services">
-        <SectionTitle eyebrow="Service architecture and unit economics" title="Clear offers create a low-risk entry point and a visible path toward higher-value recurring work." copy="Launch pricing is deliberately accessible. It must not become a permanent ceiling after customer value, scope, and outcomes are validated." />
-        <div className="service-detail-grid">{data.services.map((item) => <article key={item.name}><header><div><p className="eyebrow">{item.bestFor}</p><h3>{item.name}</h3></div><strong>{money.format(item.price)}</strong></header><p>{item.deliverables}</p><dl><div><dt>Planned owner hours</dt><dd>{item.hours}</dd></div><div><dt>Direct cost allowance</dt><dd>{money.format(item.directCost)}</dd></div><div><dt>Contribution</dt><dd>{money.format(item.contribution)}</dd></div><div><dt>Contribution margin</dt><dd>{item.margin}%</dd></div></dl><footer><strong>Upgrade path:</strong> {item.upgrade}</footer></article>)}</div>
+        <SectionTitle eyebrow="Approved standard offers" title="Start with a defined paid test. Continue only when the work proves recurring value." copy="The $550 Starter and $1,100 prepaid Retainer remain the standard/default offers. Prospect-specific custom offers may be approved separately without silently repricing the standard architecture." />
+        <div className="service-detail-grid">{data.services.map((item) => <article key={item.name}><header><div><p className="eyebrow">{item.bestFor}</p><h3>{item.name}</h3></div><strong>{money.format(item.price)}</strong></header><p>{item.deliverables}</p><footer><strong>Next step:</strong> {item.upgrade}</footer></article>)}</div>
       </section>
 
       <section className="section" id="financials">
-        <SectionTitle eyebrow="Five-year financial construction" title="The model measures livelihood, retained cash, and delivery capacity—not revenue alone." copy="Every fiscal year must support direct costs, operating expenses, taxes, owner compensation, retained cash, and the operational capacity required to deliver the work." />
-        <div className="chart-grid two">
-          <ChartCard title="Revenue, owner draw, and ending cash" copy="The owner draw grows only as revenue and retained cash expand." note="All figures are planning assumptions pending actual results and CPA review."><ResponsiveContainer width="100%" height={360}><ComposedChart data={annual}><CartesianGrid strokeDasharray="3 3" vertical={false}/><XAxis dataKey="year"/><YAxis tickFormatter={(v) => `$${Math.round(v/1000)}k`}/><Tooltip content={<CurrencyTooltip/>}/><Legend/><Bar dataKey="Revenue" fill="#123f5a" radius={[6,6,0,0]}/><Line dataKey="Owner draw" stroke="#cf9d3a" strokeWidth={3}/><Line dataKey="Ending cash" stroke="#2f7d7b" strokeWidth={3}/></ComposedChart></ResponsiveContainer></ChartCard>
-          <ChartCard title={`${year.year} revenue mix`} copy="The model becomes more stable as recurring revenue becomes a larger share of the total."><ResponsiveContainer width="100%" height={360}><PieChart><Pie data={serviceMix} dataKey="value" nameKey="name" innerRadius={76} outerRadius={125} label={({name,value}) => `${name}: ${value}%`}>{serviceMix.map((entry,index) => <Cell key={entry.name} fill={palette[index]}/>)}</Pie><Tooltip formatter={(value) => `${value}%`}/></PieChart></ResponsiveContainer></ChartCard>
+        <SectionTitle eyebrow="Historical planning baseline" title="The July financial model remains a stress test, not a current sales forecast." copy="Version 2.0 now separates current cash evidence from the original July household-stretch model. Current decisions are governed by collected cash, the active cash pipeline, actual expenses, and the Current Financial View." />
+        <div className="metrics-grid">
+          <Kpi label="Current collected cash" value={money.format(0)} detail="Verified business cash revenue since the August 1 launch." tone="navy" />
+          <Kpi label="Current active cash pipeline" value={money.format(progress.preliminaryPipelineValue)} detail="Cash opportunity value only." />
+          <Kpi label="Historical FY1 stretch reference" value={money.format(data.fiscalYears[0].revenue)} detail="July 15 household-stretch / livelihood stress test only. It is not the current sales forecast." />
+          <Kpi label="Current owner draw" value={money.format(0)} detail="No owner draw has been taken from business cash." />
         </div>
-
-        <div className="year-selector" role="tablist">{data.fiscalYears.map((item,index) => <button type="button" key={item.year} className={selectedYear===index?'active':''} onClick={() => setSelectedYear(index)}><span>{item.year}</span><strong>{money.format(item.revenue)}</strong></button>)}</div>
-        <article className="year-detail final-year-detail"><header><div><p className="eyebrow">Selected fiscal year</p><h3>{year.year}</h3></div><span className="status-pill">{year.status}</span></header><div className="detail-metrics expanded"><div><span>Revenue</span><strong>{money.format(year.revenue)}</strong></div><div><span>Direct costs</span><strong>{money.format(year.directCosts)}</strong></div><div><span>Operating expenses</span><strong>{money.format(year.operatingExpenses)}</strong></div><div><span>Operating profit</span><strong>{money.format(year.operatingProfit)}</strong></div><div><span>Tax reserve</span><strong>{money.format(year.taxReserve)}</strong></div><div><span>Owner draw</span><strong>{money.format(year.ownerDraw)}</strong></div><div><span>Net retained cash</span><strong>{money.format(year.retainedCash)}</strong></div><div><span>Ending cash</span><strong>{money.format(year.endingCash)}</strong></div><div><span>Ending monthly draw</span><strong>{money.format(year.endingMonthlyDraw)}</strong></div><div><span>Avg. delivery hours/mo.</span><strong>{number.format(year.ownerHours)}</strong></div><div><span>Max. capacity</span><strong>{year.capacity}%</strong></div><div><span>Recurring revenue mix</span><strong>{year.recurringMix}%</strong></div></div></article>
+        <div className="year-selector" role="tablist">{data.fiscalYears.map((item, index) => <button type="button" key={item.year} className={selectedYear === index ? 'active' : ''} onClick={() => setSelectedYear(index)}><span>{item.year}</span><strong>{money.format(item.revenue)}</strong></button>)}</div>
+        <article className="year-detail final-year-detail"><header><div><p className="eyebrow">Historical modeled year</p><h3>{year.year}</h3></div><span className="status-pill">{year.status}</span></header><div className="detail-metrics expanded"><div><span>Modeled revenue</span><strong>{money.format(year.revenue)}</strong></div><div><span>Modeled operating expenses</span><strong>{money.format(year.operatingExpenses)}</strong></div><div><span>Modeled owner draw</span><strong>{money.format(year.ownerDraw)}</strong></div><div><span>Modeled ending cash</span><strong>{money.format(year.endingCash)}</strong></div><div><span>Recurring revenue mix</span><strong>{year.recurringMix}%</strong></div></div></article>
       </section>
 
       <section className="section" id="sales">
-        <SectionTitle eyebrow="First-year monthly sales construction" title="The annual target is credible only when the monthly path and required selling activity are visible." copy="The first-year plan requires continuous prospecting, discovery, proposals, paid starter work, conversion to retainers, and disciplined collections." />
-        <ChartCard title="FY 2026–27 monthly revenue and owner-draw ramp" copy="The draw increases from $2,850 in August to $6,550 in July only if revenue and cash support it."><ResponsiveContainer width="100%" height={390}><ComposedChart data={monthly}><CartesianGrid strokeDasharray="3 3" vertical={false}/><XAxis dataKey="month"/><YAxis yAxisId="money" tickFormatter={(v)=>`$${Math.round(v/1000)}k`}/><YAxis yAxisId="clients" orientation="right" allowDecimals={false}/><Tooltip/><Legend/><Bar yAxisId="money" dataKey="Revenue target" fill="#123f5a" radius={[6,6,0,0]}/><Line yAxisId="money" dataKey="Owner draw" stroke="#cf9d3a" strokeWidth={3}/><Line yAxisId="clients" dataKey="retainers" name="Active retainers" stroke="#2f7d7b" strokeWidth={3}/></ComposedChart></ResponsiveContainer></ChartCard>
+        <SectionTitle eyebrow="Current conversion test" title="Plans and proposals do not pay the bills. Collected cash does." copy="The weekly standard protects consistent selling while keeping the quality of qualification more important than raw activity volume." />
         <div className="sales-layout">
-          <article className="funnel-card"><h3>Launch proof funnel</h3>{data.funnel.map((item,index) => <div key={item.stage} style={{width:`${Math.max(38,100-index*13)}%`}}><span>{item.stage}</span><strong>{item.value}</strong><small>{item.conversion}% of qualified prospects</small></div>)}</article>
-          <article className="activity-card"><h3>Weekly operating standard</h3><ul><li>10–15 qualified prospects added</li><li>10–15 personalized contacts</li><li>At least 5 follow-ups</li><li>2 or more calls scheduled</li><li>1–2 discovery calls completed</li><li>At least 1 proposal issued</li><li>Revenue and collections reviewed weekly</li><li>Approximately 10 hours dedicated to prospecting</li></ul><p><strong>Core conversion test:</strong> 40 qualified prospects must produce 6 discovery calls, 3 proposals, 2 paid starters, and 1 converted retainer.</p></article>
+          <article className="funnel-card"><h3>Current proof funnel</h3>{data.funnel.map((item, index) => <div key={item.stage} style={{ width: `${Math.max(38, 100 - index * 13)}%` }}><span>{item.stage}</span><strong>{item.value}</strong><small>{item.conversion}% of CRM prospect records</small></div>)}</article>
+          <article className="activity-card"><h3>Weekly operating standard</h3><ul><li>10–15 qualified personalized contacts</li><li>5 or more follow-ups</li><li>2 or more discovery calls</li><li>1 or more proposal</li><li>Every active lead has a dated next action</li><li>Cash collections reviewed weekly</li><li>Research and unsent drafts do not count as contacts</li></ul><p><strong>Current management test:</strong> Eight proposals and one barter client win have produced $0 collected cash. The immediate priority is conversion, not more infrastructure.</p></article>
         </div>
       </section>
 
       <section className="section" id="operations">
-        <SectionTitle eyebrow="Operating system and accountability" title="The business must be managed as a repeatable company, not a collection of favors and improvised projects." copy="Commercial controls, production controls, financial controls, and professional-review gates protect margin, quality, client trust, and compliance." />
-        <div className="workflow-grid">{data.workflow.map(([step,name,detail]) => <article key={step}><span>{step}</span><div><h3>{name}</h3><p>{detail}</p></div></article>)}</div>
-        <div className="control-grid"><article><h3>Commercial controls</h3><ul><li>Written scope and deliverables</li><li>50% project deposit</li><li>Monthly retainer prepayment</li><li>One revision unless contracted otherwise</li><li>Change orders for added scope</li></ul></article><article><h3>Financial controls</h3><ul><li>Monthly close and forecast-versus-actual review</li><li>Separate tax reserve</li><li>Owner draw explicitly recorded</li><li>Minimum cash warning</li><li>Outside-income bridge quantified</li></ul></article><article><h3>Professional gates</h3><ul><li>Attorney review of contracts, privacy, IP, and releases</li><li>CPA review of entity, taxes, and accounting treatment</li><li>Insurance review for liability, E&O, cyber, and equipment</li><li>Cybersecurity review for credentials, backups, and incidents</li></ul></article><article><h3>Capacity controls</h3><ul><li>Founder-led delivery at launch</li><li>80% utilization warning</li><li>Standard procedures before delegation</li><li>Project contractors before fixed payroll</li><li>Decline low-value or poorly scoped work</li></ul></article></div>
-      </section>
-
-      <section className="section" id="scenarios">
-        <SectionTitle eyebrow="Scenario and household sensitivity" title="The downside is quantified instead of disguised." copy="A zero-cash launch and immediate household draw create a real execution constraint. Revenue shortfalls must be translated into a visible working-capital or outside-income bridge." />
-        <ChartCard title="Revenue attainment and cash after required draw" copy="Negative balances represent the amount that must be funded outside the business."><ResponsiveContainer width="100%" height={380}><BarChart data={data.scenarios}><CartesianGrid strokeDasharray="3 3" vertical={false}/><XAxis dataKey="attainment" tickFormatter={(v)=>`${v}%`}/><YAxis tickFormatter={(v)=>`$${Math.round(v/1000)}k`}/><Tooltip content={<CurrencyTooltip/>}/><Legend/><Bar dataKey="revenue" name="Revenue" fill="#123f5a" radius={[6,6,0,0]}/><Bar dataKey="balance" name="Cash after required draw" fill="#cf9d3a" radius={[6,6,0,0]}/><ReferenceLine y={0} stroke="#8a5a44"/></BarChart></ResponsiveContainer></ChartCard>
-        <div className="scenario-grid">{data.scenarios.map((item) => <article className={item.balance<0?'scenario-card warning':'scenario-card'} key={item.name}><span className="status-pill">{item.classification}</span><h3>{item.name}</h3><dl><div><dt>Revenue</dt><dd>{money.format(item.revenue)}</dd></div><div><dt>Cash before draw</dt><dd>{money.format(item.cashBeforeDraw)}</dd></div><div><dt>Required draw</dt><dd>{money.format(item.requiredDraw)}</dd></div><div><dt>{item.balance<0?'Unfunded gap':'Remaining cash'}</dt><dd>{money.format(Math.abs(item.balance))}</dd></div></dl><p>{item.action}</p></article>)}</div>
+        <SectionTitle eyebrow="Operating system and accountability" title="The business is managed through source records, not memory or activity theater." copy="Drive/source records feed the Project Control Center, CRM, training and financial records, the Daily Operating Summary, and then OD Strategy. Calendar is a plan, not proof." />
+        <div className="workflow-grid">{data.workflow.map(([step, name, detail]) => <article key={step}><span>{step}</span><div><h3>{name}</h3><p>{detail}</p></div></article>)}</div>
+        <div className="control-grid"><article><h3>Commercial controls</h3><ul><li>Written scope and deliverables</li><li>50% project deposit where applicable</li><li>Monthly retainer prepayment</li><li>One revision unless contracted otherwise</li><li>Custom offers documented separately</li></ul></article><article><h3>Financial controls</h3><ul><li>Cash transactions recorded as they occur</li><li>Barter kept outside cash revenue</li><li>Owner draw explicitly recorded</li><li>Historical forecasts labeled as planning references</li><li>No new business debt without approval</li></ul></article><article><h3>SEAP controls</h3><ul><li>Submission is not acceptance</li><li>Scheduled training is not completed training</li><li>Actual instructional time only</li><li>Evidence retained for every countable session</li><li>Final verification due September 21</li></ul></article><article><h3>Scope controls</h3><ul><li>Podcast Production and Digital Content Support remains primary</li><li>No automatic full-service agency expansion</li><li>Media-property editorial firewall preserved</li><li>Client value and cash proof before expansion</li><li>Slack remains retired</li></ul></article></div>
       </section>
 
       <section className="section" id="risk">
-        <SectionTitle eyebrow="Risk and readiness" title="The highest risks are sales pace, pricing discipline, founder capacity, household cash, and compliance." copy="Each risk has a measurable trigger and a predetermined response so that pressure does not turn management into guesswork." />
-        <div className="risk-table"><div className="risk-row risk-head"><span>Risk</span><span>Score</span><span>Trigger</span><span>Management response</span></div>{data.risks.map((item)=><div className="risk-row" key={item.risk}><strong>{item.risk}</strong><span className={`risk-score ${item.probability*item.impact>=16?'critical':''}`}>{item.probability*item.impact}/25</span><p>{item.trigger}</p><p>{item.response}</p></div>)}</div>
+        <SectionTitle eyebrow="Risk and readiness" title="The largest current risk is simple: qualified activity has not yet become cash." copy="Risk controls stay visible so pressure does not create invented revenue, premature expansion, missed compliance, or loose scope." />
+        <div className="risk-table"><div className="risk-row risk-head"><span>Risk</span><span>Score</span><span>Trigger</span><span>Management response</span></div>{data.risks.map((item) => <div className="risk-row" key={item.risk}><strong>{item.risk}</strong><span className={`risk-score ${item.probability * item.impact >= 16 ? 'critical' : ''}`}>{item.probability * item.impact}/25</span><p>{item.trigger}</p><p>{item.response}</p></div>)}</div>
       </section>
 
       <section className="section" id="roadmap">
-        <SectionTitle eyebrow="Milestones and proof" title="Confidence must be earned through evidence on a schedule." copy="The launch is a sequence of decision gates. Missing evidence is not hidden behind activity, training, or polished presentation." />
-        <div className="milestone-grid final-milestones">{data.milestones.map((item,index)=><article key={item.name}><span>{String(index+1).padStart(2,'0')}</span><div><p>{item.date}</p><h3>{item.name}</h3><small>{item.evidence}</small></div></article>)}</div>
+        <SectionTitle eyebrow="Milestones and proof" title="Confidence is earned through dated evidence." copy="The current roadmap records what was submitted, what is live, what remains pending, and the next external deadlines." />
+        <div className="milestone-grid final-milestones">{data.milestones.map((item, index) => <article key={`${item.date}-${item.name}`}><span>{String(index + 1).padStart(2, '0')}</span><div><p>{item.date}</p><h3>{item.name}</h3><small>{item.evidence}</small></div></article>)}</div>
       </section>
 
       <section className="section verdict-section" id="verdict">
-        <SectionTitle eyebrow="First-year verdict standard" title="The business is promising, but household support is not proven until customers pay, stay, and refer." copy="The plan, founder experience, low overhead, and service architecture justify proceeding. The decisive issue is whether the sales engine can create dependable recurring value without exhausting capacity or hiding a household cash gap." />
-        <div className="success-grid">{data.successGates.map(([name,detail])=><article key={name}><h3>{name}</h3><p>{detail}</p></article>)}</div>
-        <div className="verdict-callout"><div><p className="eyebrow">What success means by July 31, 2027</p><h2>A repeatable company producing dependable owner income—not merely a busy freelance practice.</h2></div><ul><li>Revenue trajectory supports the planned draw.</li><li>Recurring clients reduce dependence on one-off projects.</li><li>Delivery remains within scope, margin, and capacity.</li><li>Cash, taxes, compliance, and professional gates remain current.</li><li>The owner and household can see the truth every day.</li></ul></div>
+        <SectionTitle eyebrow="Current verdict standard" title="The business has real infrastructure, real activity, and real proof of execution. Cash demand is still unproven." copy="The next stage is not another rebuild. It is disciplined conversion: paid work, recurring value, final SEAP compliance, and evidence that the business can support itself." />
+        <div className="success-grid">{data.successGates.map(([name, detail]) => <article key={name}><h3>{name}</h3><p>{detail}</p></article>)}</div>
+        <div className="verdict-callout"><div><p className="eyebrow">What success means now</p><h2>Turn the operating system into collected cash without sacrificing quality, compliance, or scope discipline.</h2></div><ul><li>Convert the nearest qualified opportunities.</li><li>Protect the two standard offers while allowing documented custom deals.</li><li>Complete and verify the remaining SEAP training.</li><li>Deliver the active barter relationship without treating it as cash.</li><li>Expand services only after demand and delivery are proven.</li></ul></div>
       </section>
     </main>
 
