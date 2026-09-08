@@ -3,7 +3,7 @@ window.OD_PUBLIC_DATA = {
     promise: 'Helping meaningful voices be seen, heard, trusted, and found.',
     phase: 'Focused soft launch: Podcast Production and Digital Content Support, active client delivery, protected compliance and training milestones, qualified outreach, and revenue conversion',
     outreachStart: 'Active: standardized content delivery and qualified warm-market outreach are underway. Scope remains focused on production, packaging, repurposing, basic digital visibility, and simple content-performance measurement rather than full-service agency expansion.',
-    updated: 'September 8, 2026: NYS DOL confirmed receipt of the signed ES161.2 Business Strategy submitted through Secure Messaging September 5 at 9:55 PM. DOL receipt confirmation was sent September 8 at 10:18 AM and states that the next form due is the ISVF on September 21. Receipt proof is retained; receipt is not represented as separate substantive approval or acceptance-as-complete unless DOL states that explicitly.'
+    updated: 'September 8, 2026: NYS DOL confirmed receipt of the signed ES161.2 Business Strategy submitted through Secure Messaging September 5 at 9:55 PM and identified the ISVF as the next form due September 21. Separately, VBOC at McNulty Center issued a provider completion certificate confirming Peter Vazquez completed the 1-hour Morning Coffee with Amy webinar on September 8. That webinar is retained as verified supplemental training and is not counted toward the SEAP 20-hour total because it is not on the submitted ISP unless SEAP approves eligibility or a class change.'
   },
   metrics: { prospects: 44, pipeline: 5450, trainingLogged: 11.22, trainingPending: 9.22, trainingRequired: 20, contacts: 13 },
   purpose: [
@@ -48,6 +48,7 @@ window.OD_PUBLIC_DATA = {
     ['August 23, 2026', 'Individual Progress Report submitted', 'Signed ES161.3 was submitted through the NYS DOL Secure Message Center at 10:14 PM, before the August 24 deadline. Submission proof is retained.'],
     ['August 31, 2026', 'First training verification submitted', 'The ES161.4 first 10-hour package was submitted through NYS DOL Secure Messaging at 9:26 PM. The package documents 11.22 actual hours in ISP-listed classes, submission proof is retained, and DOL review/acceptance remains pending.'],
     ['September 7, 2026', 'Business Strategy due - completed early', 'Signed ES161.2 was submitted September 5 at 9:55 PM. NYS DOL confirmed receipt September 8 at 10:18 AM. Receipt proof is retained. Next benchmark: ISVF due September 21.'],
+    ['September 8, 2026', 'Supplemental VBOC training completion verified', 'Morning Coffee with Amy was completed from 10:00-11:00 AM ET. Jamie Hensel issued a provider certificate confirming completion of the 1-hour webinar presented by Amy Amoroso, VBOC Director NY/NJ. Evidence is retained. This class is supplemental/not on the submitted ISP and is excluded from the SEAP 20-hour total unless SEAP approves eligibility or a class change.'],
     ['September 21, 2026', 'Final training verification due', 'All twenty hours must be completed, verified, submitted, and retained.'],
     ['September 22, 2026', 'Stabilization review', 'Review pipeline, collected revenue, standardized delivery, capacity, cash, compliance, scope discipline, and corrective actions before any service expansion.']
   ]
