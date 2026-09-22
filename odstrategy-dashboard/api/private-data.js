@@ -4,7 +4,7 @@ import { readActionRows, readArchiveRows, readValues, SPREADSHEETS } from './_sh
 const num = (value) => Number(String(value ?? '').replace(/[$,%]/g, '').replace(/,/g, '')) || 0;
 const filled = (row) => row && row.some((value) => String(value ?? '').trim() !== '');
 const last = (rows) => [...rows].reverse().find(filled) || [];
-const latestOpen = (rows) => [...rows].reverse().find((row) => String(row[2] || '').toLowerCase() === 'open') || last(rows);
+const latestOpen = (rows) => last(rows);
 const formatStamp = (value) => value ? String(value).replace('T', ' ').replace(/\.\d{3}Z$/, ' UTC') : new Date().toISOString();
 const plural = (value, singular, pluralForm = `${singular}s`) => `${value} ${value === 1 ? singular : pluralForm}`;
 
@@ -52,9 +52,9 @@ function staticOperatingCase() {
       ['August 12, 2026', 'Second SCORE counseling session completed', 'The two-meeting counselor prerequisite was completed. The session focused on target customers, customer ROI, prospect development, sales-pitch clarity, and continued mentorship.'],
       ['August 13, 2026', 'Pipeline reset and prospect qualification launched', 'Research targets and nurture-only records were separated from active opportunity value, and the prior-show-guest intake was staged for qualification before CRM promotion.'],
       ['August 23, 2026', 'Individual Progress Report submitted', 'Signed ES161.3 was submitted through NYS DOL Secure Messaging at 10:14 PM before the August 24 deadline. Submission proof is retained.'],
-      ['August 31, 2026', 'First training verification submitted', 'The ES161.4 first 10-hour package was submitted through NYS DOL Secure Messaging at 9:26 PM. The package documents 11.22 actual ISP-listed training hours, proof is retained, and DOL review/acceptance remains pending.'],
+      ['August 31, 2026', 'First training verification submitted', 'The ES161.4 first 10-hour package was submitted through NYS DOL Secure Messaging at 9:26 PM. The package documents 11.22 actual ISP-listed training hours and proof is retained. NYS DOL later confirmed all SEAP benchmarks complete on September 22.'],
       ['September 5, 2026', 'Business Strategy submitted', 'Signed ES161.2 was submitted through NYS DOL Secure Messaging at 9:55 PM. DOL confirmed receipt September 8 at 10:18 AM; proof is retained.'],
-      ['September 22, 2026', 'Final training verification submitted', 'Final ES161.4 and supporting documentation were submitted through NYS DOL Secure Messaging at 6:56 AM. The participant record documents 20.14 actual entrepreneurial-training hours; DOL review/acceptance remains pending.']
+      ['September 22, 2026', 'SEAP benchmarks completed and confirmed', 'Final ES161.4 and supporting documentation were submitted through NYS DOL Secure Messaging at 6:56 AM. At 10:54 AM NYS DOL stated: "You have completed all SEAP Benchmarks, Thank you!" The participant record documents 20.14 actual entrepreneurial-training hours and final completion proof is retained.']
     ]
   };
 }
@@ -188,9 +188,9 @@ async function buildData() {
       deadlines: [
         { date: 'August 10, 2026', item: 'Individual Services Plan', status: 'Completed - submitted and processed August 4' },
         { date: 'August 24, 2026', item: 'Individual Progress Report', status: 'Completed - signed and submitted August 23 at 10:14 PM; proof retained' },
-        { date: 'August 31, 2026', item: 'First ten training hours verification', status: 'Completed - ES161.4 first 10-hour package submitted August 31 at 9:26 PM; proof retained; DOL acceptance pending' },
+        { date: 'August 31, 2026', item: 'First ten training hours verification', status: 'Completed - first ES161.4 submitted August 31 at 9:26 PM; included in overall SEAP completion confirmed by DOL September 22' },
         { date: 'September 7, 2026', item: 'Business Strategy', status: 'Completed - submitted September 5 at 9:55 PM; DOL receipt confirmed September 8 at 10:18 AM' },
-        { date: 'September 21, 2026', item: 'Final training verification', status: 'Completed - final ES161.4 and supporting documentation submitted September 22 at 6:56 AM; DOL review/acceptance pending' }
+        { date: 'September 21, 2026', item: 'Final training verification', status: 'Completed - final ES161.4 submitted September 22 at 6:56 AM; NYS DOL confirmed all SEAP benchmarks complete at 10:54 AM' }
       ]
     },
     professionalGates: readinessRows.filter((row) => /legal|insurance|pricing/i.test(`${row[1]} ${row[2]}`)).map((row) => ({ name: row[1], status: row[5], action: row[8] || row[9] || 'Review required.' })),
@@ -209,7 +209,8 @@ async function buildData() {
       { name: 'ES161.4 First 10-Hour Submission Archive', url: 'https://drive.google.com/drive/folders/1HwN8hi2f31qt--gWYcLwvhLJqsZoJLJ8' },
       { name: 'ES161.4 Final Submission Archive', url: 'https://drive.google.com/drive/folders/1JhFRqEXoXzihEq1qZ7sb6z9J_Co6IAd-' },
       { name: 'ES161.4 Final Submitted Packet', url: 'https://drive.google.com/file/d/1WMAiqg6Uj1IUzBUd52cl8-btFVnd12aR/view' },
-      { name: 'ES161.4 Secure Message Proof', url: 'https://drive.google.com/file/d/1nE4eYO1QtRRwHlauOZd1S3oJiN9MnU78/view' }
+      { name: 'ES161.4 Secure Message Proof', url: 'https://drive.google.com/file/d/1nE4eYO1QtRRwHlauOZd1S3oJiN9MnU78/view' },
+      { name: 'NYS DOL SEAP Completion Confirmation', url: 'https://drive.google.com/file/d/1rzVxYkYdkfLuDMuPowIaAu99L8-ZCRvc/view' }
     ],
     approvedDocuments: []
   };
