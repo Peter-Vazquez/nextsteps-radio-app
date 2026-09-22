@@ -106,14 +106,14 @@
       ['Contacts sent', data.pipeline.contactsSent || 0, 'Cumulative outreach contacts'],
       ['Responses', data.pipeline.responses || 0, 'Cumulative prospect responses'],
       ['Training logged', `${data.training.loggedHours} / ${data.training.totalRequiredHours}`, `${data.training.eligibleHours || 0} eligible; ${data.training.pendingHours || 0} pending verification`],
-      ['SEAP benchmark', 'Submitted', 'Final ES161.4 sent September 22 at 6:56 AM; DOL review pending']
+      ['SEAP benchmark', 'Complete', 'NYS DOL confirmed all SEAP benchmarks complete September 22 at 10:54 AM']
     ];
     document.getElementById('private-kpis').innerHTML = kpis.map(([label, value, note]) => `<article class="private-kpi"><span>${label}</span><strong>${value}</strong><small>${note}</small></article>`).join('');
 
     const trainingPercent = Math.min(100, (data.training.loggedHours / data.training.totalRequiredHours) * 100);
-    document.getElementById('training-progress-label').textContent = `${trainingPercent.toFixed(0)}% documented`;
+    document.getElementById('training-progress-label').textContent = data.training.pendingHours === 0 && data.training.eligibleHours >= data.training.totalRequiredHours ? 'SEAP complete' : `${trainingPercent.toFixed(0)}% documented`;
     document.getElementById('training-progress-bar').style.width = `${trainingPercent}%`;
-    document.getElementById('training-progress-copy').innerHTML = `<strong>${data.training.loggedHours} of ${data.training.totalRequiredHours} total hours documented</strong><p>${data.training.eligibleHours || 0} hour(s) independently verified eligible; ${data.training.pendingHours || 0} hour(s) pending DOL review/acceptance. Final ES161.4 and supporting documentation were submitted September 22, 2026 at 6:56 AM. Participant-controlled submission is complete.</p>`;
+    document.getElementById('training-progress-copy').innerHTML = `<strong>${data.training.loggedHours} of ${data.training.totalRequiredHours} total hours documented</strong><p>NYS DOL confirmed all SEAP benchmarks complete on September 22, 2026 at 10:54 AM. The SEAP benchmark workstream is closed; no additional training-verification submission is due.</p>`;
 
     document.getElementById('monthly-financials').innerHTML = data.financial.monthly.map((item) => `<tr><td>${item.month}</td><td>${money.format(item.plan)}</td><td>${money.format(item.actual)}</td><td>${money.format(item.expenses)}</td><td>${money.format(item.actualDraw)}</td></tr>`).join('');
     document.getElementById('household-bridge').innerHTML = `<p><strong>Required household support:</strong> ${money.format(data.financial.requiredOwnerDrawToDate)}</p><p><strong>Business-funded draw:</strong> ${money.format(data.financial.actualOwnerDrawToDate)}</p><p><strong>Outside-income bridge:</strong> ${money.format(data.financial.outsideIncomeUsed)}</p><p>${data.financial.bridgeNote}</p>`;
